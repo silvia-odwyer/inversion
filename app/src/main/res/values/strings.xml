@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">Inversion</string>
+  <string name="your_images">Images</string>
+  <string name="your_videos">Videos</string>
+  <string name="new_effects">New Effects</string>
+  <string name="title_activity_home">HomeActivity</string>
+  <string name="title_home">Home</string>
+  <string name="theme">Theme</string>
+  <string name="effects">Effects</string>
+  <string name="settings">Settings</string>
+</resources>

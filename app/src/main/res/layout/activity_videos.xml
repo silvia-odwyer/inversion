@@ -4,30 +4,28 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@android:color/black"
+  android:background="@color/backgroundColor"
   tools:context=".Videos">
 
   <LinearLayout
-    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
-    android:orientation="horizontal"
-    app:layout_constraintBottom_toTopOf="@+id/guideline6"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.253">
+    app:layout_constraintVertical_bias="0.052">
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/your_videos"
-      android:textColor="@android:color/white"
+      android:textColor="@color/headingColor"
       android:textSize="40dp"
       android:textStyle="bold" />
-
   </LinearLayout>
 
 
@@ -38,6 +36,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
+    android:layout_marginStart="10dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@+id/guideline6"
     app:layout_constraintVertical_bias="0.036">
@@ -46,7 +45,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/your_videos"
-      android:textColor="@android:color/white"
+      android:textColor="@color/headingColor"
       android:textSize="20dp"
       android:textStyle="bold" />
   </LinearLayout>

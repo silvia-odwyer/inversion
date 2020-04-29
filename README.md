@@ -7,7 +7,7 @@ allowing users to add special effects to their videos quickly and save them for 
 
 ![Prototype](https://i.imgur.com/EDM3uef.png "Screenshots of the app prototype")
 
-![Prototype](https://i.imgur.com/wPW9auh.gif "A live prototype of the app in action")
+Link to the GIF prototype demo: https://i.imgur.com/wPW9auh.gif 
 
 ## Development Notes
 The app is being developed with Android Studio, written in Java, and supports mobile devices with a minimum API Level of 21. 

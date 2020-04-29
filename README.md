@@ -7,7 +7,7 @@ allowing users to add special effects to their videos quickly and save them for 
 
 ![Prototype](https://i.imgur.com/EDM3uef.png "Screenshots of the app prototype")
 
-![Prototype](https://i.imgur.com/wPW9auh.gifv "A live prototype of the app in action")
+![Prototype](https://i.imgur.com/wPW9auh.gif "A live prototype of the app in action")
 
 ## Development Notes
 The app is being developed with Android Studio, written in Java, and supports mobile devices with a minimum API Level of 21. 
@@ -36,7 +36,15 @@ This list is not complete as of yet, for example if new screens or activities ar
 
 ## Filters 
 - **Image correction**: Sharpen, blur, adjustments to saturation, contrast, brightness, etc.,
-- **Filters**: Hue transforms, monochrome, sepia, blending with a variety of gradients, RGB shifts, tints
-- **Special effects**: Other effects such as applying vignettes, pixelization, noise, vintage effects, etc.,
+- **Filters**: Hue transforms, monochrome, sepia, blending with a variety of gradients, RGB shifts, tints, 
+- **Special effects**: Other effects such as applying vignettes, halftone, pixelization, noise, vintage effects, solarization etc.,
+- **Blending**: Blending with other images will also be available, such as using Multiply blend, Add blend, and so forth. 
+
+## Other Features
+- Image collage creation
+- Adding text to images
+- Watermarking videos
+- Exporting edited images/videos
 
 It is hoped that at least 50 filters/effects will be available for use in both the image editor and video editor.
+Some visual examples of the filters will be added here or in the repository Wiki. 

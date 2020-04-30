@@ -1,7 +1,7 @@
 # Inversion 
 
-Inversion aims to be a video processing app for Android, currently in development. Its aims to perform real-time video processing on the GPU, 
-allowing users to add special effects to their videos quickly and save them for sharing. 
+Inversion aims to be a video and image processing app for Android, currently in development. It aims to perform real-time video processing on the GPU, 
+allowing users to add special effects to their videos and images quickly and save them for sharing. 
 
 ## Visual Prototypes
 

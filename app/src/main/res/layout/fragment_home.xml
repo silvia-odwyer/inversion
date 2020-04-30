@@ -28,12 +28,10 @@
       android:textStyle="bold" />
   </LinearLayout>
 
-
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginStart="10dp"
     app:layout_constraintBottom_toTopOf="@+id/guideline2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="1.0"
@@ -41,25 +39,35 @@
     app:layout_constraintTop_toTopOf="@+id/guideline"
     app:layout_constraintVertical_bias="0.033">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/your_images"
-      android:textColor="@android:color/white"
-      android:textSize="24sp"
-      android:textStyle="bold" />
-
-    <TextView
-      android:id="@+id/view_images"
+    <LinearLayout
       android:layout_width="match_parent"
-      android:gravity="right"
       android:layout_height="wrap_content"
-      android:text="View all"
-      android:textColor="@android:color/white"
-      android:textSize="15sp"
-      android:textStyle="bold" />
+      android:orientation="horizontal"
+      android:layout_marginStart="10dp">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_images"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/view_images"
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:layout_height="wrap_content"
+        android:text="View all"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    </LinearLayout>
+
 
   </LinearLayout>
+
 
   <LinearLayout
     android:layout_width="match_parent"

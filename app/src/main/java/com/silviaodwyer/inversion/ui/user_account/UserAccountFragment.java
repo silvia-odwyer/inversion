@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion.ui.user_account;
 
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +19,15 @@ import com.silviaodwyer.inversion.R;
 public class UserAccountFragment extends Fragment {
   private Switch themeToggle;
   private Boolean nightThemeEnabled;
+  private SharedPreferences sharedPreferences;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
     View root = inflater.inflate(R.layout.fragment_useraccount, container, false);
-
+    sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
     themeToggle = root.findViewById(R.id.themeToggle);
+    initThemeToggle();
     themeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -40,11 +43,25 @@ public class UserAccountFragment extends Fragment {
           umm.setNightMode(UiModeManager.MODE_NIGHT_NO);
           Toast.makeText(getActivity().getApplicationContext(), "Light theme enabled", Toast.LENGTH_SHORT).show();
         }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("nightThemeEnabled", nightThemeEnabled);
+        editor.commit();
       }
     });
 
-
-
     return root;
+  }
+
+  private void initThemeToggle() {
+    Boolean nightModeEnabled = false;
+
+    nightModeEnabled = sharedPreferences.getBoolean("nightThemeEnabled", nightModeEnabled);
+    if (nightModeEnabled) {
+      themeToggle.setChecked(true);
+    }
+    else {
+      themeToggle.setChecked(false);
+    }
   }
 }

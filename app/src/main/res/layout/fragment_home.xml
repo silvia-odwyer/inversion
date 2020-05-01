@@ -23,7 +23,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/app_name"
-      android:textColor="#EEEEEE"
+      android:textColor="@color/headingColor"
       android:textSize="40dp"
       android:textStyle="bold" />
   </LinearLayout>
@@ -31,7 +31,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     app:layout_constraintBottom_toTopOf="@+id/guideline2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="1.0"
@@ -65,15 +65,27 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+      android:layout_width="match_parent"
+      android:layout_marginStart="20dp"
+      android:layout_height="wrap_content">
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/images">
+
+      </LinearLayout>
+
+    </HorizontalScrollView>
+
 
   </LinearLayout>
-
 
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginStart="10dp"
+    android:orientation="vertical"
     app:layout_constraintBottom_toTopOf="@+id/guideline3"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
@@ -81,24 +93,47 @@
     app:layout_constraintTop_toTopOf="@+id/guideline2"
     app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/your_videos"
-      android:textColor="@android:color/white"
-      android:textSize="24sp"
-      android:textStyle="bold" />
-
-    <TextView
-      android:id="@+id/view_videos"
-      android:layout_height="wrap_content"
-      android:text="View all"
+    <LinearLayout
       android:layout_width="match_parent"
-      android:gravity="right"
-      android:textColor="@android:color/white"
-      android:textSize="15sp"
-      android:textStyle="bold" />
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginStart="10dp">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_videos"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/view_videos"
+        android:layout_height="wrap_content"
+        android:text="View all"
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+      android:layout_width="match_parent"
+      android:layout_marginStart="20dp"
+      android:layout_height="wrap_content">
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/videos">
+
+      </LinearLayout>
+
+    </HorizontalScrollView>
   </LinearLayout>
+
+
 
   <LinearLayout
     android:layout_width="match_parent"

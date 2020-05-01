@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,15 +22,18 @@ import com.silviaodwyer.inversion.Videos;
 public class HomeFragment extends Fragment {
   private TextView viewImages;
   private TextView viewVideos;
+  private View root;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
-    View root = inflater.inflate(R.layout.fragment_home, container, false);
+    root = inflater.inflate(R.layout.fragment_home, container, false);
 
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
     setUpOnClickListeners();
+    initImages();
+    initVideos();
 
     return root;
   }
@@ -49,5 +54,31 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
       }
     });
+  }
+
+  private void initImages() {
+    LinearLayout imagesLinLayout = root.findViewById(R.id.images);
+
+    appendPlaceholderImages(imagesLinLayout);
+  }
+
+  private void initVideos() {
+    LinearLayout linLayout = root.findViewById(R.id.videos);
+
+    appendPlaceholderImages(linLayout);
+  }
+
+  private void appendPlaceholderImages(LinearLayout linLayout) {
+    // Create new ImageViews (with placeholders) and append them to the linear layout
+    for (int i = 0; i < 6; i++) {
+      ImageView newImage = new ImageView(getActivity().getApplicationContext());
+      newImage.setImageResource(R.drawable.gradient);
+      LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+      layoutParams.setMargins(10, 10, 10, 10);
+      newImage.setLayoutParams(layoutParams);
+      newImage.setMinimumHeight(90);
+      newImage.setMinimumWidth(90);
+      linLayout.addView(newImage);
+    }
   }
 }

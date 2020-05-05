@@ -138,6 +138,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_marginStart="10dp"
     app:layout_constraintBottom_toTopOf="@+id/guideline4"
     app:layout_constraintEnd_toEndOf="parent"
@@ -150,9 +151,33 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/new_effects"
-      android:textColor="@android:color/white"
+      android:textColor="@color/headingColor"
       android:textSize="24sp"
       android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title"
+      android:textColor="@color/textColor"
+      android:id="@+id/chromatic_effect"
+      android:text="1 Chromatic"/>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textColor="@color/textColor"
+    android:text="2 Sepia"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title"
+      android:textColor="@color/textColor"
+      android:text="3 Pixelation"/>
+
+
   </LinearLayout>
 
   <androidx.constraintlayout.widget.Guideline

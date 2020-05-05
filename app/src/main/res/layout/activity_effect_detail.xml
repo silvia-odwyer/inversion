@@ -4,27 +4,94 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@drawable/gradient"
   tools:context=".EffectDetail">
 
   <LinearLayout
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
     android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.054">
+    app:layout_constraintTop_toTopOf="@+id/guideline5"
+    app:layout_constraintVertical_bias="0.128">
+
+    <TextView
+      android:id="@+id/effect_detail_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Effect Detail"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title"
+      android:textSize="30sp" />
 
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:id="@+id/effect_detail_name"
-      android:text="Effect Detail" />
+      android:text="Vintage tones"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-    
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="This vintage effect applies a vignette to your image;" />
+
+
   </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/effect_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/guideline7">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Try It Out On:"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="1. Spectral.JPEG"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="2. Outside.PNG"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="3. River.JPEG"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+  </LinearLayout>
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline5"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_percent="0.3" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline7"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_percent="0.6" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,33 +10,30 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
     android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.052">
+    app:layout_constraintTop_toTopOf="parent">
 
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_videos"
-        android:textColor="@color/headingColor"
-        android:textSize="40dp"
-        android:textStyle="bold" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/your_videos"
+      android:textColor="@color/headingColor"
+      android:textSize="40dp"
+      android:textStyle="bold" />
   </LinearLayout>
 
   <LinearLayout
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
     android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
-    android:layout_marginStart="10dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@+id/guideline6"
     app:layout_constraintVertical_bias="0.036">
@@ -55,15 +52,26 @@
         android:textStyle="bold" />
 
       <TextView
+        android:id="@+id/sort_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/textColor"
-        android:textStyle="bold"
         android:gravity="end"
-        android:id="@+id/sort_by"
-        android:text="Sort By"/>
+        android:text="Sort By"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
     </LinearLayout>
+
+    <GridView
+      android:id="@+id/videos_grid_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:columnWidth="100dp"
+      android:gravity="center"
+      android:horizontalSpacing="10dp"
+      android:numColumns="auto_fit"
+      android:stretchMode="spacingWidthUniform"
+      android:verticalSpacing="26dp" />
 
   </LinearLayout>
 

@@ -2,7 +2,6 @@ package com.silviaodwyer.inversion.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.Videos;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeScreenFragment extends Fragment {
   private TextView viewImages;
   private TextView viewVideos;
   private View root;
@@ -37,12 +30,13 @@ public class HomeFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
-    root = inflater.inflate(R.layout.fragment_home, container, false);
+    root = inflater.inflate(R.layout.fragment_homescreen, container, false);
 
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
     chromaticEffect = root.findViewById(R.id.chromatic_effect);
     effectList = root.findViewById(R.id.effects);
+
     setUpOnClickListeners();
     initImages();
     initVideos();

@@ -7,9 +7,9 @@
 
   <fragment
     android:id="@+id/navigation_home"
-    android:name="com.silviaodwyer.inversion.ui.home.HomeFragment"
+    android:name="com.silviaodwyer.inversion.ui.home.HomeScreenFragment"
     android:label="@string/title_home"
-    tools:layout="@layout/fragment_home" />
+    tools:layout="@layout/fragment_homescreen" />
 
   <fragment
     android:id="@+id/navigation_effects"

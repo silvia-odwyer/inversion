@@ -58,7 +58,6 @@ public class HomeFragment extends Fragment {
     effectNames.add("Vintage");
 
     for (int i = 0; i < effectNames.size(); i++) {
-      Log.d("DEBUG", effectNames.get(i));
       final String effectName = effectNames.get(i);
 
       TextView textView = new TextView(root.getContext());

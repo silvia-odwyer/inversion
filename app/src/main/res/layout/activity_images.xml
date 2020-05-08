@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/your_images"
         android:textColor="@color/headingColor"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     </LinearLayout>

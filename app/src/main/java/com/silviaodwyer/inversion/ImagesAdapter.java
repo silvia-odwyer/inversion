@@ -1,6 +1,7 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,6 +45,13 @@ public class ImagesAdapter extends BaseAdapter {
     imageView.setImageResource(R.drawable.gradient);
     imageView.setMinimumWidth(30);
     imageView.setMinimumHeight(90);
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(mContext, ImageEditor.class);
+        mContext.startActivity(intent);
+      }
+    });
     return imageView;
   }
 

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.silviaodwyer.inversion.EffectDetail;
+import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.Videos;
@@ -111,6 +112,13 @@ public class HomeScreenFragment extends Fragment {
       newImage.setLayoutParams(layoutParams);
       newImage.setMinimumHeight(90);
       newImage.setMinimumWidth(90);
+      newImage.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent = new Intent(root.getContext(), ImageEditor.class);
+          startActivity(intent);
+        }
+      });
       linLayout.addView(newImage);
     }
   }

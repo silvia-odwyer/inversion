@@ -49,27 +49,45 @@
 
     <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:layout_height="match_parent"
+      android:layout_marginBottom="10dp"
+      android:orientation="vertical">
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_images"
-        android:textColor="@color/headingColor"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-
-      <TextView
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/textColor"
+        android:orientation="horizontal">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/your_images"
+          android:textColor="@color/headingColor"
+          android:textSize="20dp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="18sp"
+          android:textColor="@color/textColor"
+          android:textStyle="bold"
+          android:id="@+id/sort_by"
+          android:gravity="end"
+          android:text="Sort By"/>
+      </LinearLayout>
+
+      <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_img_btn"
+        android:background="@drawable/gradient_blue_violet"
         android:textStyle="bold"
-        android:id="@+id/sort_by"
-        android:gravity="end"
-        android:text="Sort By"/>
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        android:text="Upload New Image"/>
     </LinearLayout>
+
     <GridView
       android:id="@+id/images_grid_view"
       android:layout_width="match_parent"

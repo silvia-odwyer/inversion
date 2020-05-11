@@ -1,16 +1,18 @@
 package com.silviaodwyer.inversion;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class ImageEditor extends AppCompatActivity {
+  ImageView imageView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,13 @@ public class ImageEditor extends AppCompatActivity {
 
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupWithNavController(navView, navController);
+
+    imageView = findViewById(R.id.imageView);
+
+    // set image
+    MainApplication application = ((MainApplication)getApplication());
+    Uri imageUri = application.getImageUri();
+    imageView.setImageURI(imageUri);
   }
 
 }

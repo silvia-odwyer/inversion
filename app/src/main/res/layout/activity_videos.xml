@@ -11,6 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginStart="10dp"
     app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +62,16 @@
         android:textSize="18sp"
         android:textStyle="bold" />
     </LinearLayout>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/upload_video_btn"
+      android:background="@drawable/gradient_blue_violet"
+      android:textStyle="bold"
+      android:textAllCaps="false"
+      android:layout_marginTop="10dp"
+      android:text="Upload New Video"/>
 
     <GridView
       android:id="@+id/videos_grid_view"

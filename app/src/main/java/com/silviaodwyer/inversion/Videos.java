@@ -50,7 +50,7 @@ public class Videos extends AppCompatActivity {
       Log.d("DEBUG", "Video URL: " + videoUrl);
 
       // returning to Home Activity for now, since Video Activity not available.
-      Intent intent = new Intent(Videos.this, HomeActivity.class);
+      Intent intent = new Intent(Videos.this, VideoEditor.class);
 
       startActivity(intent);
     }

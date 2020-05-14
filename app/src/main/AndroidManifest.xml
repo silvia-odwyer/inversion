@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.silviaodwyer.inversion">
+
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
   <application
+    android:name=".MainApplication"
     android:allowBackup="true"
     android:label="@string/app_name"
     android:supportsRtl="true"
-    android:name=".MainApplication"
     android:theme="@style/AppTheme">
+    <activity
+      android:name=".VideoEditor"
+      android:label="@string/title_activity_video_editor"></activity>
     <activity
       android:name=".ImageEditor"
       android:label="@string/title_activity_image_editor" />

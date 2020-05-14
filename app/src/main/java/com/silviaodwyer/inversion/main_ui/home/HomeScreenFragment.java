@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.ui.home;
+package com.silviaodwyer.inversion.main_ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.Videos;
 
 import java.util.ArrayList;
@@ -93,16 +94,16 @@ public class HomeScreenFragment extends Fragment {
   private void initImages() {
     LinearLayout imagesLinLayout = root.findViewById(R.id.images);
 
-    appendPlaceholderImages(imagesLinLayout);
+    appendPlaceholderImages(imagesLinLayout, "Images");
   }
 
   private void initVideos() {
     LinearLayout linLayout = root.findViewById(R.id.videos);
 
-    appendPlaceholderImages(linLayout);
+    appendPlaceholderImages(linLayout, "Videos");
   }
 
-  private void appendPlaceholderImages(LinearLayout linLayout) {
+  private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
     // Create new ImageViews (with placeholders) and append them to the linear layout
     for (int i = 0; i < 6; i++) {
       ImageView newImage = new ImageView(getActivity().getApplicationContext());
@@ -115,10 +116,16 @@ public class HomeScreenFragment extends Fragment {
       newImage.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          Intent intent = new Intent(root.getContext(), ImageEditor.class);
+          Intent intent;
+          if (activity_type.equals("Images")) {
+          intent = new Intent(root.getContext(), ImageEditor.class);
+
+          }
+          else {
+          intent = new Intent(root.getContext(), VideoEditor.class);
+          }
           startActivity(intent);
-        }
-      });
+      }});
       linLayout.addView(newImage);
     }
   }

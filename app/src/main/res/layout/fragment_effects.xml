@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/backgroundColor"
-  tools:context=".ui.effects.EffectsFragment">
+  tools:context=".main_ui.effects.EffectsFragment">
 
   <LinearLayout
     android:id="@+id/linearLayout3"

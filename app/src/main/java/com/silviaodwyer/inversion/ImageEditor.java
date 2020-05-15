@@ -2,8 +2,10 @@ package com.silviaodwyer.inversion;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +42,10 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 public class ImageEditor extends AppCompatActivity {
   ImageView imageView;
   Bitmap bmp;
+  Uri imageUri;
   Bitmap originalImageBitmap;
+  ArrayList<Bitmap> filteredImages = new ArrayList<>();
+  MainApplication mainApplication;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +59,12 @@ public class ImageEditor extends AppCompatActivity {
     imageView = findViewById(R.id.imageView);
 
     // set image
-    MainApplication application = ((MainApplication)getApplication());
-    Uri imageUri = application.getImageUri();
+    mainApplication = ((MainApplication)getApplication());
+    imageUri = mainApplication.getImageUri();
 
     try {
       updateGPUImageView(imageUri);
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -65,19 +73,28 @@ public class ImageEditor extends AppCompatActivity {
   private void updateGPUImageView(Uri imageUri) throws IOException {
     saveBitmaps(imageUri);
     GPUImage gpuImage = new GPUImage(getApplicationContext());
+    gpuImage.setImage(imageUri);
+
+    final ArrayList<GPUImageFilter> filters = new ArrayList<GPUImageFilter>();
 
     gpuImage.setImage(bmp);
     bmp = gpuImage.getBitmapWithFilterApplied(bmp);
 
-    // Set the ImageView's image content to the current value of bmp
     imageView.setImageBitmap(bmp);
 
-    final GPUImage mGPUImage = new GPUImage(this);
+  }
+
+  public void updateImageView(Bitmap bmp) {
+    imageView.setImageBitmap(bmp);
   }
 
   private void saveBitmaps(Uri imageUri) throws IOException {
     bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
     originalImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+  }
+
+  public Uri getImageURI() {
+    return imageUri;
   }
 
 }

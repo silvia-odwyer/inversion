@@ -91,6 +91,6 @@ public class HomeFragment extends Fragment {
   public void filterImage(GPUImageFilter filter, GPUImage gpuImage) {
     gpuImage.setFilter(filter);
     Bitmap bmp = gpuImage.getBitmapWithFilterApplied(originalImageBitmap);
-    activity.updateImageView(bmp);
+    activity.updateGPUImage();
   }
 }

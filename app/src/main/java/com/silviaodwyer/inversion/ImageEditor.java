@@ -26,6 +26,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageAddBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageBulgeDistortionFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
@@ -46,6 +47,7 @@ public class ImageEditor extends AppCompatActivity {
   Bitmap originalImageBitmap;
   ArrayList<Bitmap> filteredImages = new ArrayList<>();
   MainApplication mainApplication;
+  GPUImageView gpuImageView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +58,21 @@ public class ImageEditor extends AppCompatActivity {
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupWithNavController(navView, navController);
 
-    imageView = findViewById(R.id.imageView);
+
+//    imageView = findViewById(R.id.imageView);
 
     // set image
     mainApplication = ((MainApplication)getApplication());
     imageUri = mainApplication.getImageUri();
+    gpuImageView = findViewById(R.id.gpuimageview);
+    gpuImageView.setImage(imageUri);
 
-    try {
-      updateGPUImageView(imageUri);
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+//    try {
+//      updateGPUImageView(imageUri);
+//
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
   }
 
   private void updateGPUImageView(Uri imageUri) throws IOException {
@@ -95,6 +100,10 @@ public class ImageEditor extends AppCompatActivity {
 
   public Uri getImageURI() {
     return imageUri;
+  }
+
+  public void updateGPUImage() {
+    gpuImageView.setFilter(new GPUImageSepiaToneFilter());
   }
 
 }

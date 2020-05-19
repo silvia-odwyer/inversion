@@ -18,6 +18,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter;
 
+import com.silviaodwyer.inversion.FilterImage;
 import com.silviaodwyer.inversion.HomeActivity;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.MainApplication;
@@ -27,20 +28,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
-
-  ArrayList<Bitmap> filteredImages = new ArrayList<>();
   ImageEditor activity;
-  Bitmap originalImageBitmap;
-  ArrayList<GPUImageFilter> filters;
-
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_image_editor_home, container, false);
-    MainApplication mainApplication = new MainApplication();
+
     activity = (ImageEditor) getActivity();
+
+    FilterImage filterImage = new FilterImage(root.getContext(), activity, activity.getImageURI());
+    LinearLayout linLayout = root.findViewById(R.id.filteredImages);
 
     return root;
   }
-
-
 }

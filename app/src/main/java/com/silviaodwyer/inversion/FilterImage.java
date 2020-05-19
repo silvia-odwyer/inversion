@@ -1,4 +1,4 @@
-package com;
+package com.silviaodwyer.inversion;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,13 +38,16 @@ public class FilterImage {
 
   public void appendFilteredImageThumbnails(LinearLayout filteredImagesLinLayout) {
 
-    final GPUImage mGPUImage = new GPUImage(context);
+    GPUImage mGPUImage = new GPUImage(context);
     Bitmap bmp = null;
     try {
       bmp = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
       originalImageBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+    if (bmp == null) {
+      Log.d("DEBUG", "bitmap is null");
     }
     mGPUImage.setImage(bmp);
 
@@ -52,10 +56,13 @@ public class FilterImage {
 
     filters.add(new GPUImageSepiaToneFilter());
     filters.add(new GPUImageToonFilter());
-    mGPUImage.getBitmapForMultipleFilters(bmp,filters, new GPUImage.ResponseListener<Bitmap>() {
+    mGPUImage.getBitmapForMultipleFilters(bmp, filters, new GPUImage.ResponseListener<Bitmap>() {
 
       @Override
       public void response(Bitmap resultBitmap) {
+        if (resultBitmap == null) {
+          Log.d("DEBUG", "Bitmap res null");
+        }
         int maxHeight = 150;
         int maxWidth = 150;
         float scale = Math.min(((float)maxHeight / resultBitmap.getWidth()), ((float)maxWidth / resultBitmap.getHeight()));
@@ -76,7 +83,7 @@ public class FilterImage {
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          filterImage(filters.get(filter_index_final), mGPUImage);
+//          filterImage(filters.get(filter_index_final), mGPUImage);
         }
       });
 

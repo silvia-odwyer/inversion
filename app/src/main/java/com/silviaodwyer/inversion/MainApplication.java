@@ -8,6 +8,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImage;
 public class MainApplication extends Application {
   private Uri imageUri;
   private String videoUrl;
+  private ImageEditor imageEditorActivity;
 
   public Uri getImageUri() {
     return imageUri;
@@ -25,4 +26,11 @@ public class MainApplication extends Application {
     return videoUrl;
   }
 
+  public ImageEditor getImageEditorActivity() {
+    return imageEditorActivity;
+  }
+
+  public void setImageEditorActivity(ImageEditor imageEditorActivity) {
+    this.imageEditorActivity = imageEditorActivity;
+  }
 }

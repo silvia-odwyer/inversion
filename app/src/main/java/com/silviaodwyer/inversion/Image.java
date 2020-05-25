@@ -15,26 +15,49 @@ public class Image {
   private Bitmap originalImageBitmap;
   private Uri imageUri;
   private Context context;
-
-  public ArrayList<Bitmap> getFilteredThumbnails() {
-    return filteredThumbnails;
-  }
-
-  public void setFilteredThumbnails(ArrayList<Bitmap> filteredThumbnails) {
-    this.filteredThumbnails = filteredThumbnails;
-  }
+  private ImageEditor activity;
+  private ArrayList<Bitmap> filteredThumbnails;
 
   public void addFilteredThumbnail(Bitmap thumbnail) {
     this.filteredThumbnails.add(thumbnail);
   }
 
-  private ArrayList<Bitmap> filteredThumbnails;
-
-  public Image(Uri imageUri, Context ctx) {
+  public Image(Uri imageUri, Context ctx, ImageEditor activity) {
     this.context = ctx;
     this.imageUri = imageUri;
     this.originalImageBitmap = generateOriginalBitmap();
     filteredThumbnails = new ArrayList<>();
+    this.activity = activity;
+    this.createGPUImage();
+  }
+
+  public void createGPUImage() {
+    mGPUImage = new GPUImage(context);
+    mGPUImage.setImage(originalImageBitmap);
+  }
+
+  public ImageEditor getActivity() {
+    return activity;
+  }
+
+  public void setActivity(ImageEditor activity) {
+    this.activity = activity;
+  }
+
+  public ArrayList<Bitmap> getFilteredThumbnails() {
+    return filteredThumbnails;
+  }
+
+  public Context getContext() {
+    return context;
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
+  }
+
+  public void setFilteredThumbnails(ArrayList<Bitmap> filteredThumbnails) {
+    this.filteredThumbnails = filteredThumbnails;
   }
 
   private Bitmap generateOriginalBitmap() {

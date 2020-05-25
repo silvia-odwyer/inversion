@@ -18,6 +18,16 @@ public class Image {
   private ImageEditor activity;
   private ArrayList<Bitmap> filteredThumbnails;
 
+  public ArrayList<Bitmap> getCorrectedThumbnails() {
+    return correctedThumbnails;
+  }
+
+  public void setCorrectedThumbnails(ArrayList<Bitmap> correctedThumbnails) {
+    this.correctedThumbnails = correctedThumbnails;
+  }
+
+  private ArrayList<Bitmap> correctedThumbnails;
+
   public void addFilteredThumbnail(Bitmap thumbnail) {
     this.filteredThumbnails.add(thumbnail);
   }
@@ -27,6 +37,7 @@ public class Image {
     this.imageUri = imageUri;
     this.originalImageBitmap = generateOriginalBitmap();
     filteredThumbnails = new ArrayList<>();
+    correctedThumbnails = new ArrayList<>();
     this.activity = activity;
     this.createGPUImage();
   }

@@ -58,35 +58,11 @@ public class ImageEditor extends AppCompatActivity {
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupWithNavController(navView, navController);
 
-
-//    imageView = findViewById(R.id.imageView);
-
     // set image
     mainApplication = ((MainApplication)getApplication());
     imageUri = mainApplication.getImageUri();
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(imageUri);
-
-//    try {
-//      updateGPUImageView(imageUri);
-//
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-  }
-
-  private void updateGPUImageView(Uri imageUri) throws IOException {
-    saveBitmaps(imageUri);
-    GPUImage gpuImage = new GPUImage(getApplicationContext());
-    gpuImage.setImage(imageUri);
-
-    final ArrayList<GPUImageFilter> filters = new ArrayList<GPUImageFilter>();
-
-    gpuImage.setImage(bmp);
-    bmp = gpuImage.getBitmapWithFilterApplied(bmp);
-
-    imageView.setImageBitmap(bmp);
-
   }
 
   public void updateImageView(Bitmap bmp) {
@@ -102,8 +78,8 @@ public class ImageEditor extends AppCompatActivity {
     return imageUri;
   }
 
-  public void updateGPUImage() {
-    gpuImageView.setFilter(new GPUImageSepiaToneFilter());
+  public void updateGPUImage(GPUImageFilter filter) {
+    gpuImageView.setFilter(filter);
   }
 
 }

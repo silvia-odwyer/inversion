@@ -33,7 +33,7 @@ public class CorrectMenuFragment extends Fragment {
     ImageFilters imageFilters = new ImageFilters();
 
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.correctedImageThumbnails);
-    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image);
+    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.CORRECTION);
     imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
 
     return root;

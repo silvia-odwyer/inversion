@@ -59,23 +59,6 @@
       android:text="Try It Out On:"
       android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="1. Spectral.JPEG"
-      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="2. Outside.PNG"
-      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="3. River.JPEG"
-      android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
   </LinearLayout>
 

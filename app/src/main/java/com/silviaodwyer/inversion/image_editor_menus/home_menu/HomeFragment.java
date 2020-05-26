@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
     ArrayList<GPUImageFilter> filters = imageFilters.getFilters();
 
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
-    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image);
+    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);
     imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
 
     return root;

@@ -10,12 +10,18 @@ import java.util.ArrayList;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageEmbossFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGammaFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageHalftoneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImagePosterizeFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
@@ -24,18 +30,61 @@ public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<GPUImageFilter> correctionFilters;
 
+  public enum FilterType {
+    EFFECT,
+    CORRECTION,
+  }
+
   public ImageFilters() {
     filters = new ArrayList<GPUImageFilter>();
+    addEffectFilters();
+
+    correctionFilters = new ArrayList<GPUImageFilter>();
+    correctionFilters.add(new GPUImageBrightnessFilter(0.2f));
+    correctionFilters.add(new GPUImageContrastFilter(0.9f));
+    correctionFilters.add(new GPUImageGammaFilter());
+  }
+
+  public void addEffectFilters() {
     filters.add(new GPUImageSepiaToneFilter());
     filters.add(new GPUImageToonFilter());
     filters.add(new GPUImageSolarizeFilter());
     filters.add(new GPUImageGrayscaleFilter());
     filters.add(new GPUImageEmbossFilter());
     filters.add(new GPUImageVibranceFilter());
+    filters.add(new GPUImageColorInvertFilter());
+    filters.add(new GPUImageSketchFilter());
+    filters.add(new GPUImagePosterizeFilter());
+    filters.add(getDramaticFilter());
+    filters.add(getObsidianFilter());
+    filters.add(getVibrancyFilter());
+  }
 
-    correctionFilters = new ArrayList<GPUImageFilter>();
-    correctionFilters.add(new GPUImageBrightnessFilter());
-    correctionFilters.add(new GPUImageSaturationFilter());
+  public GPUImageFilterGroup getDramaticFilter() {
+    float amount = (float) 1.4;
+    float amount2 = (float) -0.3;
+
+    GPUImageFilterGroup dramaticFilter = new GPUImageFilterGroup();
+    dramaticFilter.addFilter(new GPUImageGrayscaleFilter());
+    dramaticFilter.addFilter(new GPUImageContrastFilter(amount));
+    dramaticFilter.addFilter(new GPUImageBrightnessFilter(amount2));
+    return dramaticFilter;
+  }
+
+  public GPUImageFilterGroup getObsidianFilter() {
+    float amount = (float) 1.4;
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    filterGroup.addFilter(new GPUImageGrayscaleFilter());
+    filterGroup.addFilter(new GPUImageContrastFilter(amount));
+    return filterGroup;
+  }
+
+  public GPUImageFilterGroup getVibrancyFilter() {
+    float amount = (float) 1.1;
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    filterGroup.addFilter(new GPUImageContrastFilter(amount));
+    filterGroup.addFilter(new GPUImageVibranceFilter());
+    return filterGroup;
   }
 
   public ArrayList<GPUImageFilter> getFilters() {
@@ -54,8 +103,17 @@ public class ImageFilters {
     return correctionFilters;
   }
 
-  public ArrayList<Bitmap> generateThumbnails(final Image image) {
+  public ArrayList<Bitmap> generateThumbnails(final Image image, ImageFilters.FilterType filterType) {
     final ArrayList<Bitmap> thumbnails = new ArrayList<Bitmap>();
+
+    switch(filterType) {
+      case EFFECT:
+        filters = getFilters();
+        break;
+      case CORRECTION:
+        filters = getCorrectionFilters();
+        break;
+    }
 
     GPUImage.getBitmapForMultipleFilters(image.getOriginalImageBitmap(), filters, new GPUImage.ResponseListener<Bitmap>() {
 

@@ -7,33 +7,33 @@
   android:layout_height="match_parent"
   android:background="@color/backgroundColor">
 
-  <TextView
-    android:id="@+id/textView"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Edit"
-    android:textColor="@color/headingColor"
-    android:textSize="40sp"
-    android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@+id/nav_view"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
-    app:layout_constraintVertical_bias="0.083" />
-
-  <jp.co.cyberagent.android.gpuimage.GPUImageView
-    android:id="@+id/gpuimageview"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:gpuimage_surface_type="texture_view"
-    app:gpuimage_show_loading="false"
+    android:orientation="vertical"
     app:layout_constraintBottom_toTopOf="@+id/guideline8"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textView"
-    app:layout_constraintVertical_bias="0.147" />
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.075">
+
+    <TextView
+      android:id="@+id/textView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Edit"
+      android:textColor="@color/headingColor"
+      android:textSize="40sp"
+      android:textStyle="bold" />
+
+    <jp.co.cyberagent.android.gpuimage.GPUImageView
+      android:id="@+id/gpuimageview"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:gpuimage_show_loading="false"
+      app:gpuimage_surface_type="texture_view" />
+  </LinearLayout>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/nav_view"
@@ -64,6 +64,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.63" />
+    app:layout_constraintGuide_percent="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

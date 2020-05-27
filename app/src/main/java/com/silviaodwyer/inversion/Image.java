@@ -1,6 +1,7 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ public class Image {
   private Context context;
   private ImageEditor activity;
   private ArrayList<Bitmap> filteredThumbnails;
+  private String path;
 
   public ArrayList<Bitmap> getCorrectedThumbnails() {
     return correctedThumbnails;
@@ -40,11 +42,21 @@ public class Image {
     correctedThumbnails = new ArrayList<>();
     this.activity = activity;
     this.createGPUImage();
+    this.getPathFromImageURI();
   }
 
   public void createGPUImage() {
     mGPUImage = new GPUImage(context);
     mGPUImage.setImage(originalImageBitmap);
+  }
+
+  public void getPathFromImageURI() {
+    Cursor mCursor = context.getContentResolver().query(this.imageUri, null, null, null, null);
+    mCursor.moveToFirst();
+    // get the index, which we can then use to get the path
+    int index = mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+    // return the image path
+    this.path = mCursor.getString(index);
   }
 
   public ImageEditor getActivity() {
@@ -71,6 +83,14 @@ public class Image {
     this.filteredThumbnails = filteredThumbnails;
   }
 
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
   private Bitmap generateOriginalBitmap() {
     Bitmap bmp = null;
     try {
@@ -80,7 +100,6 @@ public class Image {
     }
     return bmp;
   }
-
 
   public Uri getImageUri() {
     return imageUri;

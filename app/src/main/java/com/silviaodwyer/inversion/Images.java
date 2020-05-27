@@ -43,9 +43,12 @@ public class Images extends AppCompatActivity {
 
     if (resultCode == RESULT_OK) {
       final Uri imageUri = data.getData();
+
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
       application.setImageUri(imageUri);
+      Image image = new Image(imageUri, getApplicationContext(), application.getImageEditorActivity());
+      application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
 
       startActivity(intent);

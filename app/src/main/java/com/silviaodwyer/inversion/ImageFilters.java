@@ -158,5 +158,4 @@ public class ImageFilters {
     gpuImage.setFilter(filter);
     activity.updateGPUImage(filter);
   }
-
 }

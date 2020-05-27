@@ -9,6 +9,7 @@ public class MainApplication extends Application {
   private Uri imageUri;
   private String videoUrl;
   private ImageEditor imageEditorActivity;
+  private Image image;
 
   public Uri getImageUri() {
     return imageUri;
@@ -28,6 +29,14 @@ public class MainApplication extends Application {
 
   public ImageEditor getImageEditorActivity() {
     return imageEditorActivity;
+  }
+
+  public Image getImage() {
+    return image;
+  }
+
+  public void setImage(Image image) {
+    this.image = image;
   }
 
   public void setImageEditorActivity(ImageEditor imageEditorActivity) {

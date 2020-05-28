@@ -65,13 +65,16 @@ public class ImagesAdapter extends BaseAdapter {
   }
 
   private void getSavedImages() {
-    FileUtils fileUtils = new FileUtils();
+    FileUtils fileUtils = new FileUtils(mContext);
 
-    boolean isFilePresent = fileUtils.isFilePresent(mContext, FILENAME);
+    boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
 
     // if the file exists
     if(isFilePresent) {
-      // TODO Convert string in file to JSON, so that image paths can be retrieved.
+      String jsonString= fileUtils.readFile(FILENAME);
+
+      savedImagePaths = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
+      }.getType());
     }
     else {
       // create a new file

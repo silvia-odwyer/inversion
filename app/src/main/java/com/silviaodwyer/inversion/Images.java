@@ -3,12 +3,23 @@ package com.silviaodwyer.inversion;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Images extends AppCompatActivity {
   private Button uploadImage;
@@ -19,6 +30,33 @@ public class Images extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
     initGridView();
+
+    MainApplication mainApplication = ((MainApplication)getApplication());
+
+    ImageView imageView = findViewById(R.id.imageView1);
+    ArrayList<String> savedImagePaths =   mainApplication.getSavedImagePaths(this);
+    // get image path
+    String path = savedImagePaths.get(0);
+    Uri imageUri = Uri.fromFile(new File(path));
+    Log.d("DEBUG", imageUri.toString());
+
+    try {
+      Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+      Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+//    imageView.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        Intent intent = new Intent(mContext, ImageEditor.class);
+//        mContext.startActivity(intent);
+//      }
+//    });
+    LinearLayout linearLayout = findViewById(R.id.images1);
+
 
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +81,7 @@ public class Images extends AppCompatActivity {
 
     if (resultCode == RESULT_OK) {
       final Uri imageUri = data.getData();
+      Log.d("DEBUG", "Image URI: " + imageUri);
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());

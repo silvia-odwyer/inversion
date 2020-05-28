@@ -2,6 +2,11 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +17,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +29,19 @@ import java.util.List;
 public class ImagesAdapter extends BaseAdapter {
 
   private final Context mContext;
-  private final ArrayList<String> images = new ArrayList<String>();
-  private static String FILENAME = "stored_images.json";
+  private static String FILENAME;
   private ArrayList<String> savedImagePaths = new ArrayList<>();
 
   public ImagesAdapter(Context context) {
     this.mContext = context;
-    for (int i = 0; i < 30; i++) {
-      String img_name = "Image" + i;
-      images.add(img_name);
-    }
+    MainApplication mainApplication = new MainApplication();
+    FILENAME = mainApplication.getSavedImagePathFilename();
+    this.getSavedImages();
   }
 
   @Override
   public int getCount() {
-    return images.size();
+    return savedImagePaths.size();
   }
 
   @Override
@@ -51,17 +58,29 @@ public class ImagesAdapter extends BaseAdapter {
   public View getView(int position, View convertView, ViewGroup parent) {
     ImageView imageView = new ImageView(mContext);
     // get image path
+    String path = savedImagePaths.get(position);
+    Uri imageUri = Uri.fromFile(new File(path));
+    Log.d("DEBUG", imageUri.toString());
 
-    imageView.setImageResource(R.drawable.gradient);
-    imageView.setMinimumWidth(30);
-    imageView.setMinimumHeight(90);
-    imageView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(mContext, ImageEditor.class);
-        mContext.startActivity(intent);
-      }
-    });
+    try {
+      Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), imageUri);
+
+//      Picasso.with().load(path).centerCrop().resize(200,200).into(imageView);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+//    imageView.setImageURI(imageUri);
+//    imageView.setMinimumWidth(30);
+//    imageView.setMinimumHeight(90);
+//    imageView.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        Intent intent = new Intent(mContext, ImageEditor.class);
+//        mContext.startActivity(intent);
+//      }
+//    });
     return imageView;
   }
 
@@ -80,7 +99,6 @@ public class ImagesAdapter extends BaseAdapter {
 
     }
     else {
-      // create a new file
       Log.d("DEBUG", "File not present");
     }
   }

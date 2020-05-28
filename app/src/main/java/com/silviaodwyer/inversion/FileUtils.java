@@ -43,7 +43,7 @@ public class FileUtils {
     }
   }
 
-  public boolean createNewFile(String fileName, String jsonString){
+  public boolean writeFile(String fileName, String jsonString){
     try {
       FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
       if (jsonString != null) {

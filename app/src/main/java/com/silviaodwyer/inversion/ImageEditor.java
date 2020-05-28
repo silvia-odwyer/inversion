@@ -9,10 +9,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -67,6 +71,7 @@ public class ImageEditor extends AppCompatActivity {
     imageUri = image.getImageUri();
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(imageUri);
+    saveImageToImagePaths(image.getPath());
   }
 
   public void updateImageView(Bitmap bmp) {
@@ -76,6 +81,20 @@ public class ImageEditor extends AppCompatActivity {
   private void saveBitmaps(Uri imageUri) throws IOException {
     bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
     originalImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+  }
+
+  private void saveImageToImagePaths(String image_path) {
+      FileUtils fileUtils = new FileUtils(getApplicationContext());
+      ArrayList<String> savedImagePaths = mainApplication.getSavedImagePaths(getApplicationContext());
+      String FILENAME = mainApplication.getSavedImagePathFilename();
+      savedImagePaths.add(image_path);
+      boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
+
+      String json = new Gson().toJson(savedImagePaths);
+      Log.d("DEBUG", "Saved image paths" + savedImagePaths.toString());
+
+      // save
+      fileUtils.writeFile(FILENAME, json);
   }
 
   public Uri getImageURI() {

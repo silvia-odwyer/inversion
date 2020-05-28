@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -75,9 +76,12 @@ public class ImagesAdapter extends BaseAdapter {
 
       savedImagePaths = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
       }.getType());
+      Log.d("DEBUG", "File present");
+
     }
     else {
       // create a new file
+      Log.d("DEBUG", "File not present");
     }
   }
 

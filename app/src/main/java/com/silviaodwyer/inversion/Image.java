@@ -50,7 +50,7 @@ public class Image {
     mGPUImage.setImage(originalImageBitmap);
   }
 
-  public void getPathFromImageURI() {
+  private void getPathFromImageURI() {
     Cursor mCursor = context.getContentResolver().query(this.imageUri, null, null, null, null);
     mCursor.moveToFirst();
     // get the index, which we can then use to get the path

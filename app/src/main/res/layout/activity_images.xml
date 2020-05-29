@@ -56,7 +56,13 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/images1">
+
+        <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/imageView1"/>
 
         <TextView
           android:layout_width="wrap_content"
@@ -91,7 +97,7 @@
     <GridView
       android:id="@+id/images_grid_view"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:gravity="start"
       android:layout_gravity="start"
       android:horizontalSpacing="10dp"

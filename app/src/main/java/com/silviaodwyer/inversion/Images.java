@@ -2,8 +2,12 @@ package com.silviaodwyer.inversion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +22,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -34,21 +41,19 @@ public class Images extends AppCompatActivity {
     MainApplication mainApplication = ((MainApplication)getApplication());
 
     ImageView imageView = findViewById(R.id.imageView1);
+
+
     ArrayList<String> savedImagePaths =   mainApplication.getSavedImagePaths(this);
     // get image path
-    String path = savedImagePaths.get(0);
-    Uri imageUri = Uri.fromFile(new File(path));
+    final String path = savedImagePaths.get(0);
+    final Uri imageUri = Uri.fromFile(new File(path));
     Log.d("DEBUG", imageUri.toString());
 
-    try {
-      Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-      Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
 
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
-//    imageView.setOnClickListener(new View.OnClickListener() {
+
+
+    //    imageView.setOnClickListener(new View.OnClickListener() {
 //      @Override
 //      public void onClick(View view) {
 //        Intent intent = new Intent(mContext, ImageEditor.class);

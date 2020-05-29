@@ -1,5 +1,8 @@
 package com.silviaodwyer.inversion;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
@@ -53,7 +56,9 @@ public class ImageEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private GPUImageView gpuImageView;
   private Image image;
+  private static String IMAGES_DIRECTORY = "imagesDirectory";
 
+  @SuppressLint("WrongThread")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -72,15 +77,12 @@ public class ImageEditor extends AppCompatActivity {
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(imageUri);
     saveImageToImagePaths(image.getPath());
+    originalImageBitmap = image.getOriginalImageBitmap();
+
   }
 
   public void updateImageView(Bitmap bmp) {
     imageView.setImageBitmap(bmp);
-  }
-
-  private void saveBitmaps(Uri imageUri) throws IOException {
-    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-    originalImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
   }
 
   private void saveImageToImagePaths(String image_path) {
@@ -103,6 +105,29 @@ public class ImageEditor extends AppCompatActivity {
 
   public void updateGPUImage(GPUImageFilter filter) {
     gpuImageView.setFilter(filter);
+  }
+
+  public void saveImage() {
+
+    ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+
+    File directory = contextWrapper.getDir(IMAGES_DIRECTORY, Context.MODE_PRIVATE);
+
+    File path = new File(directory, "editedImage.jpg");
+
+    FileOutputStream fileOutputStream = null;
+    try {
+      fileOutputStream = new FileOutputStream(path);
+      originalImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        fileOutputStream.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
 }

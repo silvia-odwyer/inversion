@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,18 +41,9 @@ public class Images extends AppCompatActivity {
 
     MainApplication mainApplication = ((MainApplication)getApplication());
 
-    ImageView imageView = findViewById(R.id.imageView1);
-
-
-    ArrayList<String> savedImagePaths =   mainApplication.getSavedImagePaths(this);
+    ArrayList<String> savedImagePaths =   mainApplication.getSavedImageNames(this);
     // get image path
-    final String path = savedImagePaths.get(0);
-    final Uri imageUri = Uri.fromFile(new File(path));
-    Log.d("DEBUG", imageUri.toString());
-
-
-
-
+    readImages();
 
     //    imageView.setOnClickListener(new View.OnClickListener() {
 //      @Override
@@ -60,7 +52,7 @@ public class Images extends AppCompatActivity {
 //        mContext.startActivity(intent);
 //      }
 //    });
-    LinearLayout linearLayout = findViewById(R.id.images1);
+    LinearLayout linearLayout = findViewById(R.id.saved_images);
 
 
     uploadImage = findViewById(R.id.upload_img_btn);
@@ -100,6 +92,43 @@ public class Images extends AppCompatActivity {
     else {
       // user has not chosen an image, display a Toast message
       Toast.makeText(this, "You haven't chosen an image.", Toast.LENGTH_LONG).show();
+    }
+  }
+
+  public void readImages() {
+    MainApplication mainApplication = new MainApplication();
+    LinearLayout linearLayout = findViewById(R.id.saved_images);
+    ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+    ArrayList<String> savedImageNames = mainApplication.getSavedImageNames(this);
+    Log.d("DEBUG", "Image names: " + savedImageNames.toString());
+    File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+
+    for (String imageName : savedImageNames) {
+
+      try {
+        File file = new File(directory, imageName);
+        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+        if (bitmap == null) {
+          Log.d("DEBUG", "BITMAP IS NULL");
+        }
+        else {
+          ImageView savedImage = new ImageView(this);
+
+          int maxHeight = 250;
+          int maxWidth = 250;
+          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
+          // resize bitmap to thumbnail size
+          Matrix matrix = new Matrix();
+          matrix.postScale(scale, scale);
+
+          Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+          savedImage.setImageBitmap(resultBitmap);
+          linearLayout.addView(savedImage);
+        }
+
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
     }
   }
 }

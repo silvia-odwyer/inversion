@@ -19,8 +19,9 @@ public class MainApplication extends Application {
   private String videoUrl;
   private ImageEditor imageEditorActivity;
   private Image image;
-  private ArrayList<String> savedImagePaths = new ArrayList<String>();
+  private ArrayList<String> imageNames = new ArrayList<String>();
   private static String savedImagePathFilename = "saved_image_paths.json";
+  private static String IMAGES_DIRECTORY = "imagesDirectory";
 
   public Uri getImageUri() {
     return imageUri;
@@ -54,7 +55,11 @@ public class MainApplication extends Application {
     this.imageEditorActivity = imageEditorActivity;
   }
 
-  public ArrayList<String> getSavedImagePaths(Context context) {
+  public static String getImagesDirectory() {
+    return IMAGES_DIRECTORY;
+  }
+
+  public ArrayList<String> getSavedImageNames(Context context) {
     FileUtils fileUtils = new FileUtils(context);
     String FILENAME = getSavedImagePathFilename();
     ArrayList<String> savedImagePaths = new ArrayList<>();
@@ -69,12 +74,17 @@ public class MainApplication extends Application {
     return savedImagePaths;
   }
 
-  public void setSavedImagePaths(ArrayList<String> savedImagePaths) {
-    this.savedImagePaths = savedImagePaths;
+  public void setImageNames(ArrayList<String> imageNames) {
+    this.imageNames = imageNames;
   }
 
   public String getSavedImagePathFilename() {
     return savedImagePathFilename;
+  }
+
+  public void addSavedImageName(String image_name, Context context) {
+    imageNames = getSavedImageNames(context);
+    imageNames.add(image_name);
   }
 
 }

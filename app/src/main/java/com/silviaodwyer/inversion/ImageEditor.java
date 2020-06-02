@@ -24,8 +24,11 @@ import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +59,6 @@ public class ImageEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private GPUImageView gpuImageView;
   private Image image;
-  private static String IMAGES_DIRECTORY = "imagesDirectory";
 
   @SuppressLint("WrongThread")
   @Override
@@ -76,24 +78,24 @@ public class ImageEditor extends AppCompatActivity {
     imageUri = image.getImageUri();
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(imageUri);
-    saveImageToImagePaths(image.getPath());
+//    saveImageToImagePaths(image.getPath());
     originalImageBitmap = image.getOriginalImageBitmap();
-
+    saveImage();
   }
 
   public void updateImageView(Bitmap bmp) {
     imageView.setImageBitmap(bmp);
   }
 
-  private void saveImageToImagePaths(String image_path) {
+  private void saveImageToImageNames(String image_name) {
       FileUtils fileUtils = new FileUtils(getApplicationContext());
-      ArrayList<String> savedImagePaths = mainApplication.getSavedImagePaths(getApplicationContext());
+      ArrayList<String> savedImagePaths = mainApplication.getSavedImageNames(getApplicationContext());
       String FILENAME = mainApplication.getSavedImagePathFilename();
-      savedImagePaths.add(image_path);
+      savedImagePaths.add(image_name);
       boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
 
       String json = new Gson().toJson(savedImagePaths);
-      Log.d("DEBUG", "Saved image paths" + savedImagePaths.toString());
+      Log.d("DEBUG", "Saved image names" + savedImagePaths.toString());
 
       // save
       fileUtils.writeFile(FILENAME, json);
@@ -111,9 +113,17 @@ public class ImageEditor extends AppCompatActivity {
 
     ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
 
-    File directory = contextWrapper.getDir(IMAGES_DIRECTORY, Context.MODE_PRIVATE);
+    File directory = contextWrapper.getDir("imagesDirectory", Context.MODE_PRIVATE);
+    Calendar calendar = Calendar.getInstance();
 
-    File path = new File(directory, "editedImage.jpg");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String date = dateFormat.format(calendar.getTime());
+
+    String image_name = "image_" + date + ".jpg";
+    Log.d("DEBUG", "IMAGE NAME: " + image_name);
+
+    this.saveImageToImageNames(image_name);
+    File path = new File(directory, image_name);
 
     FileOutputStream fileOutputStream = null;
     try {

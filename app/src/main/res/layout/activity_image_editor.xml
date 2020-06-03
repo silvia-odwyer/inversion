@@ -18,14 +18,29 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.075">
 
-    <TextView
-      android:id="@+id/textView"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="Edit"
-      android:textColor="@color/headingColor"
-      android:textSize="40sp"
-      android:textStyle="bold" />
+      android:orientation="horizontal">
+
+      <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:textColor="@color/headingColor"
+        android:textSize="40sp"
+        android:layout_marginRight="200dp"
+        android:textStyle="bold" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/save_btn"
+        android:src="@drawable/save_icon"/>
+    </LinearLayout>
+
 
     <jp.co.cyberagent.android.gpuimage.GPUImageView
       android:id="@+id/gpuimageview"

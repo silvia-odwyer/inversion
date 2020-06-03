@@ -8,16 +8,16 @@
   tools:context=".Images">
 
   <LinearLayout
+    android:id="@+id/linearLayout5"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginStart="10dp"
-    app:layout_constraintBottom_toTopOf="@+id/guideline6"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.052">
-
+    app:layout_constraintVertical_bias="0.042">
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -31,84 +31,56 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
+
     </LinearLayout>
 
-  </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/guideline6"
-    app:layout_constraintVertical_bias="0.061">
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/your_images"
-          android:textColor="@color/headingColor"
-          android:textSize="20dp"
-          android:textStyle="bold" />
-
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textSize="18sp"
-          android:textColor="@color/textColor"
-          android:textStyle="bold"
-          android:id="@+id/sort_by"
-          android:gravity="end"
-          android:text="Sort By"/>
-      </LinearLayout>
-
-      <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/upload_img_btn"
-        android:background="@drawable/gradient_blue_violet"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:layout_marginTop="10dp"
-        android:text="Upload New Image"/>
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:id="@+id/saved_images">
+      android:orientation="horizontal">
 
-      </LinearLayout>
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_images"
+        android:textColor="@color/headingColor"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/sort_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Sort By"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+      android:id="@+id/upload_img_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/gradient_blue_violet"
+      android:text="Upload New Image"
+      android:textAllCaps="false"
+      android:textStyle="bold" />
 
     <GridView
       android:id="@+id/images_grid_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="start"
+      android:layout_height="wrap_content"
       android:layout_gravity="start"
-      android:horizontalSpacing="10dp"
       android:columnWidth="100dp"
+      android:gravity="start"
+      android:horizontalSpacing="10dp"
       android:numColumns="auto_fit"
-      android:verticalSpacing="10dp"
       android:stretchMode="spacingWidthUniform"
-      />
+      android:verticalSpacing="10dp" />
 
   </LinearLayout>
-
-  <androidx.constraintlayout.widget.Guideline
-    android:id="@+id/guideline6"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

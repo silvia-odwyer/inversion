@@ -14,6 +14,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 
 import java.util.ArrayList;
@@ -27,8 +28,9 @@ public class CorrectMenuFragment extends Fragment {
                            ViewGroup container, Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.imagecorrect_menu_fragment, container, false);
     activity = (ImageEditor) getActivity();
+    MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
-    image = new Image(activity.getImageURI(), root.getContext(), activity);
+    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity);
 
     ImageFilters imageFilters = new ImageFilters();
 

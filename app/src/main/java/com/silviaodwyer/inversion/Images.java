@@ -32,28 +32,15 @@ import java.util.ArrayList;
 public class Images extends AppCompatActivity {
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
+  private Context mContext;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
-    initGridView();
 
     MainApplication mainApplication = ((MainApplication)getApplication());
-
-    ArrayList<String> savedImagePaths =   mainApplication.getSavedImageNames(this);
-    // get image path
-    readImages();
-
-    //    imageView.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Intent intent = new Intent(mContext, ImageEditor.class);
-//        mContext.startActivity(intent);
-//      }
-//    });
-    LinearLayout linearLayout = findViewById(R.id.saved_images);
-
+    mContext = getApplicationContext();
 
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +51,13 @@ public class Images extends AppCompatActivity {
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
+    initGridView();
   }
 
   public void initGridView() {
+    MainApplication application = ((MainApplication)getApplication());
     GridView gridView = (GridView) findViewById(R.id.images_grid_view);
-    ImagesAdapter imagesAdapter = new ImagesAdapter(this);
+    ImagesAdapter imagesAdapter = new ImagesAdapter(this, application);
     gridView.setAdapter(imagesAdapter);
   }
 
@@ -78,12 +67,13 @@ public class Images extends AppCompatActivity {
 
     if (resultCode == RESULT_OK) {
       final Uri imageUri = data.getData();
+      ImageUtils imageUtils = new ImageUtils(getApplicationContext(), imageUri);
+      Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
       Log.d("DEBUG", "Image URI: " + imageUri);
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      application.setImageUri(imageUri);
-      Image image = new Image(imageUri, getApplicationContext(), application.getImageEditorActivity());
+      Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity());
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
 
@@ -95,40 +85,4 @@ public class Images extends AppCompatActivity {
     }
   }
 
-  public void readImages() {
-    MainApplication mainApplication = new MainApplication();
-    LinearLayout linearLayout = findViewById(R.id.saved_images);
-    ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-    ArrayList<String> savedImageNames = mainApplication.getSavedImageNames(this);
-    Log.d("DEBUG", "Image names: " + savedImageNames.toString());
-    File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-
-    for (String imageName : savedImageNames) {
-
-      try {
-        File file = new File(directory, imageName);
-        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-        if (bitmap == null) {
-          Log.d("DEBUG", "BITMAP IS NULL");
-        }
-        else {
-          ImageView savedImage = new ImageView(this);
-
-          int maxHeight = 250;
-          int maxWidth = 250;
-          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
-          // resize bitmap to thumbnail size
-          Matrix matrix = new Matrix();
-          matrix.postScale(scale, scale);
-
-          Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-          savedImage.setImageBitmap(resultBitmap);
-          linearLayout.addView(savedImage);
-        }
-
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
-    }
-  }
 }

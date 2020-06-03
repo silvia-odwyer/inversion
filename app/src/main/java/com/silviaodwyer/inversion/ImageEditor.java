@@ -76,10 +76,16 @@ public class ImageEditor extends AppCompatActivity {
 
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(image.getBitmap());
-//    saveImageToImagePaths(image.getPath());
-    originalImageBitmap = image.getOriginalImageBitmap();
+    originalImageBitmap = image.getBitmap();
     bitmap = image.getBitmap();
-    saveImage();
+
+    ImageView saveBtn = findViewById(R.id.save_btn);
+    saveBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        saveImage();
+      }
+    });
   }
 
   public void updateImageView(Bitmap bmp) {
@@ -122,12 +128,15 @@ public class ImageEditor extends AppCompatActivity {
     FileOutputStream fileOutputStream = null;
     try {
       fileOutputStream = new FileOutputStream(path);
-      originalImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+      gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
     } catch (Exception e) {
+      Toast.makeText(getApplicationContext(), "Couldn't save image.", Toast.LENGTH_SHORT).show();
       e.printStackTrace();
     } finally {
       try {
         fileOutputStream.close();
+        Toast.makeText(getApplicationContext(), "Image saved successfully.", Toast.LENGTH_SHORT).show();
       } catch (IOException e) {
         e.printStackTrace();
       }

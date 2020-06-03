@@ -1,7 +1,13 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,31 +19,39 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.silviaodwyer.inversion.EffectDetail;
+import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.Images;
+import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.Videos;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class HomeScreenFragment extends Fragment {
   private TextView viewImages;
   private TextView viewVideos;
   private View root;
+  private Context context;
   private LinearLayout effectList;
   private TextView chromaticEffect;
+  private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
     root = inflater.inflate(R.layout.fragment_homescreen, container, false);
-
+    context = getActivity().getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
     chromaticEffect = root.findViewById(R.id.chromatic_effect);
     effectList = root.findViewById(R.id.effects);
+    mainApplication = (MainApplication) getActivity().getApplication();
 
     setUpOnClickListeners();
     initImages();
@@ -104,29 +118,58 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
-    // Create new ImageViews (with placeholders) and append them to the linear layout
-    for (int i = 0; i < 6; i++) {
-      ImageView newImage = new ImageView(getActivity().getApplicationContext());
-      newImage.setImageResource(R.drawable.gradient);
-      LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-      layoutParams.setMargins(10, 10, 10, 10);
-      newImage.setLayoutParams(layoutParams);
-      newImage.setMinimumHeight(90);
-      newImage.setMinimumWidth(90);
-      newImage.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          Intent intent;
-          if (activity_type.equals("Images")) {
-          intent = new Intent(root.getContext(), ImageEditor.class);
-
-          }
-          else {
-          intent = new Intent(root.getContext(), VideoEditor.class);
-          }
-          startActivity(intent);
-      }});
-      linLayout.addView(newImage);
+    ArrayList<String> savedImageNames = mainApplication.getSavedImageNames(context);
+    int totalImageNum = 0;
+    if (savedImageNames.size() < 4) {
+      totalImageNum = savedImageNames.size();
     }
+    else {
+      totalImageNum = 4;
+    }
+    for (int i = 0; i < totalImageNum; i++) {
+      ContextWrapper contextWrapper = new ContextWrapper(context);
+
+      File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+      String imageName = savedImageNames.get(i);
+
+      ImageView imageView = new ImageView(context);
+
+      try {
+        File file = new File(directory, imageName);
+        final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+        if (bitmap == null) {
+          Log.d("DEBUG", "BITMAP IS NULL");
+        }
+        else {
+          int maxHeight = 150;
+          int maxWidth = 150;
+          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
+          // resize bitmap to thumbnail size
+          Matrix matrix = new Matrix();
+          matrix.postScale(scale, scale);
+
+          final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+          imageView.setImageBitmap(resultBitmap);
+          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+          layoutParams.setMargins(10, 10, 10, 10);
+          imageView.setLayoutParams(layoutParams);
+          imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Intent intent = new Intent(context, ImageEditor.class);
+
+              Image image = new Image(bitmap, context, mainApplication.getImageEditorActivity());
+              mainApplication.setImage(image);
+              startActivity(intent);
+            }
+          });
+          linLayout.addView(imageView);
+        }
+
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+
   }
 }

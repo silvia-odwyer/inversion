@@ -38,9 +38,9 @@ public class ImagesAdapter extends BaseAdapter {
   private MainApplication mainApplication;
   private ArrayList<String> savedImageNames = new ArrayList<>();
 
-  public ImagesAdapter(Context context) {
+  public ImagesAdapter(Context context, MainApplication application) {
     this.mContext = context;
-    mainApplication = new MainApplication();
+    mainApplication = application;
     FILENAME = mainApplication.getSavedImagePathFilename();
     this.getSavedImageNames();
   }
@@ -89,10 +89,11 @@ public class ImagesAdapter extends BaseAdapter {
           imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//              Intent intent = new Intent(Images.this, ImageEditor.class);
-//              Image image = new Image(bitmap, mContext, mainApplication.getImageEditorActivity());
-//              mainApplication.setImage(image);
-//              mContext.startActivity(intent);
+              Intent intent = new Intent(mContext, ImageEditor.class);
+
+              Image image = new Image(bitmap, mContext, mainApplication.getImageEditorActivity());
+              mainApplication.setImage(image);
+              mContext.startActivity(intent);
             }
           });
         }

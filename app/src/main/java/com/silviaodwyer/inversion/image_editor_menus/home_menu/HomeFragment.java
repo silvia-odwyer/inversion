@@ -38,8 +38,9 @@ public class HomeFragment extends Fragment {
                            ViewGroup container, Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_image_editor_home, container, false);
     activity = (ImageEditor) getActivity();
+    MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
-    image = new Image(activity.getImageURI(), root.getContext(), activity);
+    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity);
 
     ImageFilters imageFilters = new ImageFilters();
     ArrayList<GPUImageFilter> filters = imageFilters.getFilters();

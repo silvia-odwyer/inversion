@@ -13,8 +13,8 @@ import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class Image {
   private GPUImage mGPUImage;
+  private Bitmap bitmap;
   private Bitmap originalImageBitmap;
-  private Uri imageUri;
   private Context context;
   private ImageEditor activity;
   private ArrayList<Bitmap> filteredThumbnails;
@@ -34,29 +34,19 @@ public class Image {
     this.filteredThumbnails.add(thumbnail);
   }
 
-  public Image(Uri imageUri, Context ctx, ImageEditor activity) {
+  public Image(Bitmap bitmap, Context ctx, ImageEditor activity) {
     this.context = ctx;
-    this.imageUri = imageUri;
-    this.originalImageBitmap = generateOriginalBitmap();
+    this.bitmap = bitmap;
+    this.originalImageBitmap = bitmap;
     filteredThumbnails = new ArrayList<>();
     correctedThumbnails = new ArrayList<>();
     this.activity = activity;
     this.createGPUImage();
-    this.getPathFromImageURI();
   }
 
   public void createGPUImage() {
     mGPUImage = new GPUImage(context);
     mGPUImage.setImage(originalImageBitmap);
-  }
-
-  private void getPathFromImageURI() {
-    Cursor mCursor = context.getContentResolver().query(this.imageUri, null, null, null, null);
-    mCursor.moveToFirst();
-    // get the index, which we can then use to get the path
-    int index = mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-    // return the image path
-    this.path = mCursor.getString(index);
   }
 
   public ImageEditor getActivity() {
@@ -91,24 +81,6 @@ public class Image {
     this.path = path;
   }
 
-  private Bitmap generateOriginalBitmap() {
-    Bitmap bmp = null;
-    try {
-      bmp = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return bmp;
-  }
-
-  public Uri getImageUri() {
-    return imageUri;
-  }
-
-  public void setImageUri(Uri imageUri) {
-    this.imageUri = imageUri;
-  }
-
   public Bitmap getOriginalImageBitmap() {
     return originalImageBitmap;
   }
@@ -123,5 +95,13 @@ public class Image {
 
   public void setmGPUImage(GPUImage mGPUImage) {
     this.mGPUImage = mGPUImage;
+  }
+
+  public Bitmap getBitmap() {
+    return bitmap;
+  }
+
+  public void setBitmap(Bitmap bitmap) {
+    this.bitmap = bitmap;
   }
 }

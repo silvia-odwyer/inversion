@@ -22,17 +22,16 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter;
 
-public class FilterImage {
+public class ImageUtils {
   private Bitmap originalImageBitmap;
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<Bitmap> filteredImages;
   private Context context;
-  private Activity activity;
+
   private Uri imageUri;
 
-  public FilterImage(Context ctx, Activity activity, Uri uri) {
+  public ImageUtils(Context ctx, Uri uri) {
     this.context = ctx;
-    this.activity = activity;
     this.imageUri = uri;
   }
 
@@ -96,4 +95,15 @@ public class FilterImage {
     Bitmap bmp = gpuImage.getBitmapWithFilterApplied(originalImageBitmap);
     //activity.updateGPUImage();
   }
+
+  public Bitmap imageUriToBitmap(Uri imageUri) {
+    Bitmap bmp = null;
+    try {
+      bmp = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return bmp;
+  }
+
 }

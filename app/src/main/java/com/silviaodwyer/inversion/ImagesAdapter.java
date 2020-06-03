@@ -1,9 +1,11 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -30,18 +35,19 @@ public class ImagesAdapter extends BaseAdapter {
 
   private final Context mContext;
   private static String FILENAME;
-  private ArrayList<String> savedImagePaths = new ArrayList<>();
+  private MainApplication mainApplication;
+  private ArrayList<String> savedImageNames = new ArrayList<>();
 
   public ImagesAdapter(Context context) {
     this.mContext = context;
-    MainApplication mainApplication = new MainApplication();
+    mainApplication = new MainApplication();
     FILENAME = mainApplication.getSavedImagePathFilename();
-    this.getSavedImages();
+    this.getSavedImageNames();
   }
 
   @Override
   public int getCount() {
-    return savedImagePaths.size();
+    return savedImageNames.size();
   }
 
   @Override
@@ -56,35 +62,49 @@ public class ImagesAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
+
+    ContextWrapper contextWrapper = new ContextWrapper(mContext);
+    File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    String imageName = savedImageNames.get(position);
+
     ImageView imageView = new ImageView(mContext);
-    // get image path
-    String path = savedImagePaths.get(position);
-    Uri imageUri = Uri.fromFile(new File(path));
-    Log.d("DEBUG", imageUri.toString());
 
     try {
-      Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), imageUri);
+        File file = new File(directory, imageName);
+        final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+        if (bitmap == null) {
+          Log.d("DEBUG", "BITMAP IS NULL");
+        }
+        else {
 
-//      Picasso.with().load(path).centerCrop().resize(200,200).into(imageView);
+          int maxHeight = 250;
+          int maxWidth = 250;
+          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
+          // resize bitmap to thumbnail size
+          Matrix matrix = new Matrix();
+          matrix.postScale(scale, scale);
 
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+          final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+          imageView.setImageBitmap(resultBitmap);
+          imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//              Intent intent = new Intent(Images.this, ImageEditor.class);
+//              Image image = new Image(bitmap, mContext, mainApplication.getImageEditorActivity());
+//              mainApplication.setImage(image);
+//              mContext.startActivity(intent);
+            }
+          });
+        }
 
-//    imageView.setImageURI(imageUri);
-//    imageView.setMinimumWidth(30);
-//    imageView.setMinimumHeight(90);
-//    imageView.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Intent intent = new Intent(mContext, ImageEditor.class);
-//        mContext.startActivity(intent);
-//      }
-//    });
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+
     return imageView;
   }
 
-  private void getSavedImages() {
+  private void getSavedImageNames() {
     FileUtils fileUtils = new FileUtils(mContext);
 
     boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
@@ -93,8 +113,9 @@ public class ImagesAdapter extends BaseAdapter {
     if(isFilePresent) {
       String jsonString= fileUtils.readFile(FILENAME);
 
-      savedImagePaths = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
+      savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
       }.getType());
+
       Log.d("DEBUG", "File present");
 
     }
@@ -102,5 +123,6 @@ public class ImagesAdapter extends BaseAdapter {
       Log.d("DEBUG", "File not present");
     }
   }
+
 
 }

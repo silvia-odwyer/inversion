@@ -52,7 +52,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class ImageEditor extends AppCompatActivity {
   private ImageView imageView;
-  private Bitmap bmp;
+  private Bitmap bitmap;
   private Uri imageUri;
   private Bitmap originalImageBitmap;
   private ArrayList<Bitmap> filteredImages = new ArrayList<>();
@@ -73,13 +73,12 @@ public class ImageEditor extends AppCompatActivity {
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
-    Log.d("DEBUG", "Absolute image path: " + image.getPath());
 
-    imageUri = image.getImageUri();
     gpuImageView = findViewById(R.id.gpuimageview);
-    gpuImageView.setImage(imageUri);
+    gpuImageView.setImage(image.getBitmap());
 //    saveImageToImagePaths(image.getPath());
     originalImageBitmap = image.getOriginalImageBitmap();
+    bitmap = image.getBitmap();
     saveImage();
   }
 
@@ -101,8 +100,8 @@ public class ImageEditor extends AppCompatActivity {
       fileUtils.writeFile(FILENAME, json);
   }
 
-  public Uri getImageURI() {
-    return imageUri;
+  public Bitmap getBitmap() {
+    return bitmap;
   }
 
   public void updateGPUImage(GPUImageFilter filter) {
@@ -113,17 +112,12 @@ public class ImageEditor extends AppCompatActivity {
 
     ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
 
-    File directory = contextWrapper.getDir("imagesDirectory", Context.MODE_PRIVATE);
-    Calendar calendar = Calendar.getInstance();
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String date = dateFormat.format(calendar.getTime());
-
-    String image_name = "image_" + date + ".jpg";
-    Log.d("DEBUG", "IMAGE NAME: " + image_name);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    String image_name = generateImageName();
 
     this.saveImageToImageNames(image_name);
     File path = new File(directory, image_name);
+
 
     FileOutputStream fileOutputStream = null;
     try {
@@ -138,6 +132,17 @@ public class ImageEditor extends AppCompatActivity {
         e.printStackTrace();
       }
     }
+  }
+
+  public String generateImageName() {
+    Calendar calendar = Calendar.getInstance();
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String date = dateFormat.format(calendar.getTime());
+
+    String image_name = "image_" + date + ".jpg";
+    Log.d("DEBUG", "IMAGE NAME: " + image_name);
+    return image_name;
   }
 
 }

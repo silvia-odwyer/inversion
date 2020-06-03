@@ -49,10 +49,19 @@ public class Image {
     mGPUImage.setImage(originalImageBitmap);
   }
 
+  /**
+   * Returns the image editor activity for this application.
+   *
+   * @return      the image editor activity
+   */
   public ImageEditor getActivity() {
     return activity;
   }
 
+  /**
+   * Set the image editor activity for this application.
+   *
+   */
   public void setActivity(ImageEditor activity) {
     this.activity = activity;
   }
@@ -61,10 +70,19 @@ public class Image {
     return filteredThumbnails;
   }
 
+  /**
+   * Get the context for this application.
+   *
+   * @return    context for this application
+   */
   public Context getContext() {
     return context;
   }
 
+  /**
+   * Set the context for this application.
+   *
+   */
   public void setContext(Context context) {
     this.context = context;
   }
@@ -81,27 +99,59 @@ public class Image {
     this.path = path;
   }
 
+  /**
+   * Get the original image bitmap, without filters
+   * applied.
+   *
+   * @return    original bitmap without filters applied
+   */
   public Bitmap getOriginalImageBitmap() {
     return originalImageBitmap;
   }
 
+  /**
+   * Set the original image bitmap for this application.
+   *
+   */
   public void setOriginalImageBitmap(Bitmap originalImageBitmap) {
     this.originalImageBitmap = originalImageBitmap;
   }
 
+  /**
+   * Returns the GPUImage instance of the image.
+   *
+   * @return  the GPUImage instance of the image
+   */
   public GPUImage getmGPUImage() {
     return mGPUImage;
   }
 
+  /**
+   * Set the GPUImage instance of the image, which
+   * allows image processing to be performed on the GPU.
+   *
+   * @return      the image editor activity
+   */
   public void setmGPUImage(GPUImage mGPUImage) {
     this.mGPUImage = mGPUImage;
+    this.bitmap = mGPUImage.getBitmapWithFilterApplied();
   }
 
+  /**
+   * Returns the bitmap for this image.
+   *
+   * @return      the image's bitmap
+   */
   public Bitmap getBitmap() {
     return bitmap;
   }
 
+  /**
+   * Set the bitmap for this image.
+   *
+   */
   public void setBitmap(Bitmap bitmap) {
     this.bitmap = bitmap;
+    mGPUImage.setImage(bitmap);
   }
 }

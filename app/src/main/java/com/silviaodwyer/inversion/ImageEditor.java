@@ -51,10 +51,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSourceOverBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class ImageEditor extends AppCompatActivity {
-  private ImageView imageView;
   private Bitmap bitmap;
-  private Uri imageUri;
-  private Bitmap originalImageBitmap;
   private ArrayList<Bitmap> filteredImages = new ArrayList<>();
   private MainApplication mainApplication;
   private GPUImageView gpuImageView;
@@ -76,7 +73,6 @@ public class ImageEditor extends AppCompatActivity {
 
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setImage(image.getBitmap());
-    originalImageBitmap = image.getBitmap();
     bitmap = image.getBitmap();
 
     ImageView saveBtn = findViewById(R.id.save_btn);
@@ -86,10 +82,6 @@ public class ImageEditor extends AppCompatActivity {
         saveImage();
       }
     });
-  }
-
-  public void updateImageView(Bitmap bmp) {
-    imageView.setImageBitmap(bmp);
   }
 
   private void saveImageToImageNames(String image_name) {

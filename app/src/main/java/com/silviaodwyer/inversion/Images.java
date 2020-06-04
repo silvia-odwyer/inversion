@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class Images extends AppCompatActivity {
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
-  private Context mContext;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class Images extends AppCompatActivity {
     setContentView(R.layout.activity_images);
 
     MainApplication mainApplication = ((MainApplication)getApplication());
-    mContext = getApplicationContext();
 
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +65,7 @@ public class Images extends AppCompatActivity {
 
     if (resultCode == RESULT_OK) {
       final Uri imageUri = data.getData();
-      ImageUtils imageUtils = new ImageUtils(getApplicationContext(), imageUri);
+      ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
       Log.d("DEBUG", "Image URI: " + imageUri);
 
@@ -81,7 +79,7 @@ public class Images extends AppCompatActivity {
     }
     else {
       // user has not chosen an image, display a Toast message
-      Toast.makeText(this, "You haven't chosen an image.", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "No image chosen.", Toast.LENGTH_LONG).show();
     }
   }
 

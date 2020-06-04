@@ -30,9 +30,8 @@ public class ImageUtils {
 
   private Uri imageUri;
 
-  public ImageUtils(Context ctx, Uri uri) {
+  public ImageUtils(Context ctx) {
     this.context = ctx;
-    this.imageUri = uri;
   }
 
   public void appendFilteredImageThumbnails(LinearLayout filteredImagesLinLayout) {
@@ -55,7 +54,7 @@ public class ImageUtils {
 
     filters.add(new GPUImageSepiaToneFilter());
     filters.add(new GPUImageToonFilter());
-    mGPUImage.getBitmapForMultipleFilters(bmp, filters, new GPUImage.ResponseListener<Bitmap>() {
+    GPUImage.getBitmapForMultipleFilters(bmp, filters, new GPUImage.ResponseListener<Bitmap>() {
 
       @Override
       public void response(Bitmap resultBitmap) {
@@ -104,6 +103,16 @@ public class ImageUtils {
       e.printStackTrace();
     }
     return bmp;
+  }
+
+  public Bitmap resizeBitmap(Bitmap bitmap, float maxWidth, float maxHeight) {
+    float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
+    // resize bitmap to thumbnail size
+    Matrix matrix = new Matrix();
+    matrix.postScale(scale, scale);
+
+    final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    return resultBitmap;
   }
 
 }

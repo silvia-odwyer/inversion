@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
+import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
@@ -49,7 +50,6 @@ public class HomeScreenFragment extends Fragment {
     context = getActivity().getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
-    chromaticEffect = root.findViewById(R.id.chromatic_effect);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) getActivity().getApplication();
 
@@ -114,11 +114,12 @@ public class HomeScreenFragment extends Fragment {
   private void initVideos() {
     LinearLayout linLayout = root.findViewById(R.id.videos);
 
-    appendPlaceholderImages(linLayout, "Videos");
+//    appendPlaceholderImages(linLayout, "Videos");
   }
 
   private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
     ArrayList<String> savedImageNames = mainApplication.getSavedImageNames(context);
+    ImageUtils imageUtils = new ImageUtils(context);
     int totalImageNum = 0;
     if (savedImageNames.size() < 4) {
       totalImageNum = savedImageNames.size();
@@ -132,8 +133,6 @@ public class HomeScreenFragment extends Fragment {
       File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
       String imageName = savedImageNames.get(i);
 
-      ImageView imageView = new ImageView(context);
-
       try {
         File file = new File(directory, imageName);
         final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
@@ -143,26 +142,8 @@ public class HomeScreenFragment extends Fragment {
         else {
           int maxHeight = 150;
           int maxWidth = 150;
-          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
-          // resize bitmap to thumbnail size
-          Matrix matrix = new Matrix();
-          matrix.postScale(scale, scale);
-
-          final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-          imageView.setImageBitmap(resultBitmap);
-          LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-          layoutParams.setMargins(10, 10, 10, 10);
-          imageView.setLayoutParams(layoutParams);
-          imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Intent intent = new Intent(context, ImageEditor.class);
-
-              Image image = new Image(bitmap, context, mainApplication.getImageEditorActivity());
-              mainApplication.setImage(image);
-              startActivity(intent);
-            }
-          });
+          Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
+          ImageView imageView = createImageView(resultBitmap, bitmap);
           linLayout.addView(imageView);
         }
 
@@ -170,6 +151,25 @@ public class HomeScreenFragment extends Fragment {
         e.printStackTrace();
       }
     }
+  }
 
+  private ImageView createImageView(Bitmap resultBitmap, final Bitmap originalSizeBitmap) {
+    ImageView imageView = new ImageView(context);
+
+    imageView.setImageBitmap(resultBitmap);
+    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    layoutParams.setMargins(10, 10, 10, 10);
+    imageView.setLayoutParams(layoutParams);
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(context, ImageEditor.class);
+
+        Image image = new Image(originalSizeBitmap, context, mainApplication.getImageEditorActivity());
+        mainApplication.setImage(image);
+        startActivity(intent);
+      }
+    });
+    return imageView;
   }
 }

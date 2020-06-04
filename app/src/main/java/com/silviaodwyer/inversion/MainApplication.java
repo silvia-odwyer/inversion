@@ -14,22 +14,12 @@ import java.util.List;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class MainApplication extends Application {
-  private Uri imageUri;
   private String videoUrl;
-  private Bitmap bitmap;
   private ImageEditor imageEditorActivity;
   private Image image;
   private ArrayList<String> imageNames = new ArrayList<String>();
   private static String savedImagePathFilename = "saved_image_paths.json";
   private static String IMAGES_DIRECTORY = "imagesDirectory";
-
-  public Uri getImageUri() {
-    return imageUri;
-  }
-
-  public void setImageUri(Uri imageUri) {
-    this.imageUri = imageUri;
-  }
 
   public void setVideoUrl(String vidUrl) {
     this.videoUrl = vidUrl;
@@ -43,6 +33,11 @@ public class MainApplication extends Application {
     return imageEditorActivity;
   }
 
+  /**
+   * Returns the active image instance
+   *
+   * @return      image instance
+   */
   public Image getImage() {
     return image;
   }
@@ -55,10 +50,20 @@ public class MainApplication extends Application {
     this.imageEditorActivity = imageEditorActivity;
   }
 
+  /**
+   * Returns the name of the directory in internal storage where saved images are stored
+   *
+   * @return      the image editor activity
+   */
   public static String getImagesDirectory() {
     return IMAGES_DIRECTORY;
   }
 
+  /**
+   * Returns all names of images currently saved in internal storage
+   *
+   * @return      the image editor activity
+   */
   public ArrayList<String> getSavedImageNames(Context context) {
     FileUtils fileUtils = new FileUtils(context);
     String FILENAME = getSavedImagePathFilename();
@@ -78,6 +83,11 @@ public class MainApplication extends Application {
     this.imageNames = imageNames;
   }
 
+  /**
+   * Returns the name of the file which contains the names of all images stored by the user
+   *
+   * @return      the name of the JSON file which contains saved image names as JSON
+   */
   public String getSavedImagePathFilename() {
     return savedImagePathFilename;
   }

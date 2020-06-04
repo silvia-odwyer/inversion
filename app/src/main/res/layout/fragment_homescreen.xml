@@ -159,14 +159,6 @@
       android:id="@+id/effects"
       android:orientation="vertical">
 
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/textColor"
-        android:id="@+id/chromatic_effect"
-        android:text="1 Chromatic"/>
-
     </LinearLayout>
 
   </LinearLayout>
@@ -183,14 +175,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.42" />
+    app:layout_constraintGuide_percent="0.46" />
 
   <androidx.constraintlayout.widget.Guideline
     android:id="@+id/guideline3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.64" />
+    app:layout_constraintGuide_percent="0.7" />
 
   <androidx.constraintlayout.widget.Guideline
     android:id="@+id/guideline4"

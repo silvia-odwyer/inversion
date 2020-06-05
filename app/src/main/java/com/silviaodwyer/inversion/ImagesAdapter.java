@@ -37,12 +37,19 @@ public class ImagesAdapter extends BaseAdapter {
   private static String FILENAME;
   private MainApplication mainApplication;
   private ArrayList<String> savedImageNames = new ArrayList<>();
+  private ImageUtils imageUtils;
+  private ContextWrapper contextWrapper;
+  private File directory;
 
   public ImagesAdapter(Context context, MainApplication application) {
     this.mContext = context;
     mainApplication = application;
     FILENAME = mainApplication.getSavedImagePathFilename();
     this.getSavedImageNames();
+
+    imageUtils = new ImageUtils(mContext);
+    contextWrapper = new ContextWrapper(mContext);
+    directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
   }
 
   @Override
@@ -63,8 +70,6 @@ public class ImagesAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
 
-    ContextWrapper contextWrapper = new ContextWrapper(mContext);
-    File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
     String imageName = savedImageNames.get(position);
 
     ImageView imageView = new ImageView(mContext);
@@ -79,12 +84,7 @@ public class ImagesAdapter extends BaseAdapter {
 
           int maxHeight = 250;
           int maxWidth = 250;
-          float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
-          // resize bitmap to thumbnail size
-          Matrix matrix = new Matrix();
-          matrix.postScale(scale, scale);
-
-          final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+          final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
           imageView.setImageBitmap(resultBitmap);
           imageView.setOnClickListener(new View.OnClickListener() {
             @Override

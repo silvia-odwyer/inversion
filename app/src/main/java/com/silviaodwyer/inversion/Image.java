@@ -19,7 +19,13 @@ public class Image {
   private ImageEditor activity;
   private ArrayList<Bitmap> filteredThumbnails;
   private String path;
+  private ArrayList<Bitmap> correctedThumbnails;
 
+  /**
+   * Returns all image thumbnails with image correction filters applied to them.
+   *
+   * @return      image thumbnails with image correction filters applied to them
+   */
   public ArrayList<Bitmap> getCorrectedThumbnails() {
     return correctedThumbnails;
   }
@@ -27,8 +33,6 @@ public class Image {
   public void setCorrectedThumbnails(ArrayList<Bitmap> correctedThumbnails) {
     this.correctedThumbnails = correctedThumbnails;
   }
-
-  private ArrayList<Bitmap> correctedThumbnails;
 
   public void addFilteredThumbnail(Bitmap thumbnail) {
     this.filteredThumbnails.add(thumbnail);

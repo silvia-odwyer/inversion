@@ -63,13 +63,7 @@ public class ImageUtils {
         }
         int maxHeight = 150;
         int maxWidth = 150;
-        float scale = Math.min(((float)maxHeight / resultBitmap.getWidth()), ((float)maxWidth / resultBitmap.getHeight()));
-        // resize bitmap to thumbnail size
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        resultBitmap = Bitmap.createBitmap(resultBitmap, 0, 0, resultBitmap.getWidth(), resultBitmap.getHeight(), matrix, true);
-
+        resultBitmap = resizeBitmap(resultBitmap, maxWidth, maxHeight);
         filteredImages.add(resultBitmap);
       }
     });
@@ -92,7 +86,6 @@ public class ImageUtils {
   public void filterImage(GPUImageFilter filter, GPUImage gpuImage) {
     gpuImage.setFilter(filter);
     Bitmap bmp = gpuImage.getBitmapWithFilterApplied(originalImageBitmap);
-    //activity.updateGPUImage();
   }
 
   public Bitmap imageUriToBitmap(Uri imageUri) {

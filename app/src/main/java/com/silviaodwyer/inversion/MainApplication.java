@@ -1,13 +1,9 @@
 package com.silviaodwyer.inversion;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

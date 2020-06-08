@@ -39,7 +39,6 @@ public class HomeScreenFragment extends Fragment {
   private View root;
   private Context context;
   private LinearLayout effectList;
-  private TextView chromaticEffect;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
 

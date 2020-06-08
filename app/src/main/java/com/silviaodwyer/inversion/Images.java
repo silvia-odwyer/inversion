@@ -1,6 +1,8 @@
 package com.silviaodwyer.inversion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -29,16 +31,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Images extends AppCompatActivity {
+public class Images extends AppCompatActivity implements ImagesRecyclerView.ItemClickListener {
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
+  private ImagesRecyclerView adapter;
+  private ArrayList<String> savedImageNames;
+  private MainApplication mainApplication;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
+    mainApplication = ((MainApplication)getApplication());
+    savedImageNames = mainApplication.getSavedImageNames(this);
 
-    MainApplication mainApplication = ((MainApplication)getApplication());
+    initializeRecyclerView();
 
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -49,14 +56,48 @@ public class Images extends AppCompatActivity {
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
-    initGridView();
   }
 
-  public void initGridView() {
-    MainApplication application = ((MainApplication)getApplication());
-    GridView gridView = (GridView) findViewById(R.id.images_grid_view);
-    ImagesAdapter imagesAdapter = new ImagesAdapter(this, application);
-    gridView.setAdapter(imagesAdapter);
+  private ArrayList<Bitmap> initializeSavedBitmaps() {
+    ImageUtils imageUtils = new ImageUtils(this);
+    ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    ContextWrapper contextWrapper = new ContextWrapper(this);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    for (int position = 0; position < savedImageNames.size(); position++) {
+
+      String imageName = savedImageNames.get(position);
+
+      try {
+        File file = new File(directory, imageName);
+        final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+        if (bitmap == null) {
+          Log.d("DEBUG", "BITMAP IS NULL");
+        }
+        else {
+
+          int maxHeight = 250;
+          int maxWidth = 250;
+          final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
+          bitmaps.add(resultBitmap);
+        }
+
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+    return bitmaps;
+
+  }
+
+  private void initializeRecyclerView() {
+    ArrayList<Bitmap> bitmaps = initializeSavedBitmaps();
+
+    RecyclerView recyclerView = findViewById(R.id.recycler_view);
+    int numberOfColumns = 3;
+    recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+    adapter = new ImagesRecyclerView(this, bitmaps, mainApplication);
+    adapter.setClickListener(this);
+    recyclerView.setAdapter(adapter);
   }
 
   @Override
@@ -83,4 +124,8 @@ public class Images extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onItemClick(View view, int position) {
+
+  }
 }

@@ -85,7 +85,7 @@ public class ImagesAdapter extends BaseAdapter {
           int maxHeight = 250;
           int maxWidth = 250;
           final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
-          imageView.setImageBitmap(resultBitmap);
+//          imageView.setImageBitmap(resultBitmap);
           imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

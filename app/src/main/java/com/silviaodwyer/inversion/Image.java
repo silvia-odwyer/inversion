@@ -1,12 +1,7 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;

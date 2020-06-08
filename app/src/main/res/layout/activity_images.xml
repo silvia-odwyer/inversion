@@ -67,17 +67,10 @@
       android:textAllCaps="false"
       android:textStyle="bold" />
 
-    <GridView
-      android:id="@+id/images_grid_view"
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="start"
-      android:columnWidth="100dp"
-      android:gravity="start"
-      android:horizontalSpacing="10dp"
-      android:numColumns="auto_fit"
-      android:stretchMode="spacingWidthUniform"
-      android:verticalSpacing="10dp" />
+      android:layout_height="match_parent"/>
 
   </LinearLayout>
 

@@ -1,8 +1,11 @@
 package com.silviaodwyer.inversion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +14,29 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class Videos extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.BitSet;
+
+public class Videos extends AppCompatActivity implements VideosRecyclerView.ItemClickListener {
   private Button uploadVideo;
   private static Integer RESULT_LOAD_VIDEO = 9;
+  private MainApplication mainApplication;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_videos);
-    initGridView();
+
+    ArrayList<Bitmap> data = new ArrayList<>();
+    mainApplication = ((MainApplication)getApplication());
+
+    // set up the RecyclerView
+    RecyclerView recyclerView = findViewById(R.id.videos_recycler_view);
+    int noOfColumns = 3;
+    recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), noOfColumns));
+    VideosRecyclerView recyclerViewAdapter = new VideosRecyclerView(getApplicationContext(), data, mainApplication);
+    recyclerViewAdapter.setClickListener((VideosRecyclerView.ItemClickListener) getApplicationContext());
+    recyclerView.setAdapter(recyclerViewAdapter);
 
     uploadVideo = findViewById(R.id.upload_video_btn);
     uploadVideo.setOnClickListener(new View.OnClickListener() {
@@ -30,12 +47,6 @@ public class Videos extends AppCompatActivity {
         startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
       }
     });
-  }
-
-  public void initGridView() {
-    GridView gridView = (GridView) findViewById(R.id.videos_grid_view);
-    VideosAdapter videosAdapter = new VideosAdapter(this);
-    gridView.setAdapter(videosAdapter);
   }
 
   @Override
@@ -58,5 +69,10 @@ public class Videos extends AppCompatActivity {
       // user has not chosen an image, display a Toast message
       Toast.makeText(this, "You haven't chosen a video.", Toast.LENGTH_LONG).show();
     }
+  }
+
+  @Override
+  public void onItemClick(View view, int position) {
+
   }
 }

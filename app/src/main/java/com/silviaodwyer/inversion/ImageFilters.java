@@ -58,6 +58,9 @@ public class ImageFilters {
     filters.add(getDramaticFilter());
     filters.add(getObsidianFilter());
     filters.add(getVibrancyFilter());
+    filters.add(getFourFilter());
+    filters.add(getEightFilter());
+    filters.add(getRubrikFilter());
   }
 
   public GPUImageFilterGroup getDramaticFilter() {
@@ -69,6 +72,39 @@ public class ImageFilters {
     dramaticFilter.addFilter(new GPUImageContrastFilter(amount));
     dramaticFilter.addFilter(new GPUImageBrightnessFilter(amount2));
     return dramaticFilter;
+  }
+
+  public GPUImageFilterGroup getRubrikFilter() {
+    float amount = (float) 1.1;
+    float amount2 = (float) 1.2;
+
+    GPUImageFilterGroup rubrikFilter = new GPUImageFilterGroup();
+    rubrikFilter.addFilter(new GPUImageContrastFilter(amount));
+    rubrikFilter.addFilter(new GPUImageBrightnessFilter(amount2));
+    return rubrikFilter;
+  }
+
+  public GPUImageFilterGroup getEightFilter() {
+    float amount = (float) 0.8;
+    float amount2 = (float) -0.2;
+
+    GPUImageFilterGroup eightFilter = new GPUImageFilterGroup();
+    eightFilter.addFilter(new GPUImageSaturationFilter(amount));
+    eightFilter.addFilter(new GPUImageBrightnessFilter(amount2));
+    return eightFilter;
+  }
+
+
+  public GPUImageFilterGroup getFourFilter() {
+    float amount = (float) 1.2;
+    float amount2 = (float) -0.4;
+
+    GPUImageFilterGroup fourFilter = new GPUImageFilterGroup();
+    fourFilter.addFilter(new GPUImageSaturationFilter(amount));
+    fourFilter.addFilter(new GPUImageBrightnessFilter(amount2));
+    fourFilter.addFilter(new GPUImageContrastFilter(amount2));
+
+    return fourFilter;
   }
 
   public GPUImageFilterGroup getObsidianFilter() {

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
+public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.ViewHolder> {
 
   private ArrayList<Bitmap> data;
   private ItemClickListener clickListener;
@@ -28,7 +28,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private MainApplication mainApplication;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<Bitmap> data, MainApplication mainApplication) {
+  VideosRecyclerView(Context context, ArrayList<Bitmap> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
@@ -38,22 +38,16 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
 
   @Override
   @NonNull
-  public ImagesRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public VideosRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = inflater.inflate(R.layout.recyclerview_image, parent, false);
     return new ViewHolder(view);
   }
 
   // binds the bitmap to the ImageView
   @Override
-  public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
-    Bitmap thumbnail = imageUtils.resizeBitmap(data.get(position), 250, 250);
-    holder.imageView.setImageBitmap(thumbnail);
-//
-//    Glide
-//      .with(context)
-//      .load(new File(fileUri.getPath())) // Uri of the picture
-//      .apply(new RequestOptions().override(250, 250))
-//      .into(holder.imageView);
+  public void onBindViewHolder(@NonNull VideosRecyclerView.ViewHolder holder, int position) {
+//    Bitmap thumbnail = imageUtils.resizeBitmap(data.get(position), 250, 250);
+//    holder.imageView.setImageBitmap(thumbnail);
   }
 
   @Override
@@ -74,11 +68,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     @Override
     public void onClick(View view) {
       if (clickListener != null) {
-        clickListener.onItemClick(view, getAdapterPosition());
-        Intent intent = new Intent(context, ImageEditor.class);
-        Image image = new Image(data.get(getAdapterPosition()), context, mainApplication.getImageEditorActivity());
-        mainApplication.setImage(image);
-        context.startActivity(intent);
+//        clickListener.onItemClick(view, getAdapterPosition());
       }
     }
 

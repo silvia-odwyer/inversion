@@ -2,9 +2,12 @@ package com.silviaodwyer.inversion;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
@@ -78,16 +81,20 @@ public class MainApplication extends Application {
   public ArrayList<String> getSavedImageNames(Context context) {
     FileUtils fileUtils = new FileUtils(context);
     String FILENAME = getSavedImagePathFilename();
-    ArrayList<String> savedImagePaths = new ArrayList<>();
+    ArrayList<String> savedImageNames = new ArrayList<>();
 
     boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
+    String dir = context.getFilesDir().getAbsolutePath();
+    Log.d("DEBUG", "Dir " + dir);
     if(isFilePresent) {
       String jsonString = fileUtils.readFile(FILENAME);
 
-      savedImagePaths = new Gson().fromJson(jsonString, new TypeToken<List<String>>(){}.getType());
+      savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<String>>(){}.getType());
     }
 
-    return savedImagePaths;
+    Collections.reverse(savedImageNames);
+
+    return savedImageNames;
   }
 
   /**

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -89,6 +90,7 @@ public class HomeScreenFragment extends Fragment {
     viewImages.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        Toast.makeText(getActivity().getApplicationContext(), "Opened images", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), Images.class);
         startActivity(intent);
       }
@@ -166,6 +168,7 @@ public class HomeScreenFragment extends Fragment {
 
         Image image = new Image(originalSizeBitmap, context, mainApplication.getImageEditorActivity());
         mainApplication.setImage(image);
+
         startActivity(intent);
       }
     });

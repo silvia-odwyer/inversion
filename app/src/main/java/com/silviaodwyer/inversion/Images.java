@@ -60,7 +60,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
   private ArrayList<Bitmap> initializeSavedBitmaps() {
     ImageUtils imageUtils = new ImageUtils(this);
-    ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    ArrayList<Bitmap> savedImages = new ArrayList<>();
     ContextWrapper contextWrapper = new ContextWrapper(this);
     File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
     for (int position = 0; position < savedImageNames.size(); position++) {
@@ -74,28 +74,26 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
           Log.d("DEBUG", "BITMAP IS NULL");
         }
         else {
+          Image image = new Image(bitmap, this, mainApplication.getImageEditorActivity());
+          savedImages.add(bitmap);
 
-          int maxHeight = 250;
-          int maxWidth = 250;
-          final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
-          bitmaps.add(resultBitmap);
         }
 
       } catch (FileNotFoundException e) {
         e.printStackTrace();
       }
     }
-    return bitmaps;
+    return savedImages;
 
   }
 
   private void initializeRecyclerView() {
-    ArrayList<Bitmap> bitmaps = initializeSavedBitmaps();
+    ArrayList<Bitmap> savedImages = initializeSavedBitmaps();
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-    adapter = new ImagesRecyclerView(this, bitmaps, mainApplication);
+    adapter = new ImagesRecyclerView(this, savedImages, mainApplication);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
   }

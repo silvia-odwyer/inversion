@@ -116,6 +116,12 @@ public class Image {
     this.originalImageBitmap = originalImageBitmap;
   }
 
+  public Bitmap getThumbnail(int maxWidth, int maxHeight) {
+    ImageUtils imageUtils = new ImageUtils(context);
+    final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
+    return resultBitmap;
+  }
+
   /**
    * Returns the GPUImage instance of the image.
    *

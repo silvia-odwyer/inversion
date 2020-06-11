@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -56,6 +58,13 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
+
+    ImageView imageView = findViewById(R.id.imageviewglide);
+    Glide
+      .with(getApplicationContext())
+      .load("https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png") // Uri of the picture
+      .apply(new RequestOptions().override(250, 250))
+      .into(imageView);
   }
 
   private ArrayList<Bitmap> initializeSavedBitmaps() {

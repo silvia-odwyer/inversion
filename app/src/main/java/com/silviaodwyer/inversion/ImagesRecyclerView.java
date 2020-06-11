@@ -48,12 +48,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
     Bitmap thumbnail = imageUtils.resizeBitmap(data.get(position), 250, 250);
     holder.imageView.setImageBitmap(thumbnail);
-//
-//    Glide
-//      .with(context)
-//      .load(new File(fileUri.getPath())) // Uri of the picture
-//      .apply(new RequestOptions().override(250, 250))
-//      .into(holder.imageView);
+
   }
 
   @Override

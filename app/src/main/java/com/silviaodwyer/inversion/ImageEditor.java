@@ -84,15 +84,15 @@ public class ImageEditor extends AppCompatActivity {
     });
   }
 
-  private void saveImageToImageNames(String image_name) {
+  private void saveImageToImageNames(ImageMetadata metadata) {
       FileUtils fileUtils = new FileUtils(getApplicationContext());
-      ArrayList<String> savedImagePaths = mainApplication.getSavedImageNames(getApplicationContext());
+      ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getMetaDataArrayList(getApplicationContext());
       String FILENAME = mainApplication.getSavedImagePathFilename();
-      savedImagePaths.add(image_name);
+      savedImageMetadata.add(metadata);
       boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
 
-      String json = new Gson().toJson(savedImagePaths);
-      Log.d("DEBUG", "Saved image names" + savedImagePaths.toString());
+      String json = new Gson().toJson(savedImageMetadata);
+      Log.d("DEBUG", "Saved image names" + savedImageMetadata.toString());
 
       // save
       fileUtils.writeFile(FILENAME, json);
@@ -111,12 +111,9 @@ public class ImageEditor extends AppCompatActivity {
     ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
 
     File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    String image_name = generateImageName();
-
-    this.saveImageToImageNames(image_name);
-    File path = new File(directory, image_name);
-
-
+    ImageMetadata metadata = new ImageMetadata();
+    this.saveImageToImageNames(metadata);
+    File path = new File(directory, metadata.getName());
     FileOutputStream fileOutputStream = null;
     try {
       fileOutputStream = new FileOutputStream(path);
@@ -135,15 +132,5 @@ public class ImageEditor extends AppCompatActivity {
     }
   }
 
-  public String generateImageName() {
-    Calendar calendar = Calendar.getInstance();
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String date = dateFormat.format(calendar.getTime());
-
-    String image_name = "image_" + date + ".jpg";
-    Log.d("DEBUG", "IMAGE NAME: " + image_name);
-    return image_name;
-  }
 
 }

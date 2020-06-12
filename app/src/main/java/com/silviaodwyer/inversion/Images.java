@@ -37,7 +37,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
   private ImagesRecyclerView adapter;
-  private ArrayList<String> savedImageNames;
+  private ArrayList<ImageMetadata> savedImageMetaData;
   private MainApplication mainApplication;
 
   @Override
@@ -45,7 +45,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
     mainApplication = ((MainApplication)getApplication());
-    savedImageNames = mainApplication.getSavedImageNames(this);
+    savedImageMetaData = mainApplication.getMetaDataArrayList(this);
 
     initializeRecyclerView();
 
@@ -58,33 +58,26 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
-
-    ImageView imageView = findViewById(R.id.imageviewglide);
-    Glide
-      .with(getApplicationContext())
-      .load("https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png") // Uri of the picture
-      .apply(new RequestOptions().override(250, 250))
-      .into(imageView);
   }
 
-  private ArrayList<Bitmap> initializeSavedBitmaps() {
+  private ArrayList<Image> initializeSavedBitmaps() {
     ImageUtils imageUtils = new ImageUtils(this);
-    ArrayList<Bitmap> savedImages = new ArrayList<>();
+    ArrayList<Image> savedImages = new ArrayList<>();
     ContextWrapper contextWrapper = new ContextWrapper(this);
     File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    for (int position = 0; position < savedImageNames.size(); position++) {
+    for (int position = 0; position < savedImageMetaData.size(); position++) {
 
-      String imageName = savedImageNames.get(position);
+      ImageMetadata metadata = savedImageMetaData.get(position);
 
       try {
-        File file = new File(directory, imageName);
+        File file = new File(directory, metadata.getName());
         final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
         if (bitmap == null) {
           Log.d("DEBUG", "BITMAP IS NULL");
         }
         else {
-          Image image = new Image(bitmap, this, mainApplication.getImageEditorActivity());
-          savedImages.add(bitmap);
+          Image image = new Image(bitmap, this, mainApplication.getImageEditorActivity(), metadata);
+          savedImages.add(image);
 
         }
 
@@ -97,7 +90,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   }
 
   private void initializeRecyclerView() {
-    ArrayList<Bitmap> savedImages = initializeSavedBitmaps();
+    ArrayList<Image> savedImages = initializeSavedBitmaps();
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
@@ -119,7 +112,8 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity());
+      ImageMetadata metadata = new ImageMetadata();
+      Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
 

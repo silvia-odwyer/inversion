@@ -26,12 +26,14 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private LayoutInflater inflater;
   private Context context;
   private MainApplication mainApplication;
+  private ArrayList<ImageMetadata> metaDataArray;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<Bitmap> data, MainApplication mainApplication) {
+  ImagesRecyclerView(Context context, ArrayList<Bitmap> data, MainApplication mainApplication, ArrayList<ImageMetadata> metadata) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
+    this.metaDataArray = metadata;
     this.mainApplication = mainApplication;
     this.imageUtils = new ImageUtils(context);
   }
@@ -46,9 +48,13 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
-    Bitmap thumbnail = imageUtils.resizeBitmap(data.get(position), 250, 250);
-    holder.imageView.setImageBitmap(thumbnail);
+    Bitmap bitmap = data.get(position);
 
+    Glide
+      .with(context)
+      .load(bitmap)
+      .apply(new RequestOptions().override(250, 250))
+      .into(holder.imageView);
   }
 
   @Override
@@ -71,7 +77,8 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
         Intent intent = new Intent(context, ImageEditor.class);
-        Image image = new Image(data.get(getAdapterPosition()), context, mainApplication.getImageEditorActivity());
+        ImageMetadata metadata = metaDataArray.get(getAdapterPosition());
+        Image image = new Image(data.get(getAdapterPosition()), context, mainApplication.getImageEditorActivity(), metadata);
         mainApplication.setImage(image);
         context.startActivity(intent);
       }

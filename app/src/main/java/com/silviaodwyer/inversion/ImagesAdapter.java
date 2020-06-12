@@ -36,7 +36,7 @@ public class ImagesAdapter extends BaseAdapter {
   private final Context mContext;
   private static String FILENAME;
   private MainApplication mainApplication;
-  private ArrayList<String> savedImageNames = new ArrayList<>();
+  private ArrayList<ImageMetadata> savedImageMetadata = new ArrayList<>();
   private ImageUtils imageUtils;
   private ContextWrapper contextWrapper;
   private File directory;
@@ -54,7 +54,7 @@ public class ImagesAdapter extends BaseAdapter {
 
   @Override
   public int getCount() {
-    return savedImageNames.size();
+    return savedImageMetadata.size();
   }
 
   @Override
@@ -70,12 +70,12 @@ public class ImagesAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
 
-    String imageName = savedImageNames.get(position);
+    final ImageMetadata metadata = savedImageMetadata.get(position);
 
     ImageView imageView = new ImageView(mContext);
 
     try {
-        File file = new File(directory, imageName);
+        File file = new File(directory, metadata.getName());
         final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
         if (bitmap == null) {
           Log.d("DEBUG", "BITMAP IS NULL");
@@ -91,7 +91,7 @@ public class ImagesAdapter extends BaseAdapter {
             public void onClick(View view) {
               Intent intent = new Intent(mContext, ImageEditor.class);
 
-              Image image = new Image(bitmap, mContext, mainApplication.getImageEditorActivity());
+              Image image = new Image(bitmap, mContext, mainApplication.getImageEditorActivity(), metadata);
               mainApplication.setImage(image);
               mContext.startActivity(intent);
             }
@@ -114,7 +114,7 @@ public class ImagesAdapter extends BaseAdapter {
     if(isFilePresent) {
       String jsonString= fileUtils.readFile(FILENAME);
 
-      savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
+      savedImageMetadata = new Gson().fromJson(jsonString, new TypeToken<List<String>>() {
       }.getType());
 
       Log.d("DEBUG", "File present");

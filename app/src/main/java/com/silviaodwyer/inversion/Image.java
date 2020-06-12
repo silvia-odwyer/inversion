@@ -15,6 +15,7 @@ public class Image {
   private ArrayList<Bitmap> filteredThumbnails;
   private String path;
   private ArrayList<Bitmap> correctedThumbnails;
+  private ImageMetadata metaData;
 
   /**
    * Returns all image thumbnails with image correction filters applied to them.
@@ -33,13 +34,14 @@ public class Image {
     this.filteredThumbnails.add(thumbnail);
   }
 
-  public Image(Bitmap bitmap, Context ctx, ImageEditor activity) {
+  public Image(Bitmap bitmap, Context ctx, ImageEditor activity, ImageMetadata metaData) {
     this.context = ctx;
     this.bitmap = bitmap;
     this.originalImageBitmap = bitmap;
     filteredThumbnails = new ArrayList<>();
     correctedThumbnails = new ArrayList<>();
     this.activity = activity;
+    this.metaData = metaData;
     this.createGPUImage();
   }
 
@@ -158,5 +160,22 @@ public class Image {
   public void setBitmap(Bitmap bitmap) {
     this.bitmap = bitmap;
     mGPUImage.setImage(bitmap);
+  }
+
+  /**
+   * Get the metadata for this image.
+   *
+   * @return metadata for this image
+   */
+  public ImageMetadata getMetaData() {
+    return metaData;
+  }
+
+  /**
+   * Set the metadata for this image.
+   *
+   */
+  public void setMetaData(ImageMetadata metaData) {
+    this.metaData = metaData;
   }
 }

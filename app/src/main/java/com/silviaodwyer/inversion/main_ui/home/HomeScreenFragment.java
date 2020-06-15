@@ -1,11 +1,13 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
+import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
@@ -119,11 +122,11 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
-    ArrayList<String> savedImageNames = mainApplication.getSavedImageNames(context);
+    ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getMetaDataArrayList(context);
     ImageUtils imageUtils = new ImageUtils(context);
     int totalImageNum = 0;
-    if (savedImageNames.size() < 4) {
-      totalImageNum = savedImageNames.size();
+    if (savedImageMetadata.size() < 4) {
+      totalImageNum = savedImageMetadata.size();
     }
     else {
       totalImageNum = 4;
@@ -132,7 +135,7 @@ public class HomeScreenFragment extends Fragment {
       ContextWrapper contextWrapper = new ContextWrapper(context);
 
       File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-      String imageName = savedImageNames.get(i);
+      String imageName = savedImageMetadata.get(i).getName();
 
       try {
         File file = new File(directory, imageName);
@@ -144,7 +147,7 @@ public class HomeScreenFragment extends Fragment {
           int maxHeight = 150;
           int maxWidth = 150;
           Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
-          ImageView imageView = createImageView(resultBitmap, bitmap);
+          ImageView imageView = createImageView(resultBitmap, bitmap, savedImageMetadata.get(i));
           linLayout.addView(imageView);
         }
 
@@ -154,7 +157,7 @@ public class HomeScreenFragment extends Fragment {
     }
   }
 
-  private ImageView createImageView(Bitmap resultBitmap, final Bitmap originalSizeBitmap) {
+  private ImageView createImageView(Bitmap resultBitmap, final Bitmap originalSizeBitmap, final ImageMetadata metadata) {
     ImageView imageView = new ImageView(context);
 
     imageView.setImageBitmap(resultBitmap);
@@ -166,10 +169,16 @@ public class HomeScreenFragment extends Fragment {
       public void onClick(View view) {
         Intent intent = new Intent(context, ImageEditor.class);
 
-        Image image = new Image(originalSizeBitmap, context, mainApplication.getImageEditorActivity());
+        Image image = new Image(originalSizeBitmap, context, mainApplication.getImageEditorActivity(), metadata);
         mainApplication.setImage(image);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // TODO implement shared animations and transitions
 
+        } else {
+
+        }
         startActivity(intent);
+
       }
     });
     return imageView;

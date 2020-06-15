@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class EffectDetail extends AppCompatActivity {
   private TextView effectTitle;
+  private MainApplication mainApplication;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +23,28 @@ public class EffectDetail extends AppCompatActivity {
     String effectName = getEffectName();
     effectTitle.setText(effectName);
 
+    mainApplication = ((MainApplication)getApplication());
+
+
     initializeFileNames();
   }
 
   private void initializeFileNames() {
     LinearLayout fileList = findViewById(R.id.effect_list);
 
-    // TODO Get most recently edited last 3 file items
-    ArrayList<String> fileNames = new ArrayList<String>();
-    fileNames.add("File1");
-    fileNames.add("File2");
+    ArrayList<ImageMetadata> fileMetaData = mainApplication.getMetaDataArrayList(getApplicationContext());
+    int length = 0;
+    if (fileMetaData.size() > 3) {
+      length = 3;
+    }
+    else {
+      length = fileMetaData.size();
+    }
 
-    for (String fileName : fileNames) {
+    for (int i = 0; i < length; i++) {
+      ImageMetadata metadata = fileMetaData.get(i);
       TextView textView = new TextView(getApplicationContext());
+      String fileName = metadata.getName();
       textView.setText(fileName);
       textView.setOnClickListener(new View.OnClickListener() {
         @Override

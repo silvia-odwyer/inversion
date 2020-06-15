@@ -4,6 +4,7 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ public class UserAccountFragment extends Fragment {
     themeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        // TODO switch theme
         if (isChecked) {
           nightThemeEnabled = true;
           UiModeManager umm = (UiModeManager) getActivity().getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
@@ -56,12 +56,20 @@ public class UserAccountFragment extends Fragment {
   private void initThemeToggle() {
     Boolean nightModeEnabled = false;
 
-    nightModeEnabled = sharedPreferences.getBoolean("nightThemeEnabled", nightModeEnabled);
-    if (nightModeEnabled) {
-      themeToggle.setChecked(true);
+    // check if key exists in sharedPreferences
+    if (sharedPreferences.contains("nightThemeEnabled")) {
+      nightModeEnabled = sharedPreferences.getBoolean("nightThemeEnabled", nightModeEnabled);
+      Log.d("DEBUG", "Night mode enabled? " + nightModeEnabled.toString());
+      if (nightModeEnabled) {
+        themeToggle.setChecked(true);
+      }
+      else {
+        themeToggle.setChecked(false);
+      }
     }
     else {
-      themeToggle.setChecked(false);
+      themeToggle.setChecked(true);
     }
+
   }
 }

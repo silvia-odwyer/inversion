@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.silviaodwyer.inversion.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
@@ -106,6 +108,23 @@ public class ImageUtils {
 
     final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     return resultBitmap;
+  }
+
+  /**
+   * Get the locale of the user's device. This is required
+   * for date formatting according to the locale when generating
+   * image names, etc.,
+   *
+   * @return     locale
+   */
+  private Locale getLocale() {
+    // check if API Level is greater than 24
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+      return context.getResources().getConfiguration().getLocales().get(0);
+    } else{
+      Log.d("DEBUG", "API Level less than 24");
+      return context.getResources().getConfiguration().locale;
+    }
   }
 
 }

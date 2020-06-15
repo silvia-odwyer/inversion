@@ -150,20 +150,12 @@ public class ImageFilters {
         filters = getCorrectionFilters();
         break;
     }
+    Bitmap thumbnail = image.getThumbnail(150, 150);
 
-    GPUImage.getBitmapForMultipleFilters(image.getOriginalImageBitmap(), filters, new GPUImage.ResponseListener<Bitmap>() {
+    GPUImage.getBitmapForMultipleFilters(thumbnail, filters, new GPUImage.ResponseListener<Bitmap>() {
 
       @Override
       public void response(Bitmap resultBitmap) {
-        int maxHeight = 150;
-        int maxWidth = 150;
-        float scale = Math.min(((float)maxHeight / resultBitmap.getWidth()), ((float)maxWidth / resultBitmap.getHeight()));
-        // resize bitmap to thumbnail size
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        resultBitmap = Bitmap.createBitmap(resultBitmap, 0, 0, resultBitmap.getWidth(), resultBitmap.getHeight(), matrix, true);
-
         thumbnails.add(resultBitmap);
       }
     });

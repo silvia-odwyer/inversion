@@ -2,12 +2,14 @@ package com.silviaodwyer.inversion;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 
@@ -15,7 +17,7 @@ public class MainApplication extends Application {
   private String videoUrl;
   private ImageEditor imageEditorActivity;
   private Image image;
-  private ArrayList<String> imageNames = new ArrayList<String>();
+  private ArrayList<ImageMetadata> imageMetaDataArrayList = new ArrayList<>();
   private static String savedImagePathFilename = "saved_image_paths.json";
   private static String IMAGES_DIRECTORY = "imagesDirectory";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
@@ -77,10 +79,10 @@ public class MainApplication extends Application {
    *
    * @return      the image editor activity
    */
-  public ArrayList<String> getSavedImageNames(Context context) {
+  public ArrayList<ImageMetadata> getMetaDataArrayList(Context context) {
     FileUtils fileUtils = new FileUtils(context);
     String FILENAME = getSavedImagePathFilename();
-    ArrayList<String> savedImageNames = new ArrayList<>();
+    ArrayList<ImageMetadata> savedImageNames = new ArrayList<>();
 
     boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
     String dir = context.getFilesDir().getAbsolutePath();
@@ -88,7 +90,7 @@ public class MainApplication extends Application {
     if(isFilePresent) {
       String jsonString = fileUtils.readFile(FILENAME);
 
-      savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<String>>(){}.getType());
+      savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<ImageMetadata>>(){}.getType());
     }
 
     Collections.reverse(savedImageNames);
@@ -109,12 +111,12 @@ public class MainApplication extends Application {
    * Add a new image name (for an image that was newly saved and was not
    * previously in the list) to the list of saved image names
    *
-   * @param image_name
+   * @param imageMetadata
    * @param context
    */
-  public void addSavedImageName(String image_name, Context context) {
-    imageNames = getSavedImageNames(context);
-    imageNames.add(image_name);
+  public void addSavedImageMetadata(ImageMetadata imageMetadata, Context context) {
+    imageMetaDataArrayList = getMetaDataArrayList(context);
+    imageMetaDataArrayList.add(imageMetadata);
   }
 
   /**
@@ -127,5 +129,6 @@ public class MainApplication extends Application {
   public static String getImageEffectsList() {
     return IMAGE_EFFECTS_LIST;
   }
+
 
 }

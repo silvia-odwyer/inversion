@@ -60,9 +60,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     });
   }
 
-  private ArrayList<Image> initializeSavedBitmaps() {
+  private ArrayList<ImageFile> initializeSavedBitmaps() {
     ImageUtils imageUtils = new ImageUtils(this);
-    ArrayList<Image> savedImages = new ArrayList<>();
+    ArrayList<ImageFile> savedImages = new ArrayList<>();
     ContextWrapper contextWrapper = new ContextWrapper(this);
     File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
     for (int position = 0; position < savedImageMetaData.size(); position++) {
@@ -76,8 +76,8 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
           Log.d("DEBUG", "BITMAP IS NULL");
         }
         else {
-          Image image = new Image(bitmap, this, mainApplication.getImageEditorActivity(), metadata);
-          savedImages.add(image);
+          ImageFile imageFile = new ImageFile(bitmap, metadata);
+          savedImages.add(imageFile);
 
         }
 
@@ -86,11 +86,10 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
       }
     }
     return savedImages;
-
   }
 
   private void initializeRecyclerView() {
-    ArrayList<Image> savedImages = initializeSavedBitmaps();
+    ArrayList<ImageFile> savedImages = initializeSavedBitmaps();
 
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;

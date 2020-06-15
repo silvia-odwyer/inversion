@@ -30,6 +30,7 @@ public class EffectDetail extends AppCompatActivity {
   }
 
   private void initializeFileNames() {
+    final ImageUtils imageUtils = new ImageUtils(getApplicationContext());
     LinearLayout fileList = findViewById(R.id.effect_list);
 
     ArrayList<ImageMetadata> fileMetaData = mainApplication.getMetaDataArrayList(getApplicationContext());
@@ -42,14 +43,17 @@ public class EffectDetail extends AppCompatActivity {
     }
 
     for (int i = 0; i < length; i++) {
-      ImageMetadata metadata = fileMetaData.get(i);
+      final ImageMetadata metadata = fileMetaData.get(i);
       TextView textView = new TextView(getApplicationContext());
       String fileName = metadata.getName();
+
       textView.setText(fileName);
       textView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           Intent intent = new Intent(EffectDetail.this, ImageEditor.class);
+          Image image = imageUtils.getImageFromFilename(metadata, getApplicationContext(), mainApplication);
+          mainApplication.setImage(image);
           startActivity(intent);
         }
       });

@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
 
-  private ArrayList<Bitmap> data;
+  private ArrayList<ImageFile> data;
   private ItemClickListener clickListener;
   private LayoutInflater inflater;
   private Context context;
@@ -29,11 +29,10 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private ArrayList<ImageMetadata> metaDataArray;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<Bitmap> data, MainApplication mainApplication, ArrayList<ImageMetadata> metadata) {
+  ImagesRecyclerView(Context context, ArrayList<ImageFile> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
-    this.metaDataArray = metadata;
     this.mainApplication = mainApplication;
     this.imageUtils = new ImageUtils(context);
   }
@@ -48,7 +47,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
-    Bitmap bitmap = data.get(position);
+    Bitmap bitmap = data.get(position).getBitmap();
 
     Glide
       .with(context)
@@ -77,8 +76,9 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
         Intent intent = new Intent(context, ImageEditor.class);
-        ImageMetadata metadata = metaDataArray.get(getAdapterPosition());
-        Image image = new Image(data.get(getAdapterPosition()), context, mainApplication.getImageEditorActivity(), metadata);
+        ImageFile imageFile = data.get(getAdapterPosition());
+        Image image = new Image(imageFile.getBitmap(), context, mainApplication.getImageEditorActivity(), imageFile.getMetadata());
+
         mainApplication.setImage(image);
         context.startActivity(intent);
       }
@@ -86,7 +86,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
 
   }
 
-  Bitmap getItem(int id) {
+  ImageFile getItem(int id) {
     return data.get(id);
   }
 

@@ -2,7 +2,9 @@ package com.silviaodwyer.inversion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +17,9 @@ import android.widget.LinearLayout;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -125,6 +130,26 @@ public class ImageUtils {
       Log.d("DEBUG", "API Level less than 24");
       return context.getResources().getConfiguration().locale;
     }
+  }
+
+  public static Image getImageFromFilename(ImageMetadata metadata, Context context, MainApplication mainApplication) {
+    Image image = null;
+    ContextWrapper contextWrapper = new ContextWrapper(context);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    File file = new File(directory, metadata.getName());
+    Bitmap bitmap = null;
+    try {
+      bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    if (bitmap == null) {
+      Log.d("DEBUG", "BITMAP IS NULL");
+    } else {
+      image = new Image(bitmap, context, mainApplication.getImageEditorActivity(), metadata);
+
+    }
+    return image;
   }
 
 }

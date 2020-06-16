@@ -1,12 +1,16 @@
 package com.silviaodwyer.inversion;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -62,6 +67,7 @@ public class ImageEditor extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_editor);
+
     BottomNavigationView navView = findViewById(R.id.nav_view);
 
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -82,6 +88,49 @@ public class ImageEditor extends AppCompatActivity {
         saveImage();
       }
     });
+
+    requestPermissions();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int reqCode,
+                                         String permissions[], int[] grantResults) {
+    switch (reqCode) {
+      case 1: {
+        if (grantResults.length > 0
+          && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          FileOutputStream fileOutputStream = null;
+          try {
+            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
+            directory.mkdirs();
+
+            File outputFile = new File(directory.toString(), image.getMetaData().getName());
+
+            fileOutputStream = new FileOutputStream(outputFile);
+            gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+          }
+          catch (IOException e) {
+            Log.d("DEBUG", "Could not write file!" + e);
+          }
+          finally {
+            try {
+              fileOutputStream.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+              Uri.parse("file://" + "image.JPG")));
+
+          Log.d("DEBUG", "SAVED IMAGE");
+
+
+        } else {
+          // permission was denied
+        }
+        return;
+      }
+    }
   }
 
   private void saveImageToImageNames(ImageMetadata metadata) {
@@ -132,5 +181,9 @@ public class ImageEditor extends AppCompatActivity {
     }
   }
 
-
+  private void requestPermissions() {
+    ActivityCompat.requestPermissions(ImageEditor.this,
+      new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+      1);
+  }
 }

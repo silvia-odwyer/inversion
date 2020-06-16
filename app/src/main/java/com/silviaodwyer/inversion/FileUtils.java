@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class FileUtils {
   private Context context;
@@ -55,5 +57,17 @@ public class FileUtils {
     }
   }
 
+  /**
+   * Get the current time and date and
+   * create a timestamp from this.
+   *
+   * @return timestamp
+   */
+  public static String createTimestamp() {
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    return dateFormat.format(calendar.getTime());
+
+  }
 
 }

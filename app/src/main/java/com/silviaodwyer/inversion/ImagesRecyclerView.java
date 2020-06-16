@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
 
-  private ArrayList<ImageFile> data;
+  private ArrayList<ImageMetadata> data;
   private ItemClickListener clickListener;
   private LayoutInflater inflater;
   private Context context;
@@ -29,7 +29,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private ArrayList<ImageMetadata> metaDataArray;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<ImageFile> data, MainApplication mainApplication) {
+  ImagesRecyclerView(Context context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
@@ -47,11 +47,15 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
-    Bitmap bitmap = data.get(position).getBitmap();
+    ImageMetadata metadata = data.get(position);
+    ContextWrapper contextWrapper = new ContextWrapper(context);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+
+    File file = new File(directory, metadata.getName());
 
     Glide
       .with(context)
-      .load(bitmap)
+      .load(file.getAbsolutePath())
       .apply(new RequestOptions().override(250, 250))
       .into(holder.imageView);
   }
@@ -76,17 +80,16 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
         Intent intent = new Intent(context, ImageEditor.class);
-        ImageFile imageFile = data.get(getAdapterPosition());
-        Image image = new Image(imageFile.getBitmap(), context, mainApplication.getImageEditorActivity(), imageFile.getMetadata());
+        ImageMetadata metadata = data.get(getAdapterPosition());
+        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
 
         mainApplication.setImage(image);
         context.startActivity(intent);
       }
     }
-
   }
 
-  ImageFile getItem(int id) {
+  ImageMetadata getItem(int id) {
     return data.get(id);
   }
 

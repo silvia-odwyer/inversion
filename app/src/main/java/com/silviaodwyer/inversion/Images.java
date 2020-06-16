@@ -53,48 +53,18 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     uploadImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
   }
 
-  private ArrayList<ImageFile> initializeSavedBitmaps() {
-    ImageUtils imageUtils = new ImageUtils(this);
-    ArrayList<ImageFile> savedImages = new ArrayList<>();
-    ContextWrapper contextWrapper = new ContextWrapper(this);
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    for (int position = 0; position < savedImageMetaData.size(); position++) {
-
-      ImageMetadata metadata = savedImageMetaData.get(position);
-
-      try {
-        File file = new File(directory, metadata.getName());
-        final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-        if (bitmap == null) {
-          Log.d("DEBUG", "BITMAP IS NULL");
-        }
-        else {
-          ImageFile imageFile = new ImageFile(bitmap, metadata);
-          savedImages.add(imageFile);
-
-        }
-
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
-    }
-    return savedImages;
-  }
-
   private void initializeRecyclerView() {
-    ArrayList<ImageFile> savedImages = initializeSavedBitmaps();
-
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-    adapter = new ImagesRecyclerView(this, savedImages, mainApplication);
+    adapter = new ImagesRecyclerView(this, savedImageMetaData, mainApplication);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
   }
@@ -127,5 +97,31 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   @Override
   public void onItemClick(View view, int position) {
 
+  }
+
+  private ArrayList<ImageFile> initializeSavedBitmaps() {
+    ImageUtils imageUtils = new ImageUtils(this);
+    ArrayList<ImageFile> savedImages = new ArrayList<>();
+    ContextWrapper contextWrapper = new ContextWrapper(this);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    for (int position = 0; position < savedImageMetaData.size(); position++) {
+
+      ImageMetadata metadata = savedImageMetaData.get(position);
+      File file = new File(directory, metadata.getName());
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inSampleSize = 4;
+      final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+      if (bitmap == null) {
+        Log.d("DEBUG", "BITMAP IS NULL");
+      }
+      else {
+        ImageFile imageFile = new ImageFile(bitmap, metadata);
+        savedImages.add(imageFile);
+
+      }
+
+    }
+    return savedImages;
   }
 }

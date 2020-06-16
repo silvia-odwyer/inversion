@@ -19,7 +19,7 @@ public class ImageMetadata {
 
   public ImageMetadata() {
     this.name = generateImageName();
-    this.timestamp = generateTimestamp();
+    this.timestamp = FileUtils.createTimestamp();
   }
 
   /**
@@ -38,18 +38,6 @@ public class ImageMetadata {
   public void setTimestamp(String timestamp) {
 
     this.timestamp = timestamp;
-  }
-
-  /**
-   * Get the current time and date and
-   * create a timestamp from this.
-   *
-   * @return timestamp
-   */
-  public String generateTimestamp() {
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    return dateFormat.format(calendar.getTime());
   }
 
   /**

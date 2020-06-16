@@ -2,12 +2,19 @@ package com.silviaodwyer.inversion;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.daasuu.epf.EPlayerView;
 import com.daasuu.epf.filter.GlSepiaFilter;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -18,6 +25,9 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.File;
+import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -47,11 +57,11 @@ public class VideoEditor extends AppCompatActivity {
   }
 
   private void setupVideo() {
-
-    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), Util.getUserAgent(this, "yourApplicationName"));
+    String MP4_URL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
+    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), Util.getUserAgent(this, getApplicationInfo().name));
 
     MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-      .createMediaSource(Uri.parse(videoPath));
+      .createMediaSource(Uri.parse(MP4_URL));
 
     SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(this);
 

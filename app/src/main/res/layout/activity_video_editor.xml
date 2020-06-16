@@ -7,6 +7,7 @@
   android:layout_height="match_parent">
 
   <LinearLayout
+    android:id="@+id/linearLayout6"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -27,13 +28,20 @@
       android:textSize="40sp"
       android:textStyle="bold" />
 
-    <ImageView
-      android:id="@+id/imageView"
+    <LinearLayout
+      android:id="@+id/video_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:minHeight="300dp"
-      android:src="@drawable/gradient_blue_violet" />
+      android:orientation="vertical">
 
+    </LinearLayout>
+
+    <ImageView
+      android:id="@+id/vidthumbnail"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:maxWidth="30dp"
+      android:maxHeight="40dp"/>
 
   </LinearLayout>
 

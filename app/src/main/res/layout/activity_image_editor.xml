@@ -41,7 +41,6 @@
         android:src="@drawable/save_icon"/>
     </LinearLayout>
 
-
     <jp.co.cyberagent.android.gpuimage.GPUImageView
       android:id="@+id/gpuimageview"
       android:layout_width="match_parent"
@@ -66,12 +65,13 @@
     android:id="@+id/nav_host_fragment"
     android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:defaultNavHost="true"
     app:layout_constraintBottom_toTopOf="@id/nav_view"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/guideline8"
     app:navGraph="@navigation/image_editor_navigation" />
 
   <androidx.constraintlayout.widget.Guideline

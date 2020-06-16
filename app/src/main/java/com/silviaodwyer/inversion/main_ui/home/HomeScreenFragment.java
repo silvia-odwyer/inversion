@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
@@ -132,47 +134,39 @@ public class HomeScreenFragment extends Fragment {
       totalImageNum = 4;
     }
     for (int i = 0; i < totalImageNum; i++) {
-      ContextWrapper contextWrapper = new ContextWrapper(context);
+      final ImageMetadata metadata = savedImageMetadata.get(i);
 
-      File directory = contextWrapper.getDir(mainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-      String imageName = savedImageMetadata.get(i).getName();
-
-      try {
-        File file = new File(directory, imageName);
-        final Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-        if (bitmap == null) {
-          Log.d("DEBUG", "BITMAP IS NULL");
-        }
-        else {
-          int maxHeight = 150;
-          int maxWidth = 150;
-          Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
-          ImageView imageView = createImageView(resultBitmap, bitmap, savedImageMetadata.get(i));
-          linLayout.addView(imageView);
-        }
-
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
+      ImageView imageView = createImageView(metadata);
+      linLayout.addView(imageView);
     }
   }
 
-  private ImageView createImageView(Bitmap resultBitmap, final Bitmap originalSizeBitmap, final ImageMetadata metadata) {
+  private ImageView createImageView(final ImageMetadata metadata) {
     ImageView imageView = new ImageView(context);
-
-    imageView.setImageBitmap(resultBitmap);
     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     layoutParams.setMargins(10, 10, 10, 10);
     imageView.setLayoutParams(layoutParams);
+
+    ContextWrapper contextWrapper = new ContextWrapper(context);
+    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+
+    File file = new File(directory, metadata.getName());
+
+    Glide
+      .with(context)
+      .load(file.getAbsolutePath())
+      .apply(new RequestOptions().override(150, 150))
+      .into(imageView);
+
     imageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         Intent intent = new Intent(context, ImageEditor.class);
 
-        Image image = new Image(originalSizeBitmap, context, mainApplication.getImageEditorActivity(), metadata);
+        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
         mainApplication.setImage(image);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // TODO implement shared animations and transitions
+          // TODO implement shared animations and transitions
 
         } else {
 
@@ -181,6 +175,7 @@ public class HomeScreenFragment extends Fragment {
 
       }
     });
+
     return imageView;
   }
 }

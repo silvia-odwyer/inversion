@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -71,7 +74,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         Intent intent = new Intent(Videos.this, VideoEditor.class);
         intent.putExtra("videoPath", videoPath);
         startActivity(intent);
-
       }
 
     }
@@ -94,6 +96,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         return null;
     }
   }
+
 
   @Override
   public void onItemClick(View view, int position) {

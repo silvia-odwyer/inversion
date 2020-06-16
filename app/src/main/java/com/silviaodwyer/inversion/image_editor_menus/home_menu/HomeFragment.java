@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
     activity = (ImageEditor) getActivity();
     MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
-    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity);
+    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
     ImageFilters imageFilters = new ImageFilters();
     ArrayList<GPUImageFilter> filters = imageFilters.getFilters();

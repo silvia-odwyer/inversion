@@ -18,7 +18,11 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -52,6 +56,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
       }
     });
+    mainApplication.requestPermissions(Videos.this);
   }
 
   @Override
@@ -70,6 +75,44 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         MainApplication application = ((MainApplication)getApplication());
         application.setVideoUrl(videoUrl);
         Log.d("DEBUG", "Video URL: " + videoUrl);
+        File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
+        dst.mkdirs();
+        File expFile = new File(dst.getPath() + File.separator + "copied_video.mp4");
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+
+        File src = new File(videoPath);
+        Log.d("DEBUG", "INPUT FILE: " + src.getPath());
+        Log.d("DEBUG", "OUTPUT FILE: " + expFile.getPath());
+
+        try {
+          inChannel = new FileInputStream(src).getChannel();
+          outChannel = new FileOutputStream(expFile).getChannel();
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
+
+        try {
+          inChannel.transferTo(0, inChannel.size(), outChannel);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } finally {
+          if (inChannel != null) {
+            try {
+              inChannel.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+          if (outChannel != null) {
+            try {
+              outChannel.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+        Log.d("DEBUG", "COPIED VIDEO ");
 
         Intent intent = new Intent(Videos.this, VideoEditor.class);
         intent.putExtra("videoPath", videoPath);

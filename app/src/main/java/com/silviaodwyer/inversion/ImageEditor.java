@@ -89,7 +89,7 @@ public class ImageEditor extends AppCompatActivity {
       }
     });
 
-    requestPermissions();
+    mainApplication.requestPermissions(ImageEditor.this);
   }
 
   @Override
@@ -181,9 +181,4 @@ public class ImageEditor extends AppCompatActivity {
     }
   }
 
-  private void requestPermissions() {
-    ActivityCompat.requestPermissions(ImageEditor.this,
-      new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-      1);
-  }
 }

@@ -1,5 +1,8 @@
 package com.silviaodwyer.inversion;
 
+import android.app.DownloadManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -27,6 +30,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,11 +58,14 @@ public class VideoEditor extends AppCompatActivity {
     mainApplication = ((MainApplication)getApplication());
 
     setupVideo();
+    mainApplication.requestPermissions(VideoEditor.this);
   }
 
   private void setupVideo() {
     String MP4_URL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
-    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), Util.getUserAgent(this, getApplicationInfo().name));
+
+
+    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), Util.getUserAgent(getApplicationContext(),"Inversion"));
 
     MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
       .createMediaSource(Uri.parse(MP4_URL));
@@ -77,6 +84,58 @@ public class VideoEditor extends AppCompatActivity {
     ePlayerView.onResume();
     ePlayerView.setGlFilter(new GlSepiaFilter());
 
+  }
+
+
+  @Override
+  public void onRequestPermissionsResult(int reqCode,
+                                         String permissions[], int[] grantResults) {
+    switch (reqCode) {
+      case 1: {
+        if (grantResults.length > 0
+          && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          FileOutputStream fileOutputStream = null;
+          try {
+            Log.d("DEBUG", "Downloading video");
+            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
+            directory.mkdirs();
+
+            File outputFile = new File(directory.toString(), "video1.mp4");
+
+            fileOutputStream = new FileOutputStream(outputFile);
+
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://www.radiantmediaplayer.com/media/bbb-360p.mp4"))
+              .setTitle(outputFile.getName())
+              .setDescription("Downloading")
+              .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+              .setDestinationUri(Uri.fromFile(outputFile))
+              .setAllowedOverMetered(true)
+              .setAllowedOverRoaming(true);
+            DownloadManager downloadManager = (DownloadManager) getApplication().getSystemService(getApplication().DOWNLOAD_SERVICE);
+//            long downloadId = downloadManager.enqueue(request);
+          }
+          catch (IOException e) {
+            Log.d("DEBUG", "Could not write file!" + e);
+          }
+          finally {
+            try {
+              fileOutputStream.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+          sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+            Uri.parse("file://" + "image.JPG")));
+
+          Log.d("DEBUG", "SAVED IMAGE");
+
+
+        } else {
+          // permission was denied
+        }
+        return;
+      }
+    }
   }
 
 }

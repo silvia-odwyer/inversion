@@ -1,16 +1,23 @@
 package com.silviaodwyer.inversion;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.app.ActivityCompat;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class MainApplication extends Application {
@@ -130,5 +137,16 @@ public class MainApplication extends Application {
     return IMAGE_EFFECTS_LIST;
   }
 
+  public void requestPermissions(Activity activity) {
+    ActivityCompat.requestPermissions(activity,
+      new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+      1);
+  }
+
+  public void broadcastNewImage(File file) {
+    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+    intent.setData(Uri.fromFile(file));
+    getApplicationContext().sendBroadcast(intent);
+  }
 
 }

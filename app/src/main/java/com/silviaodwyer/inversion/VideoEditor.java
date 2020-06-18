@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.daasuu.epf.EPlayerView;
+import com.daasuu.epf.filter.GlFilter;
 import com.daasuu.epf.filter.GlSepiaFilter;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -42,6 +43,9 @@ import androidx.navigation.ui.NavigationUI;
 public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private String videoPath;
+  private EPlayerView ePlayerView;
+  private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
+  private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class VideoEditor extends AppCompatActivity {
     BottomNavigationView navView = findViewById(R.id.nav_view);
 
     videoPath = getIntent().getExtras().getString("videoPath");
+    videoURL = videoPath;
 
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -57,24 +62,22 @@ public class VideoEditor extends AppCompatActivity {
 
     mainApplication = ((MainApplication)getApplication());
 
-    setupVideo();
     mainApplication.requestPermissions(VideoEditor.this);
+    setupVideo();
   }
 
   private void setupVideo() {
-    String MP4_URL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
-
 
     DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), Util.getUserAgent(getApplicationContext(),"Inversion"));
 
     MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-      .createMediaSource(Uri.parse(MP4_URL));
+      .createMediaSource(Uri.parse(videoURL));
 
     SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(this);
 
     player.prepare(videoSource);
     player.setPlayWhenReady(true);
-    EPlayerView ePlayerView = new EPlayerView(this);
+    ePlayerView = new EPlayerView(this);
 
     ePlayerView.setSimpleExoPlayer(player);
     ePlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -82,10 +85,8 @@ public class VideoEditor extends AppCompatActivity {
     LinearLayout linLayout =  findViewById(R.id.video_container);
     linLayout.addView(ePlayerView);
     ePlayerView.onResume();
-    ePlayerView.setGlFilter(new GlSepiaFilter());
-
+    filterPlayerView(new GlSepiaFilter());
   }
-
 
   @Override
   public void onRequestPermissionsResult(int reqCode,
@@ -97,22 +98,12 @@ public class VideoEditor extends AppCompatActivity {
           FileOutputStream fileOutputStream = null;
           try {
             Log.d("DEBUG", "Downloading video");
-            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
+            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
             directory.mkdirs();
 
-            File outputFile = new File(directory.toString(), "video1.mp4");
-
+            File outputFile = new File(directory.toString(), "video.mp4");
             fileOutputStream = new FileOutputStream(outputFile);
 
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://www.radiantmediaplayer.com/media/bbb-360p.mp4"))
-              .setTitle(outputFile.getName())
-              .setDescription("Downloading")
-              .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-              .setDestinationUri(Uri.fromFile(outputFile))
-              .setAllowedOverMetered(true)
-              .setAllowedOverRoaming(true);
-            DownloadManager downloadManager = (DownloadManager) getApplication().getSystemService(getApplication().DOWNLOAD_SERVICE);
-//            long downloadId = downloadManager.enqueue(request);
           }
           catch (IOException e) {
             Log.d("DEBUG", "Could not write file!" + e);
@@ -138,4 +129,7 @@ public class VideoEditor extends AppCompatActivity {
     }
   }
 
+  private void filterPlayerView(GlFilter filter) {
+    ePlayerView.setGlFilter(filter);
+  }
 }

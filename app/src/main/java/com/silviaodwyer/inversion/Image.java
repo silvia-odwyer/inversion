@@ -15,7 +15,7 @@ public class Image {
   private ArrayList<Bitmap> filteredThumbnails;
   private String path;
   private ArrayList<Bitmap> correctedThumbnails;
-  private ImageMetadata metaData;
+  private FileMetadata metaData;
 
   /**
    * Returns all image thumbnails with image correction filters applied to them.
@@ -34,7 +34,7 @@ public class Image {
     this.filteredThumbnails.add(thumbnail);
   }
 
-  public Image(Bitmap bitmap, Context ctx, ImageEditor activity, ImageMetadata metaData) {
+  public Image(Bitmap bitmap, Context ctx, ImageEditor activity, FileMetadata metaData) {
     this.context = ctx;
     this.bitmap = bitmap;
     this.originalImageBitmap = bitmap;
@@ -167,7 +167,7 @@ public class Image {
    *
    * @return metadata for this image
    */
-  public ImageMetadata getMetaData() {
+  public FileMetadata getMetaData() {
     return metaData;
   }
 
@@ -175,7 +175,7 @@ public class Image {
    * Set the metadata for this image.
    *
    */
-  public void setMetaData(ImageMetadata metaData) {
+  public void setMetaData(FileMetadata metaData) {
     this.metaData = metaData;
   }
 }

@@ -9,8 +9,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,27 +16,16 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.squareup.picasso.Picasso;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Images extends AppCompatActivity implements ImagesRecyclerView.ItemClickListener {
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
   private ImagesRecyclerView adapter;
-  private ArrayList<ImageMetadata> savedImageMetaData;
+  private ArrayList<FileMetadata> savedFileMetaData;
   private MainApplication mainApplication;
   private Button deleteBtn;
 
@@ -47,7 +34,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
     mainApplication = ((MainApplication)getApplication());
-    savedImageMetaData = mainApplication.getMetaDataArrayList(this);
+    savedFileMetaData = mainApplication.getSavedImageMetadata(this);
 
     initializeRecyclerView();
 
@@ -71,7 +58,6 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
         Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
         getSavedImages();
         mainApplication.deleteAllMetadata();
-
       }
     });
     this.getSavedImages();
@@ -81,7 +67,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     RecyclerView recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-    adapter = new ImagesRecyclerView(this, savedImageMetaData, mainApplication);
+    adapter = new ImagesRecyclerView(this, savedFileMetaData, mainApplication);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
   }
@@ -98,7 +84,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      ImageMetadata metadata = new ImageMetadata();
+      FileMetadata metadata = new FileMetadata();
       Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
@@ -140,9 +126,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     ArrayList<ImageFile> savedImages = new ArrayList<>();
     ContextWrapper contextWrapper = new ContextWrapper(this);
     File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    for (int position = 0; position < savedImageMetaData.size(); position++) {
+    for (int position = 0; position < savedFileMetaData.size(); position++) {
 
-      ImageMetadata metadata = savedImageMetaData.get(position);
+      FileMetadata metadata = savedFileMetaData.get(position);
       File file = new File(directory, metadata.getName());
       BitmapFactory.Options options = new BitmapFactory.Options();
       options.inSampleSize = 4;

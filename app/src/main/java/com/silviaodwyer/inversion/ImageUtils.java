@@ -1,8 +1,6 @@
 package com.silviaodwyer.inversion;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,9 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.silviaodwyer.inversion.ImageEditor;
-import com.silviaodwyer.inversion.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -133,7 +128,7 @@ public class ImageUtils {
     }
   }
 
-  public static Image getImageFromFilename(ImageMetadata metadata, Context context, MainApplication mainApplication) {
+  public static Image getImageFromFilename(FileMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
     if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
       File imageFile = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images", metadata.getName());

@@ -10,7 +10,7 @@ import com.daasuu.epf.filter.GlVignetteFilter;
 import java.util.ArrayList;
 
 public class VideoFilters {
-  private ArrayList<GlFilter> videoFilters;
+  private ArrayList<GlFilter> videoFilters = new ArrayList<>();
 
   public VideoFilters() {
     this.videoFilters.add(new GlSepiaFilter());

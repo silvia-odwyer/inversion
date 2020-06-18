@@ -1,15 +1,12 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -22,15 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
 
-  private ArrayList<ImageMetadata> data;
+  private ArrayList<FileMetadata> data;
   private ItemClickListener clickListener;
   private LayoutInflater inflater;
   private Context context;
   private MainApplication mainApplication;
-  private ArrayList<ImageMetadata> metaDataArray;
+  private ArrayList<FileMetadata> metaDataArray;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
+  ImagesRecyclerView(Context context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
@@ -79,7 +76,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
         Intent intent = new Intent(context, ImageEditor.class);
-        ImageMetadata metadata = data.get(getAdapterPosition());
+        FileMetadata metadata = data.get(getAdapterPosition());
         Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
 
         mainApplication.setImage(image);
@@ -88,7 +85,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     }
   }
 
-  ImageMetadata getItem(int id) {
+  FileMetadata getItem(int id) {
     return data.get(id);
   }
 

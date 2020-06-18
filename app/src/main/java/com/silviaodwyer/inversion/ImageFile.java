@@ -4,9 +4,9 @@ import android.graphics.Bitmap;
 
 public class ImageFile {
   private Bitmap bitmap;
-  private ImageMetadata metadata;
+  private FileMetadata metadata;
 
-  public ImageFile(Bitmap bitmap, ImageMetadata metadata) {
+  public ImageFile(Bitmap bitmap, FileMetadata metadata) {
     this.metadata = metadata;
     this.bitmap = bitmap;
   }
@@ -19,11 +19,11 @@ public class ImageFile {
     this.bitmap = bitmap;
   }
 
-  public ImageMetadata getMetadata() {
+  public FileMetadata getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(ImageMetadata metadata) {
+  public void setMetadata(FileMetadata metadata) {
     this.metadata = metadata;
   }
 }

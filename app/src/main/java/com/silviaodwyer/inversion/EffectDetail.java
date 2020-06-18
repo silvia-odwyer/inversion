@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +32,7 @@ public class EffectDetail extends AppCompatActivity {
     final ImageUtils imageUtils = new ImageUtils(getApplicationContext());
     LinearLayout fileList = findViewById(R.id.effect_list);
 
-    ArrayList<ImageMetadata> fileMetaData = mainApplication.getMetaDataArrayList(getApplicationContext());
+    ArrayList<FileMetadata> fileMetaData = mainApplication.getSavedImageMetadata(getApplicationContext());
     int length = 0;
     if (fileMetaData.size() > 3) {
       length = 3;
@@ -43,7 +42,7 @@ public class EffectDetail extends AppCompatActivity {
     }
 
     for (int i = 0; i < length; i++) {
-      final ImageMetadata metadata = fileMetaData.get(i);
+      final FileMetadata metadata = fileMetaData.get(i);
       TextView textView = new TextView(getApplicationContext());
       String fileName = metadata.getName();
 

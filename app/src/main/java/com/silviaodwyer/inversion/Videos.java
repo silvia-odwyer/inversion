@@ -30,6 +30,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private Button uploadVideo;
   private static Integer RESULT_LOAD_VIDEO = 9;
   private MainApplication mainApplication;
+  private FileUtils fileUtils;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
     ArrayList<Bitmap> data = new ArrayList<>();
     mainApplication = ((MainApplication)getApplication());
+    fileUtils = new FileUtils(getApplicationContext());
 
     // set up the RecyclerView
     RecyclerView recyclerView = findViewById(R.id.videos_recycler_view);
@@ -56,7 +58,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
       }
     });
-    mainApplication.requestPermissions(Videos.this);
+//    mainApplication.requestPermissions(Videos.this);
   }
 
   @Override
@@ -65,6 +67,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
     if (resultCode == RESULT_OK) {
       final String videoUrl = data.getData().getPath();
+      Video video = new Video();
 
       Uri videoUri = data.getData();
 
@@ -74,45 +77,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       if (videoPath != null) {
         MainApplication application = ((MainApplication)getApplication());
         application.setVideoUrl(videoUrl);
-        Log.d("DEBUG", "Video URL: " + videoUrl);
-        File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
-        dst.mkdirs();
-        File expFile = new File(dst.getPath() + File.separator + "copied_video.mp4");
-        FileChannel inChannel = null;
-        FileChannel outChannel = null;
-
-        File src = new File(videoPath);
-        Log.d("DEBUG", "INPUT FILE: " + src.getPath());
-        Log.d("DEBUG", "OUTPUT FILE: " + expFile.getPath());
-
-        try {
-          inChannel = new FileInputStream(src).getChannel();
-          outChannel = new FileOutputStream(expFile).getChannel();
-        } catch (FileNotFoundException e) {
-          e.printStackTrace();
-        }
-
-        try {
-          inChannel.transferTo(0, inChannel.size(), outChannel);
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          if (inChannel != null) {
-            try {
-              inChannel.close();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
-          if (outChannel != null) {
-            try {
-              outChannel.close();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
-        }
-        Log.d("DEBUG", "COPIED VIDEO ");
+        this.copyVideo(videoPath);
 
         Intent intent = new Intent(Videos.this, VideoEditor.class);
         intent.putExtra("videoPath", videoPath);
@@ -127,7 +92,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   }
 
   public String uriToPath(Uri uri) {
-    String[] projection = { MediaStore.Video.Media.DATA };
+    String[] projection = {MediaStore.Video.Media.DATA};
 
     try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
       if (cursor != null) {
@@ -140,6 +105,15 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     }
   }
 
+  public void copyVideo(String videoPath) {
+    File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+    dst.mkdirs();
+    File outputFile = new File(dst.getPath() + File.separator + "copied_video.mp4");
+    File src = new File(videoPath);
+    fileUtils.copyFile(src, outputFile);
+    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
+
+  }
 
   @Override
   public void onItemClick(View view, int position) {

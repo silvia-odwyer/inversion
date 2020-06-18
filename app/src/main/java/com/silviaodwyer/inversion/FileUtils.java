@@ -1,16 +1,21 @@
 package com.silviaodwyer.inversion;
 
+import android.app.Application;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -84,6 +89,58 @@ public class FileUtils {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
       }
     }
+  }
+
+  public void downloadVideo(String fileURL, File outputFile, Application application) {
+    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileURL))
+      .setTitle(outputFile.getName())
+      .setDescription("Downloading file")
+      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+      .setDestinationUri(Uri.fromFile(outputFile))
+      .setAllowedOverRoaming(true)
+      .setAllowedOverMetered(true);
+    DownloadManager downloadManager = (DownloadManager) application.getSystemService(application.DOWNLOAD_SERVICE);
+    long downloadRes = downloadManager.enqueue(request);
+  }
+
+
+  public void copyFile(File src, File expFile) {
+
+    FileChannel inChannel = null;
+    FileChannel outChannel = null;
+
+
+    Log.d("DEBUG", "INPUT FILE: " + src.getPath());
+    Log.d("DEBUG", "OUTPUT FILE: " + expFile.getPath());
+
+    try {
+      inChannel = new FileInputStream(src).getChannel();
+      outChannel = new FileOutputStream(expFile).getChannel();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      inChannel.transferTo(0, inChannel.size(), outChannel);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (inChannel != null) {
+        try {
+          inChannel.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      if (outChannel != null) {
+        try {
+          outChannel.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    Log.d("DEBUG", "COPIED VIDEO ");
   }
 
 }

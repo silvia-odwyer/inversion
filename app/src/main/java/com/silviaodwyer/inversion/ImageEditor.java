@@ -1,59 +1,31 @@
 package com.silviaodwyer.inversion;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageAddBlendFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBulgeDistortionFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageExclusionBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueBlendFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageLaplacianFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImagePosterizeFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSourceOverBlendFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class ImageEditor extends AppCompatActivity {
   private Bitmap bitmap;
@@ -141,7 +113,7 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void saveImage() {
-    ImageMetadata metadata = new ImageMetadata();
+    FileMetadata metadata = new FileMetadata();
     image.setMetaData(metadata);
     mainApplication.saveImageMetadata(image.getMetaData());
     mainApplication.requestPermissions(ImageEditor.this);

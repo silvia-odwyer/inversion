@@ -8,16 +8,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ImageMetadata {
+public class FileMetadata {
   private String name;
   private String timestamp;
 
-  public ImageMetadata(String name) {
+  public FileMetadata(String name) {
     this.name = name;
-
   }
 
-  public ImageMetadata() {
+  public FileMetadata() {
     this.name = generateImageName();
     this.timestamp = FileUtils.createTimestamp();
   }

@@ -94,10 +94,12 @@ public class MainApplication extends Application {
     boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
     String dir = context.getFilesDir().getAbsolutePath();
     Log.d("DEBUG", "Dir " + dir);
+
     if(isFilePresent) {
       String jsonString = fileUtils.readFile(FILENAME);
 
       savedImageNames = new Gson().fromJson(jsonString, new TypeToken<List<ImageMetadata>>(){}.getType());
+      Log.d("DEBUG", "SAVED IMAGE NAME METADATA LENGTH: " + savedImageNames.size());
     }
 
     Collections.reverse(savedImageNames);
@@ -147,6 +149,33 @@ public class MainApplication extends Application {
     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
     intent.setData(Uri.fromFile(file));
     getApplicationContext().sendBroadcast(intent);
+  }
+
+
+  public void saveImageMetadata(ImageMetadata metadata) {
+    FileUtils fileUtils = new FileUtils(getApplicationContext());
+    ArrayList<ImageMetadata> savedImageMetadata = getMetaDataArrayList(getApplicationContext());
+    String FILENAME = getSavedImagePathFilename();
+    savedImageMetadata.add(metadata);
+    boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
+
+    String json = new Gson().toJson(savedImageMetadata);
+    Log.d("DEBUG", "Saved image names" + savedImageMetadata.toString());
+
+    // save
+    fileUtils.writeFile(FILENAME, json);
+  }
+
+  public void deleteAllMetadata() {
+    FileUtils fileUtils = new FileUtils(getApplicationContext());
+    ArrayList<ImageMetadata> savedImageMetadata = new ArrayList<>();
+    String FILENAME = getSavedImagePathFilename();
+
+    String json = new Gson().toJson(savedImageMetadata);
+    Log.d("DEBUG", "Image metadata now: " + savedImageMetadata.toString());
+
+    // save
+    fileUtils.writeFile(FILENAME, json);
   }
 
 }

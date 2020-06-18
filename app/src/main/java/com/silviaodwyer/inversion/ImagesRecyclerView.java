@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +48,9 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
-    ImageMetadata metadata = data.get(position);
-    ContextWrapper contextWrapper = new ContextWrapper(context);
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
 
-    File file = new File(directory, metadata.getName());
+    File file = new File(inversionDirectory, data.get(position).getName());
 
     Glide
       .with(context)

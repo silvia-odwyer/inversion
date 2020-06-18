@@ -13,6 +13,7 @@ import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   private ImagesRecyclerView adapter;
   private ArrayList<ImageMetadata> savedImageMetaData;
   private MainApplication mainApplication;
+  private Button deleteBtn;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,21 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
       }
     });
+
+    deleteBtn = findViewById(R.id.delete_imgs);
+    deleteBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        FileUtils fileUtils = new FileUtils(getApplicationContext());
+        File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/images");
+        fileUtils.deleteDirectory(directory, getApplicationContext());
+        Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+        getSavedImages();
+        mainApplication.deleteAllMetadata();
+
+      }
+    });
+    this.getSavedImages();
   }
 
   private void initializeRecyclerView() {
@@ -97,6 +114,25 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   @Override
   public void onItemClick(View view, int position) {
 
+  }
+
+  private void getSavedImages() {
+
+    if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+      File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
+
+      ArrayList<String> filepaths = new ArrayList<String>();
+
+      File files[] = inversionDirectory.listFiles();
+
+      if (files != null) {
+        for (int i = 0; i < files.length; i++) {
+          filepaths.add(files[i].getAbsolutePath());
+          Log.d("DEBUG", "EXTERNAL DIR IMAGE: " + files[i].getAbsolutePath());
+        }
+      }
+      Log.d("DEBUG", "Filepaths: " + filepaths.toString());
+    }
   }
 
   private ArrayList<ImageFile> initializeSavedBitmaps() {

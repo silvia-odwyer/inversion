@@ -1,6 +1,9 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,6 +71,19 @@ public class FileUtils {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     return dateFormat.format(calendar.getTime());
 
+  }
+
+  public static void deleteDirectory(File dir, Context context) {
+    if (dir.isDirectory())
+    {
+      String[] dir_children = dir.list();
+      for (int i = 0; i < dir_children.length; i++)
+      {
+        File file = new File(dir, dir_children[i]);
+        file.delete();
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+      }
+    }
   }
 
 }

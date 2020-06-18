@@ -88,8 +88,6 @@ public class ImageEditor extends AppCompatActivity {
         saveImage();
       }
     });
-
-    mainApplication.requestPermissions(ImageEditor.this);
   }
 
   @Override
@@ -101,13 +99,16 @@ public class ImageEditor extends AppCompatActivity {
           && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           FileOutputStream fileOutputStream = null;
           try {
-            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion");
+            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
             directory.mkdirs();
 
             File outputFile = new File(directory.toString(), image.getMetaData().getName());
+            Log.d("DEBUG", "IMAGE OUTPUTTED TO: " + outputFile.getAbsolutePath());
 
             fileOutputStream = new FileOutputStream(outputFile);
             gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
+
           }
           catch (IOException e) {
             Log.d("DEBUG", "Could not write file!" + e);
@@ -115,16 +116,13 @@ public class ImageEditor extends AppCompatActivity {
           finally {
             try {
               fileOutputStream.close();
+              Toast.makeText(this, "Image saved successfully", Toast.LENGTH_SHORT).show();
+              getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+
             } catch (IOException e) {
               e.printStackTrace();
             }
           }
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-              Uri.parse("file://" + "image.JPG")));
-
-          Log.d("DEBUG", "SAVED IMAGE");
-
-
         } else {
           // permission was denied
         }
@@ -133,19 +131,6 @@ public class ImageEditor extends AppCompatActivity {
     }
   }
 
-  private void saveImageToImageNames(ImageMetadata metadata) {
-      FileUtils fileUtils = new FileUtils(getApplicationContext());
-      ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getMetaDataArrayList(getApplicationContext());
-      String FILENAME = mainApplication.getSavedImagePathFilename();
-      savedImageMetadata.add(metadata);
-      boolean isFilePresent = fileUtils.isFilePresent(FILENAME);
-
-      String json = new Gson().toJson(savedImageMetadata);
-      Log.d("DEBUG", "Saved image names" + savedImageMetadata.toString());
-
-      // save
-      fileUtils.writeFile(FILENAME, json);
-  }
 
   public Bitmap getBitmap() {
     return bitmap;
@@ -156,29 +141,10 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void saveImage() {
-
-    ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
     ImageMetadata metadata = new ImageMetadata();
-    this.saveImageToImageNames(metadata);
-    File path = new File(directory, metadata.getName());
-    FileOutputStream fileOutputStream = null;
-    try {
-      fileOutputStream = new FileOutputStream(path);
-      gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-
-    } catch (Exception e) {
-      Toast.makeText(getApplicationContext(), "Couldn't save image.", Toast.LENGTH_SHORT).show();
-      e.printStackTrace();
-    } finally {
-      try {
-        fileOutputStream.close();
-        Toast.makeText(getApplicationContext(), "Image saved successfully.", Toast.LENGTH_SHORT).show();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+    image.setMetaData(metadata);
+    mainApplication.saveImageMetadata(image.getMetaData());
+    mainApplication.requestPermissions(ImageEditor.this);
   }
 
 }

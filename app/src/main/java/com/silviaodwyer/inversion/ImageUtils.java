@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -134,20 +135,21 @@ public class ImageUtils {
 
   public static Image getImageFromFilename(ImageMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
-    ContextWrapper contextWrapper = new ContextWrapper(context);
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    File file = new File(directory, metadata.getName());
-    Bitmap bitmap = null;
-    try {
-      bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-    if (bitmap == null) {
-      Log.d("DEBUG", "BITMAP IS NULL");
-    } else {
-      image = new Image(bitmap, context, mainApplication.getImageEditorActivity(), metadata);
+    if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+      File imageFile = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images", metadata.getName());
 
+      Bitmap bitmap = null;
+      try {
+        bitmap = BitmapFactory.decodeStream(new FileInputStream(imageFile));
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+      if (bitmap == null) {
+        Log.d("DEBUG", "BITMAP IS NULL");
+      } else {
+        image = new Image(bitmap, context, mainApplication.getImageEditorActivity(), metadata);
+
+      }
     }
     return image;
   }

@@ -69,6 +69,7 @@
       android:id="@+id/upload_video_btn"
       android:background="@drawable/gradient_blue_violet"
       android:textStyle="bold"
+      android:padding="10dp"
       android:textAllCaps="false"
       android:layout_marginTop="10dp"
       android:text="Upload New Video"/>

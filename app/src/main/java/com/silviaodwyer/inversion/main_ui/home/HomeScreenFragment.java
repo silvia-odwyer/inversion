@@ -1,15 +1,11 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +22,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
-import com.silviaodwyer.inversion.ImageMetadata;
+import com.silviaodwyer.inversion.FileMetadata;
 import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.Videos;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class HomeScreenFragment extends Fragment {
@@ -124,31 +117,30 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
-    ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getMetaDataArrayList(context);
+    ArrayList<FileMetadata> savedFileMetadata = mainApplication.getSavedImageMetadata(context);
     ImageUtils imageUtils = new ImageUtils(context);
     int totalImageNum = 0;
-    if (savedImageMetadata.size() < 4) {
-      totalImageNum = savedImageMetadata.size();
+    if (savedFileMetadata.size() < 4) {
+      totalImageNum = savedFileMetadata.size();
     }
     else {
       totalImageNum = 4;
     }
     for (int i = 0; i < totalImageNum; i++) {
-      final ImageMetadata metadata = savedImageMetadata.get(i);
+      final FileMetadata metadata = savedFileMetadata.get(i);
 
       ImageView imageView = createImageView(metadata);
       linLayout.addView(imageView);
     }
   }
 
-  private ImageView createImageView(final ImageMetadata metadata) {
+  private ImageView createImageView(final FileMetadata metadata) {
     ImageView imageView = new ImageView(context);
     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     layoutParams.setMargins(10, 10, 10, 10);
     imageView.setLayoutParams(layoutParams);
 
-    ContextWrapper contextWrapper = new ContextWrapper(context);
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
+    File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
 
     File file = new File(directory, metadata.getName());
 

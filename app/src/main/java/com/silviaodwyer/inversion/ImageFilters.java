@@ -5,26 +5,9 @@ import android.graphics.Matrix;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import java.util.ArrayList;
-
 import jp.co.cyberagent.android.gpuimage.GPUImage;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageEmbossFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGammaFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageHalftoneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImagePosterizeFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
+import jp.co.cyberagent.android.gpuimage.filter.*;
 
 public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;

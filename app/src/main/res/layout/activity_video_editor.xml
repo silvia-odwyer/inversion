@@ -18,15 +18,28 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.09">
 
-    <TextView
-      android:id="@+id/textView"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
-      android:text="Video Editor"
-      android:textColor="@color/headingColor"
-      android:textSize="40sp"
-      android:textStyle="bold" />
+      android:orientation="horizontal">
+
+      <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Video Editor"
+        android:textColor="@color/headingColor"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+      <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveVideoBtn"
+        android:src="@drawable/save_icon"/>
+
+    </LinearLayout>
 
     <LinearLayout
       android:id="@+id/video_container"
@@ -34,22 +47,25 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
+      <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"/>
+
     </LinearLayout>
 
-    <ScrollView
+    <fragment
+      android:id="@+id/nav_host_fragment"
+      android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
-      <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-          android:id="@+id/vidthumbnail"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-      </LinearLayout>
-    </ScrollView>
-
+      android:layout_height="wrap_content"
+      app:defaultNavHost="true"
+      app:layout_constraintBottom_toTopOf="@id/nav_view"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navGraph="@navigation/video_editor_navigation" />
 
   </LinearLayout>
 
@@ -65,16 +81,5 @@
     app:layout_constraintRight_toRightOf="parent"
     app:menu="@menu/video_editor_menu" />
 
-  <fragment
-    android:id="@+id/nav_host_fragment"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:defaultNavHost="true"
-    app:layout_constraintBottom_toTopOf="@id/nav_view"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:navGraph="@navigation/video_editor_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -164,9 +164,7 @@ public class ImageFilters {
   }
 
   public void filterImage(GPUImageFilter filter, Image image) {
-    GPUImage gpuImage = image.getmGPUImage();
     ImageEditor activity = image.getActivity();
-    gpuImage.setFilter(filter);
     activity.updateGPUImage(filter);
   }
 }

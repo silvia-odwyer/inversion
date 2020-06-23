@@ -3,24 +3,10 @@ package com.silviaodwyer.inversion;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.daasuu.epf.filter.GlBrightnessFilter;
-import com.daasuu.epf.filter.GlContrastFilter;
-import com.daasuu.epf.filter.GlFilter;
-import com.daasuu.epf.filter.GlFilterGroup;
-import com.daasuu.epf.filter.GlGrayScaleFilter;
-import com.daasuu.epf.filter.GlHalftoneFilter;
-import com.daasuu.epf.filter.GlLuminanceFilter;
-import com.daasuu.epf.filter.GlMonochromeFilter;
-import com.daasuu.epf.filter.GlSaturationFilter;
-import com.daasuu.epf.filter.GlSepiaFilter;
-import com.daasuu.epf.filter.GlVignetteFilter;
+import com.daasuu.epf.EPlayerView;
+import com.daasuu.epf.filter.*;
 
 import java.util.ArrayList;
-
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
@@ -70,6 +56,14 @@ public class VideoFilters {
 
     GlFilterGroup rubrikFilter = new GlFilterGroup(new GlContrastFilter(), brightnessFilter );
     return rubrikFilter;
+  }
+
+
+  /**
+   * Filter the video by applying the filter passed.
+   **/
+  public void filterVideo(GlFilter filter, EPlayerView ePlayerView) {
+    ePlayerView.setGlFilter(filter);
   }
 
 }

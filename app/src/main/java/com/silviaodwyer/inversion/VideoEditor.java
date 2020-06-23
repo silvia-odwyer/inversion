@@ -1,6 +1,7 @@
 package com.silviaodwyer.inversion;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -66,14 +67,15 @@ import static com.bumptech.glide.load.resource.UnitTransformation.get;
 
 public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
-  private String videoPath;
-  private SimpleExoPlayer player;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
   private VideoPlayer videoPlayer;
   private EPlayerView ePlayerView;
-  private ImageView imageView;
+  private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
+  private Context context;
+  private String videoPath;
+  private ImageView imageView;
   private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
   private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
 
@@ -82,23 +84,85 @@ public class VideoEditor extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_video_editor);
 
+    context = getApplicationContext();
+
+    if (player != null) {
+      player = null;
+      ePlayerView = null;
+      dataSourceFactory = null;
+    }
+
     videoPath = getIntent().getExtras().getString("videoPath");
-
     mainApplication = ((MainApplication)getApplication());
-
-    setupVideo();
-
+    this.setupPlayer();
     this.setUpNavController();
 
     ImageButton btn = findViewById(R.id.saveVideoBtn);
     btn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
         mainApplication.requestPermissions(VideoEditor.this);
       }
     });
 
+  }
+
+  public void setupPlayer() {
+    player = ExoPlayerFactory.newSimpleInstance(context);
+    ePlayerView = new EPlayerView(context);
+
+    ePlayerView.setSimpleExoPlayer(player);
+    ePlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+    dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context,"Inversion"));
+
+    MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+      .createMediaSource(Uri.parse(videoPath));
+//
+//    player.addListener(new Player.EventListener() {
+//
+//      @Override
+//      public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+//
+//      @Override
+//      public void onLoadingChanged(boolean isLoading) {}
+//
+//      @Override
+//      public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//        if (playbackState == Player.STATE_BUFFERING){
+//          progressBar.setVisibility(View.VISIBLE);
+//        } else {
+//          progressBar.setVisibility(View.INVISIBLE);
+//        }
+//      }
+//
+//      @Override
+//      public void onPlayerError(ExoPlaybackException error) {}
+//
+//
+//      @Override
+//      public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
+//    });
+
+    player.prepare(videoSource);
+    player.setPlayWhenReady(true);
+
+    mainApplication.setPlayerView(ePlayerView);
+
+    LinearLayout videoContainer = findViewById(R.id.video_container);
+    videoContainer.addView(ePlayerView);
+
+    ePlayerView.onResume();
+
+  }
+
+  public void end() {
+    player.stop();
+    player.setPlayWhenReady(false);
+
+    // Set player to null to avoid overuse of memory
+    player.release();
+    player = null;
   }
 
   public void setUpNavController() {
@@ -109,27 +173,25 @@ public class VideoEditor extends AppCompatActivity {
     NavigationUI.setupWithNavController(navView, navController);
   }
 
-  public void setupVideo() {
-    videoPlayer = mainApplication.getVideoPlayer();
-    ePlayerView = videoPlayer.getPlayerView();
-    player = videoPlayer.getSimpleExoPlayer();
-    LinearLayout linLayout =  findViewById(R.id.video_container);
-    linLayout.addView(ePlayerView);
+  @Override
+  public void onStart() {
+    super.onStart();
+    if (Util.SDK_INT > 23) {
+
+      if (ePlayerView != null) {
+
+      }
+    }
   }
 
   @Override
   public void onStop() {
-
     super.onStop();
     Log.d("DEBUG", "STOPPED VID EDITOR ACTIVITY");
 //    playVideoWhenForegrounded = player.getPlayWhenReady();
 //
 //    lastPosition = player.getCurrentPosition();
-    player.stop();
-    player.setPlayWhenReady(false);
-
-    // Set player to null to avoid overuse of memory
-//    player.release();
+    end();
 
   }
 

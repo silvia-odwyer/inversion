@@ -4,25 +4,41 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import com.daasuu.epf.EPlayerView;
 import androidx.core.app.ActivityCompat;
 
 public class MainApplication extends Application {
   private String videoUrl;
+  private Video video;
   private ImageEditor imageEditorActivity;
   private Image image;
+  private EPlayerView playerView;
   private ArrayList<FileMetadata> fileMetaDataArrayList = new ArrayList<>();
+  private VideoPlayer videoPlayer;
+  private VideoEditor videoEditorActivity;
   private static String savedImageMetadataFilename = "saved_image_paths.json";
   private static String savedVideoMetadataFilename = "saved_image_paths.json";
   private static String IMAGES_DIRECTORY = "imagesDirectory";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
+
+
+  public Video getVideo() {
+    return video;
+  }
+
+  public void setVideo(Video video) {
+    this.video = video;
+  }
 
   /**
    * Set the active video URL
@@ -170,5 +186,35 @@ public class MainApplication extends Application {
     // save
     fileUtils.writeFile(FILENAME, json);
   }
+
+  /**
+   * Returns an instance of the VideoEditor activity
+   *
+   * @return      instance of the VideoEditor activity
+   */
+  public VideoEditor getVideoEditorActivity() {
+    return videoEditorActivity;
+  }
+
+  public VideoPlayer getVideoPlayer() {
+    return this.videoPlayer;
+  }
+
+  public void setVideoPlayer(VideoPlayer videoPlayer) {
+    this.videoPlayer = videoPlayer;
+  }
+
+  /**
+   * Returns an instance of the playerview used by the video player.
+   *
+   * @return      instance of the video player's PlayerView
+   */
+  public EPlayerView getPlayerView() {return this.playerView;}
+
+  /**
+   * Set the playerview instance of the video player
+   *
+   */
+  public void setPlayerView(EPlayerView playerView) {this.playerView = playerView;}
 
 }

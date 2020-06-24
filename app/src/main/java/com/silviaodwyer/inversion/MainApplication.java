@@ -24,10 +24,9 @@ public class MainApplication extends Application {
   private Image image;
   private EPlayerView playerView;
   private ArrayList<FileMetadata> fileMetaDataArrayList = new ArrayList<>();
-  private VideoPlayer videoPlayer;
   private VideoEditor videoEditorActivity;
   private static String savedImageMetadataFilename = "saved_image_paths.json";
-  private static String savedVideoMetadataFilename = "saved_image_paths.json";
+  private static String savedVideoMetadataFilename = "saved_video_paths.json";
   private static String IMAGES_DIRECTORY = "imagesDirectory";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
 
@@ -93,18 +92,14 @@ public class MainApplication extends Application {
    *
    * @return      the image editor activity
    */
-  public ArrayList<FileMetadata> getMetaDataArrayList(Context context, String filename) {
+  public ArrayList<FileMetadata> getSavedImageMetadata(Context context) {
+    String filename = getSavedImageMetadataFilename();
     FileUtils fileUtils = new FileUtils(context);
 
     ArrayList<FileMetadata> metadata = new ArrayList<>();
-
     boolean isFilePresent = fileUtils.isFilePresent(filename);
-    String dir = context.getFilesDir().getAbsolutePath();
-    Log.d("DEBUG", "Dir " + dir);
-
     if(isFilePresent) {
       String jsonString = fileUtils.readFile(filename);
-
       metadata = new Gson().fromJson(jsonString, new TypeToken<List<FileMetadata>>(){}.getType());
       Log.d("DEBUG", "SAVED METADATA LENGTH: " + metadata.size());
     }
@@ -114,15 +109,24 @@ public class MainApplication extends Application {
     return metadata;
   }
 
-  public ArrayList<FileMetadata> getSavedImageMetadata(Context context) {
-    String filename = getSavedImageMetadataFilename();
-    ArrayList<FileMetadata> metadata = getMetaDataArrayList(context, filename);
-    return metadata;
-  }
-
-  public ArrayList<FileMetadata> getSavedVideoMetadata(Context context) {
+  public ArrayList<VideoMetadata> getSavedVideoMetadata(Context context) {
     String filename = getSavedVideoMetadataFilename();
-    ArrayList<FileMetadata> metadata = getMetaDataArrayList(context, filename);
+    FileUtils fileUtils = new FileUtils(context);
+
+    ArrayList<VideoMetadata> metadata = new ArrayList<>();
+
+    boolean isFilePresent = fileUtils.isFilePresent(filename);
+
+    if(isFilePresent) {
+      String jsonString = fileUtils.readFile(filename);
+
+      metadata = new Gson().fromJson(jsonString, new TypeToken<List<VideoMetadata>>(){}.getType());
+
+      Log.d("DEBUG", "SAVED METADATA LENGTH: " + metadata.size());
+    }
+
+    Collections.reverse(metadata);
+
     return metadata;
   }
 
@@ -162,26 +166,48 @@ public class MainApplication extends Application {
   }
 
   public void saveImageMetadata(FileMetadata metadata) {
+    String FILENAME = "";
     FileUtils fileUtils = new FileUtils(getApplicationContext());
-    String FILENAME = getSavedImageMetadataFilename();
 
-    ArrayList<FileMetadata> savedFileMetadata = getMetaDataArrayList(getApplicationContext(), FILENAME);
+    ArrayList<FileMetadata> savedFileMetadata = getSavedImageMetadata(getApplicationContext());
     savedFileMetadata.add(metadata);
-
     String json = new Gson().toJson(savedFileMetadata);
-    Log.d("DEBUG", "Saved image names" + savedFileMetadata.toString());
 
     // save
     fileUtils.writeFile(FILENAME, json);
   }
 
-  public void deleteAllMetadata() {
+  public void saveVideoMetadata(VideoMetadata metadata) {
+    String FILENAME = "";
+    FileUtils fileUtils = new FileUtils(getApplicationContext());
+
+    ArrayList<VideoMetadata> savedVideoMetadata = getSavedVideoMetadata(getApplicationContext());
+    savedVideoMetadata.add(metadata);
+    String json = new Gson().toJson(savedVideoMetadata);
+
+    // save
+    fileUtils.writeFile(FILENAME, json);
+  }
+
+  public void saveVideo(Video video) {
+    // save bitmap as thumbnail in thumbnails directory
+
+    saveVideoMetadata(video.getMetadata());
+  }
+
+  public void deleteAllMetadata(FileMetadata.FileType fileType) {
     FileUtils fileUtils = new FileUtils(getApplicationContext());
     ArrayList<FileMetadata> savedFileMetadata = new ArrayList<>();
-    String FILENAME = getSavedImageMetadataFilename();
+    String FILENAME = null;
+    switch(fileType){
+      case IMAGE:
+        FILENAME = getSavedImageMetadataFilename();
+      case VIDEO:
+        FILENAME = getSavedVideoMetadataFilename();
+    }
 
     String json = new Gson().toJson(savedFileMetadata);
-    Log.d("DEBUG", "Image metadata now: " + savedFileMetadata.toString());
+    Log.d("DEBUG", "Metadata now: " + savedFileMetadata.toString());
 
     // save
     fileUtils.writeFile(FILENAME, json);
@@ -194,14 +220,6 @@ public class MainApplication extends Application {
    */
   public VideoEditor getVideoEditorActivity() {
     return videoEditorActivity;
-  }
-
-  public VideoPlayer getVideoPlayer() {
-    return this.videoPlayer;
-  }
-
-  public void setVideoPlayer(VideoPlayer videoPlayer) {
-    this.videoPlayer = videoPlayer;
   }
 
   /**

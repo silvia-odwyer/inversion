@@ -39,7 +39,8 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private MainApplication mainApplication;
   private FileUtils fileUtils;
   private String videoPath;
-  private VideoPlayer videoPlayer;
+  private Button deleteAllVideosBtn;
+  private ArrayList<VideoMetadata> savedVideoMetadata;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
     mainApplication = ((MainApplication)getApplication());
     fileUtils = new FileUtils(getApplicationContext());
+    savedVideoMetadata = mainApplication.getSavedVideoMetadata(getApplicationContext());
 
     setUpRecyclerView();
 
@@ -60,16 +62,23 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
         startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
       }
     });
+
+    deleteAllVideosBtn = findViewById(R.id.delete_videos_btn);
+    deleteAllVideosBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        deleteAllVideos();
+      }
+    });
 //    mainApplication.requestPermissions(Videos.this);
   }
 
   private void setUpRecyclerView() {
     // set up the RecyclerView
-    ArrayList<Bitmap> data = new ArrayList<>();
     RecyclerView recyclerView = findViewById(R.id.videos_recycler_view);
     int noOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), noOfColumns));
-    VideosRecyclerView recyclerViewAdapter = new VideosRecyclerView(getApplicationContext(), data, mainApplication);
+    VideosRecyclerView recyclerViewAdapter = new VideosRecyclerView(getApplicationContext(), savedVideoMetadata, mainApplication);
     recyclerViewAdapter.setClickListener(this);
     recyclerView.setAdapter(recyclerViewAdapter);
   }
@@ -79,14 +88,10 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     super.onActivityResult(reqCode, resultCode, data);
 
     if (resultCode == RESULT_OK) {
-      final String videoUrl = data.getData().getPath();
       Uri videoUri = data.getData();
 
       // Convert the video URI to a path
       videoPath = uriToPath(videoUri);
-
-      // Set up video player before starting async task
-      videoPlayer = new VideoPlayer(getApplicationContext(), videoPath);
 
       try {
         thumbnailVideo(videoPath);
@@ -131,7 +136,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
   }
 
-
   public void thumbnailVideo(final String videoPath) throws ExecutionException, InterruptedException {
     new Thread(new Runnable() {
       @Override
@@ -172,10 +176,9 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
     protected void onPostExecute(Bitmap result) {
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
-      Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 250, 250);
-      Video video = new Video(resizedBitmap);
+      Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
+      Video video = new Video(savedVideoMetadata.get());
       mainApplication.setVideo(video);
-      mainApplication.setVideoPlayer(videoPlayer);
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoPath != null) {
@@ -188,5 +191,38 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       super.onPostExecute(result);
     }
   }
+
+  public void deleteAllVideos() {
+    File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/videos");
+
+    fileUtils.deleteAllFilesInDirectory(directory);
+    mainApplication.deleteAllMetadata(FileMetadata.FileType.VIDEO);
+
+    // delete all thumbnails
+    File vidThumbnailsDirectory = new File(Environment.getExternalStorageDirectory() + "/Inversion/videos/thumbnails");
+
+    fileUtils.deleteAllFilesInDirectory(vidThumbnailsDirectory);
+    this.printSavedVideos();
+  }
+
+  private void printSavedVideos() {
+
+    if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+      File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+
+      ArrayList<String> filepaths = new ArrayList<String>();
+
+      File files[] = inversionDirectory.listFiles();
+
+      if (files != null) {
+        for (int i = 0; i < files.length; i++) {
+          filepaths.add(files[i].getAbsolutePath());
+          Log.d("DEBUG", "EXTERNAL DIR IMAGE: " + files[i].getAbsolutePath());
+        }
+      }
+      Log.d("DEBUG", "Filepaths: " + filepaths.toString());
+    }
+  }
+
 
 }

@@ -69,12 +69,12 @@ public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
-  private VideoPlayer videoPlayer;
   private EPlayerView ePlayerView;
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
   private Context context;
   private String videoPath;
+  private Video video;
   private ImageView imageView;
   private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
   private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
@@ -85,6 +85,9 @@ public class VideoEditor extends AppCompatActivity {
     setContentView(R.layout.activity_video_editor);
 
     context = getApplicationContext();
+    mainApplication = ((MainApplication)getApplication());
+
+    video = mainApplication.getVideo();
 
     if (player != null) {
       player = null;
@@ -93,7 +96,8 @@ public class VideoEditor extends AppCompatActivity {
     }
 
     videoPath = getIntent().getExtras().getString("videoPath");
-    mainApplication = ((MainApplication)getApplication());
+    Log.d("DEBUG", "Video Path is: " + videoPath);
+
     this.setupPlayer();
     this.setUpNavController();
 
@@ -101,7 +105,7 @@ public class VideoEditor extends AppCompatActivity {
     btn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        mainApplication.requestPermissions(VideoEditor.this);
+        saveVideo();
       }
     });
 
@@ -153,7 +157,6 @@ public class VideoEditor extends AppCompatActivity {
     videoContainer.addView(ePlayerView);
 
     ePlayerView.onResume();
-
   }
 
   public void end() {
@@ -225,33 +228,6 @@ public class VideoEditor extends AppCompatActivity {
         if (grantResults.length > 0
           && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           saveVideo();
-
-////          FileOutputStream fileOutputStream = null;
-////          try {
-////            Log.d("DEBUG", "Downloading video");
-////            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
-////            directory.mkdirs();
-////
-////            File outputFile = new File(directory.toString(), "video.mp4");
-////            fileOutputStream = new FileOutputStream(outputFile);
-////
-////          }
-////          catch (IOException e) {
-////            Log.d("DEBUG", "Could not write file!" + e);
-////          }
-////          finally {
-////            try {
-////              fileOutputStream.close();
-////            } catch (IOException e) {
-////              e.printStackTrace();
-////            }
-////          }
-////          sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-////            Uri.parse("file://" + "image.JPG")));
-////
-////          Log.d("DEBUG", "SAVED IMAGE");
-//
-//
         } else {
           // permission was denied
         }
@@ -280,6 +256,7 @@ public class VideoEditor extends AppCompatActivity {
   }
 
   private void saveVideo() {
+    ImageUtils imageUtils = new ImageUtils(context);
     File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
     dst.mkdirs();
     File outputFile = new File(dst.getPath() + File.separator + "saved_video.mp4");
@@ -297,13 +274,21 @@ public class VideoEditor extends AppCompatActivity {
         // TODO Update a progress bar to display progress.
         @Override
         public void onCompleted() {
-          Log.d("DEBUG", "onCompleted()");
-            Toast.makeText(getApplicationContext(), "codec complete path =" + destMp4Path, Toast.LENGTH_SHORT).show();
+          sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
+          getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+
+            Log.d("DEBUG", "onCompleted()");
+
+            // Save video to store
+            VideoMetadata metadata = new VideoMetadata();
+            video.setMetadata(metadata);
+            mainApplication.saveVideoMetadata(video.getMetadata());
+            imageUtils.writeThumbnail(video);
         }
 
         @Override
         public void onCanceled() {
-          Log.d("DEBUG", "onCanceled");
+          Log.d("DEBUG", "Saving video cancelled");
         }
 
         @Override

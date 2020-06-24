@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,9 @@ import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.SaveVideo;
+import com.silviaodwyer.inversion.VideoEditor;
+import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
 
 import java.io.File;
@@ -37,6 +41,7 @@ public class HomeScreenFragment extends Fragment {
   private TextView viewVideos;
   private View root;
   private Context context;
+  private Button openVideoSaver;
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
@@ -107,18 +112,18 @@ public class HomeScreenFragment extends Fragment {
   private void initImages() {
     LinearLayout imagesLinLayout = root.findViewById(R.id.images);
 
-    appendPlaceholderImages(imagesLinLayout, "Images");
+    appendImageThumbnails(imagesLinLayout);
   }
 
   private void initVideos() {
     LinearLayout linLayout = root.findViewById(R.id.videos);
 
-//    appendPlaceholderImages(linLayout, "Videos");
+    appendVideoThumbnails(linLayout);
   }
 
-  private void appendPlaceholderImages(LinearLayout linLayout, final String activity_type) {
+  private void appendImageThumbnails(LinearLayout linLayout) {
     ArrayList<FileMetadata> savedFileMetadata = mainApplication.getSavedImageMetadata(context);
-    ImageUtils imageUtils = new ImageUtils(context);
+
     int totalImageNum = 0;
     if (savedFileMetadata.size() < 4) {
       totalImageNum = savedFileMetadata.size();
@@ -130,6 +135,26 @@ public class HomeScreenFragment extends Fragment {
       final FileMetadata metadata = savedFileMetadata.get(i);
 
       ImageView imageView = createImageView(metadata);
+
+      linLayout.addView(imageView);
+    }
+  }
+
+  private void appendVideoThumbnails(LinearLayout linLayout) {
+    ArrayList<VideoMetadata> savedFileMetadata = mainApplication.getSavedVideoMetadata(context);
+
+    int totalImageNum = 0;
+    if (savedFileMetadata.size() < 4) {
+      totalImageNum = savedFileMetadata.size();
+    }
+    else {
+      totalImageNum = 4;
+    }
+
+    for (int i = 0; i < totalImageNum; i++) {
+      final VideoMetadata metadata = savedFileMetadata.get(i);
+
+      ImageView imageView = createVideoThumbnail(metadata);
       linLayout.addView(imageView);
     }
   }
@@ -165,6 +190,42 @@ public class HomeScreenFragment extends Fragment {
         }
         startActivity(intent);
 
+      }
+    });
+
+    return imageView;
+  }
+
+  private ImageView createVideoThumbnail(final FileMetadata metadata) {
+    ImageView imageView = new ImageView(context);
+    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    layoutParams.setMargins(10, 10, 10, 10);
+    imageView.setLayoutParams(layoutParams);
+
+    File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
+
+    File file = new File(directory, metadata.getName());
+
+    Glide
+      .with(context)
+      .load(file.getAbsolutePath())
+      .apply(new RequestOptions().override(150, 150))
+      .into(imageView);
+
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(context, VideoEditor.class);
+
+//        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
+//        mainApplication.setImage(image);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          // TODO implement shared animations and transitions
+
+        } else {
+
+        }
+        startActivity(intent);
       }
     });
 

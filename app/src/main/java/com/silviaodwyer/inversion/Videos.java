@@ -40,6 +40,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private FileUtils fileUtils;
   private String videoPath;
   private Button deleteAllVideosBtn;
+  private Video video;
   private ArrayList<VideoMetadata> savedVideoMetadata;
 
   @Override
@@ -92,6 +93,9 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
       // Convert the video URI to a path
       videoPath = uriToPath(videoUri);
+
+      video = new Video();
+      mainApplication.setVideo(video);
 
       try {
         thumbnailVideo(videoPath);
@@ -177,8 +181,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     protected void onPostExecute(Bitmap result) {
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
-      Video video = new Video(savedVideoMetadata.get());
-      mainApplication.setVideo(video);
+
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoPath != null) {

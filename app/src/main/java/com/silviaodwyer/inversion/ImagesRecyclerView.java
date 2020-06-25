@@ -3,6 +3,7 @@ package com.silviaodwyer.inversion;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
     File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
 
-    File file = new File(inversionDirectory, data.get(position).getName());
+    File file = new File(inversionDirectory, data.get(position).getName() + ".png");
+    Log.d("DEBUG", "GETTING IMAGE: " + file.getAbsolutePath());
 
     Glide
       .with(context)

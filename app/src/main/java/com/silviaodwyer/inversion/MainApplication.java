@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -23,6 +22,7 @@ public class MainApplication extends Application {
   private ImageEditor imageEditorActivity;
   private Image image;
   private EPlayerView playerView;
+  private Bitmap videoThumbnail;
   private ArrayList<FileMetadata> fileMetaDataArrayList = new ArrayList<>();
   private VideoEditor videoEditorActivity;
   private static String savedImageMetadataFilename = "saved_image_paths.json";
@@ -35,8 +35,9 @@ public class MainApplication extends Application {
     return video;
   }
 
-  public void setVideo(Video video) {
+  public void setVideo(Video video, Bitmap videoThumbnail) {
     this.video = video;
+    this.videoThumbnail = videoThumbnail;
   }
 
   /**
@@ -234,5 +235,13 @@ public class MainApplication extends Application {
    *
    */
   public void setPlayerView(EPlayerView playerView) {this.playerView = playerView;}
+
+  public Bitmap getVideoThumbnail() {
+    return this.videoThumbnail;
+  }
+
+  public void setVideoThumbnail(Bitmap thumbnail) {
+    this.videoThumbnail = thumbnail;
+  }
 
 }

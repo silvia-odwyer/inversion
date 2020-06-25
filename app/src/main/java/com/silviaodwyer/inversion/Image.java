@@ -34,6 +34,8 @@ public class Image {
     this.filteredThumbnails.add(thumbnail);
   }
 
+  // TODO remove ImageEditor activity and for image filtering, pass instance of gpuimage to
+  //  a method below for filtering, similar to how it's done in the VideoEditor activity
   public Image(Bitmap bitmap, Context ctx, ImageEditor activity, FileMetadata metaData) {
     this.context = ctx;
     this.bitmap = bitmap;

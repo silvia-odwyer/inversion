@@ -1,15 +1,12 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -48,7 +45,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
   public void onBindViewHolder(@NonNull VideosRecyclerView.ViewHolder holder, int position) {
     File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
 
-    File file = new File(inversionDirectory, data.get(position).getName());
+    File file = new File(inversionDirectory, data.get(position).getName() + ".png");
 
     Glide
       .with(context)
@@ -77,12 +74,13 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
         Intent intent = new Intent(context, VideoEditor.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         VideoMetadata metadata = data.get(getAdapterPosition());
         intent.putExtra("videoPath", metadata.getAbsolutePath());
 
         Video video = new Video(metadata);
 
-        mainApplication.setVideo(video);
+        mainApplication.setVideo(video, video.getThumbnail());
         context.startActivity(intent);
       }
     }

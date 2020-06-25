@@ -74,7 +74,7 @@ public class ImageEditor extends AppCompatActivity {
             File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
             directory.mkdirs();
 
-            File outputFile = new File(directory.toString(), image.getMetaData().getName());
+            File outputFile = new File(directory.toString(), image.getMetaData().getName() + ".png");
             Log.d("DEBUG", "IMAGE OUTPUTTED TO: " + outputFile.getAbsolutePath());
 
             fileOutputStream = new FileOutputStream(outputFile);
@@ -113,7 +113,7 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void saveImage() {
-    FileMetadata metadata = new FileMetadata();
+    FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
     image.setMetaData(metadata);
     mainApplication.saveImageMetadata(image.getMetaData());
     mainApplication.requestPermissions(ImageEditor.this);

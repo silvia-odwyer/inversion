@@ -1,7 +1,6 @@
 package com.silviaodwyer.inversion.video_editor_menus.home;
 
 import android.graphics.Bitmap;
-import android.os.Binder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.daasuu.epf.filter.GlFilter;
-import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.ImageFilters;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.VideoFilters;
-import com.silviaodwyer.inversion.VideoPlayer;
 
 import java.util.ArrayList;
 

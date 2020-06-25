@@ -259,7 +259,7 @@ public class VideoEditor extends AppCompatActivity {
     ImageUtils imageUtils = new ImageUtils(context);
     File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
     dst.mkdirs();
-    File outputFile = new File(dst.getPath() + File.separator + "saved_video.mp4");
+    File outputFile = new File(dst.getPath() + File.separator + video.getMetadata().getName() + ".mp4");
     final String destMp4Path = outputFile.getPath();
 
     new Mp4Composer(videoPath, destMp4Path)
@@ -283,7 +283,7 @@ public class VideoEditor extends AppCompatActivity {
             VideoMetadata metadata = new VideoMetadata();
             video.setMetadata(metadata);
             mainApplication.saveVideoMetadata(video.getMetadata());
-            imageUtils.writeThumbnail(video);
+            imageUtils.writeThumbnail(video, mainApplication.getVideoThumbnail());
         }
 
         @Override

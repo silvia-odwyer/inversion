@@ -94,9 +94,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       // Convert the video URI to a path
       videoPath = uriToPath(videoUri);
 
-      video = new Video();
-      mainApplication.setVideo(video);
-
       try {
         thumbnailVideo(videoPath);
       } catch (ExecutionException e) {
@@ -181,7 +178,8 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     protected void onPostExecute(Bitmap result) {
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
-
+      video = new Video();
+      mainApplication.setVideo(video, resizedBitmap);
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoPath != null) {

@@ -1,6 +1,8 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,10 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -147,6 +151,31 @@ public class ImageUtils {
       }
     }
     return image;
+  }
+
+  public void writeThumbnail(Video video, Bitmap thumbnail) {
+    FileOutputStream fileOutputStream = null;
+    try {
+      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
+      directory.mkdirs();
+
+      File outputFile = new File(directory.toString(), video.getMetadata().getName() + ".png");
+      Log.d("DEBUG", "THUMBNAIL OUTPUTTED TO: " + outputFile.getAbsolutePath());
+
+      fileOutputStream = new FileOutputStream(outputFile);
+      thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+    }
+    catch (IOException e) {
+      Log.d("DEBUG", "Could not write file!" + e);
+    }
+    finally {
+      try {
+        fileOutputStream.close();
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
 }

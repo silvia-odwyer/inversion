@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion.video_editor_menus.home;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,14 @@ public class HomeFragment extends Fragment {
     mainApplication = (MainApplication) getActivity().getApplication();
 
     originalVideoThumbnail = mainApplication.getVideo().getThumbnail();
+
+    if (mainApplication.getVideo() == null) {
+        Log.d("DEBUG", "VIDEO IS NULL");
+    }
+
+    if (originalVideoThumbnail == null) {
+        Log.d("DEBUG", "THUMBNAIL IS NULL");
+    }
 
     appendThumbnails();
 

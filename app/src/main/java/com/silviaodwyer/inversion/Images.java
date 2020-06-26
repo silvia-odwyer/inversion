@@ -55,9 +55,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
         FileUtils fileUtils = new FileUtils(getApplicationContext());
         File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/images");
         fileUtils.deleteDirectory(directory, getApplicationContext());
-        Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Deleted: ", Toast.LENGTH_SHORT).show();
         getSavedImages();
-        mainApplication.deleteAllMetadata();
+        mainApplication.deleteAllMetadata(FileMetadata.FileType.IMAGE);
       }
     });
     this.getSavedImages();
@@ -80,11 +80,10 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
       final Uri imageUri = data.getData();
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
-      Log.d("DEBUG", "Image URI: " + imageUri);
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      FileMetadata metadata = new FileMetadata();
+      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
       Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
@@ -121,29 +120,4 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     }
   }
 
-  private ArrayList<ImageFile> initializeSavedBitmaps() {
-    ImageUtils imageUtils = new ImageUtils(this);
-    ArrayList<ImageFile> savedImages = new ArrayList<>();
-    ContextWrapper contextWrapper = new ContextWrapper(this);
-    File directory = contextWrapper.getDir(MainApplication.getImagesDirectory(), Context.MODE_PRIVATE);
-    for (int position = 0; position < savedFileMetaData.size(); position++) {
-
-      FileMetadata metadata = savedFileMetaData.get(position);
-      File file = new File(directory, metadata.getName());
-      BitmapFactory.Options options = new BitmapFactory.Options();
-      options.inSampleSize = 4;
-      final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-
-      if (bitmap == null) {
-        Log.d("DEBUG", "BITMAP IS NULL");
-      }
-      else {
-        ImageFile imageFile = new ImageFile(bitmap, metadata);
-        savedImages.add(imageFile);
-
-      }
-
-    }
-    return savedImages;
-  }
 }

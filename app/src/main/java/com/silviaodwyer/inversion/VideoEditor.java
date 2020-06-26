@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
+  private ProgressBar progressBar;
   private EPlayerView ePlayerView;
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
@@ -264,6 +266,8 @@ public class VideoEditor extends AppCompatActivity {
   }
 
   private void saveVideo() {
+    initProgressBar();
+
     ImageUtils imageUtils = new ImageUtils(context);
     File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
     dst.mkdirs();
@@ -280,11 +284,14 @@ public class VideoEditor extends AppCompatActivity {
       .listener(new Mp4Composer.Listener() {
         @Override
         public void onProgress(double progress) {
-          Log.d("DEBUG", "Progress:  " + progress);
+          int progress_res = (int) Math.round((progress * 100));
+          Log.d("DEBUG", "Progress:  " + progress_res);
+          progressBar.setProgress(progress_res);
         }
-        // TODO Update a progress bar to display progress.
+
         @Override
         public void onCompleted() {
+          progressBar.setProgress(100);
           sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
           getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
 
@@ -307,6 +314,12 @@ public class VideoEditor extends AppCompatActivity {
         }
       })
       .start();
+  }
+
+  private void initProgressBar() {
+    progressBar = findViewById(R.id.progress_bar);
+    progressBar.setProgress(0);
+    progressBar.setVisibility(View.VISIBLE);
   }
 
 }

@@ -63,27 +63,35 @@
         android:textStyle="bold" />
     </LinearLayout>
 
-    <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/upload_video_btn"
-      android:background="@drawable/gradient_blue_violet"
-      android:textStyle="bold"
-      android:padding="10dp"
-      android:textAllCaps="false"
-      android:layout_marginTop="10dp"
-      android:text="Upload New Video"/>
-
-    <GridView
-      android:id="@+id/videos_grid_view"
+    <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:columnWidth="100dp"
-      android:gravity="center"
-      android:horizontalSpacing="10dp"
-      android:numColumns="auto_fit"
-      android:stretchMode="spacingWidthUniform"
-      android:verticalSpacing="26dp" />
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_video_btn"
+        android:background="@drawable/gradient_blue_violet"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Upload New Video"/>
+
+      <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_videos_btn"
+        android:background="@drawable/gradient_blue_violet"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        android:text="Delete All Videos"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/videos_recycler_view"

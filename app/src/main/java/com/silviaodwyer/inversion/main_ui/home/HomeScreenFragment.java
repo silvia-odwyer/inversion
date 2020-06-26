@@ -1,7 +1,6 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.SaveVideo;
 import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
@@ -60,6 +58,8 @@ public class HomeScreenFragment extends Fragment {
     initImages();
     initVideos();
     initEffectList();
+
+    mainApplication.requestPermissions(getActivity());
 
     return root;
   }
@@ -167,7 +167,7 @@ public class HomeScreenFragment extends Fragment {
 
     File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
 
-    File file = new File(directory, metadata.getName());
+    File file = new File(directory, metadata.getName() + ".png");
 
     Glide
       .with(context)
@@ -204,7 +204,7 @@ public class HomeScreenFragment extends Fragment {
 
     File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
 
-    File file = new File(directory, metadata.getName());
+    File file = new File(directory, metadata.getName() + ".png");
 
     Glide
       .with(context)

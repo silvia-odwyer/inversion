@@ -20,14 +20,28 @@ public class Video {
     this.thumbnail = getThumbnailFromPath();
   }
 
+  /**
+   * Get the video metadata for this video.
+   *
+   * @return    video metadata
+   */
   public VideoMetadata getMetadata() {
     return metadata;
   }
 
+  /**
+   * Set the video metadata for this video.
+   *
+   */
   public void setMetadata(VideoMetadata metadata) {
     this.metadata = metadata;
   }
 
+  /**
+   * Fetch the thumbnail image from the path to the thumbnails directory.
+   *
+   * @return    video thumbnail
+   */
   private Bitmap getThumbnailFromPath() {
     String bitmapPath = metadata.getThumbnailPath();
     Bitmap thumbnail = BitmapFactory.decodeFile(bitmapPath);
@@ -35,6 +49,11 @@ public class Video {
     return thumbnail;
   }
 
+  /**
+   * Get the thumbnail for this video.
+   *
+   * @return    video thumbnail
+   */
   public Bitmap getThumbnail() {
     return this.thumbnail;
   }

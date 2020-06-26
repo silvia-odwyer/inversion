@@ -115,7 +115,7 @@ public class ImageEditor extends AppCompatActivity {
   public void saveImage() {
     FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
     image.setMetaData(metadata);
-    mainApplication.saveImageMetadata(image.getMetaData());
+    mainApplication.saveImageMetadata(metadata);
     mainApplication.requestPermissions(ImageEditor.this);
   }
 

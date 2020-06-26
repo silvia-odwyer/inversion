@@ -89,10 +89,18 @@ public class VideoEditor extends AppCompatActivity {
 
     video = mainApplication.getVideo();
 
+    Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
+
+//      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+//
+//      String name = video.getMetadata().getName() + ".mp4";
+//
+//      File file = new File(directory, name);
+
     if (player != null) {
-      player = null;
-      ePlayerView = null;
-      dataSourceFactory = null;
+        player = null;
+        ePlayerView = null;
+        dataSourceFactory = null;
     }
 
     videoPath = getIntent().getExtras().getString("videoPath");
@@ -259,6 +267,9 @@ public class VideoEditor extends AppCompatActivity {
     ImageUtils imageUtils = new ImageUtils(context);
     File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
     dst.mkdirs();
+    VideoMetadata metadata = new VideoMetadata();
+    video.setMetadata(metadata);
+    mainApplication.saveVideoMetadata(video.getMetadata());
     File outputFile = new File(dst.getPath() + File.separator + video.getMetadata().getName() + ".mp4");
     final String destMp4Path = outputFile.getPath();
 
@@ -280,10 +291,8 @@ public class VideoEditor extends AppCompatActivity {
             Log.d("DEBUG", "onCompleted()");
 
             // Save video to store
-            VideoMetadata metadata = new VideoMetadata();
-            video.setMetadata(metadata);
-            mainApplication.saveVideoMetadata(video.getMetadata());
-            imageUtils.writeThumbnail(video, mainApplication.getVideoThumbnail());
+
+            imageUtils.writeThumbnail(video);
         }
 
         @Override

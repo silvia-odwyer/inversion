@@ -178,8 +178,8 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     protected void onPostExecute(Bitmap result) {
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
-      video = new Video();
-      mainApplication.setVideo(video, resizedBitmap);
+      video = new Video(resizedBitmap);
+      mainApplication.setVideo(video);
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoPath != null) {

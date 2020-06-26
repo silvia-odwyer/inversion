@@ -135,7 +135,7 @@ public class ImageUtils {
   public static Image getImageFromFilename(FileMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
     if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-      File imageFile = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images", metadata.getName());
+      File imageFile = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images", metadata.getName() + ".png");
 
       Bitmap bitmap = null;
       try {
@@ -153,7 +153,7 @@ public class ImageUtils {
     return image;
   }
 
-  public void writeThumbnail(Video video, Bitmap thumbnail) {
+  public void writeThumbnail(Video video) {
     FileOutputStream fileOutputStream = null;
     try {
       File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
@@ -163,7 +163,7 @@ public class ImageUtils {
       Log.d("DEBUG", "THUMBNAIL OUTPUTTED TO: " + outputFile.getAbsolutePath());
 
       fileOutputStream = new FileOutputStream(outputFile);
-      thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+      video.getThumbnail().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
     }
     catch (IOException e) {
       Log.d("DEBUG", "Could not write file!" + e);

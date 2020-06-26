@@ -16,7 +16,7 @@ public class VideoMetadata extends FileMetadata {
 
     public String getThumbnailPath() {
         File videoThumbnailsDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
-        File file = new File(videoThumbnailsDirectory, getName());
+        File file = new File(videoThumbnailsDirectory, getName() + ".png");
         return file.getAbsolutePath();
     }
 }

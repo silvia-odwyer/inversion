@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -101,6 +102,13 @@ public class FileUtils {
       .setAllowedOverMetered(true);
     DownloadManager downloadManager = (DownloadManager) application.getSystemService(application.DOWNLOAD_SERVICE);
     long downloadRes = downloadManager.enqueue(request);
+  }
+
+  public void deleteAllFilesInDirectory(File directory) {
+    FileUtils fileUtils = new FileUtils(context);
+    fileUtils.deleteDirectory(directory, context);
+    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+
   }
 
 

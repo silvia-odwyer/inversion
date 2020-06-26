@@ -76,11 +76,13 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
         Intent intent = new Intent(context, VideoEditor.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         VideoMetadata metadata = data.get(getAdapterPosition());
-        intent.putExtra("videoPath", metadata.getAbsolutePath());
-
         Video video = new Video(metadata);
 
-        mainApplication.setVideo(video, video.getThumbnail());
+        mainApplication.setVideo(video);
+
+        intent.putExtra("videoPath", metadata.getAbsolutePath());
+
+
         context.startActivity(intent);
       }
     }

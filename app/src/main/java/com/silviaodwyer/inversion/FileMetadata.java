@@ -67,23 +67,19 @@ public class FileMetadata {
   }
 
   public String generateName() {
-    Calendar calendar = Calendar.getInstance();
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String date = dateFormat.format(calendar.getTime());
-
     String file_name = "";
     switch(fileType) {
       case IMAGE:
-        file_name = "image_" + this.timestamp + ".jpg";
+        file_name = "image_" + this.timestamp;
+        break;
       case VIDEO:
-        file_name = "video_" + date + ".mp4";
+        file_name = "video_" + this.timestamp;
+        break;
     }
 
-    Log.d("DEBUG", "FILE NAME: " + file_name);
+    Log.d("DEBUG", "NAME GENERATED: " + file_name);
     return file_name;
   }
-
 
   public FileType getFileType() {
     return fileType;
@@ -95,16 +91,26 @@ public class FileMetadata {
 
   public String getAbsolutePath() {
     String sub_dir = "";
+    String name = "";
 
     switch(fileType) {
       case IMAGE:
-        sub_dir = "images";
+        sub_dir = "images/";
+        break;
 
       case VIDEO:
-        sub_dir = "videos";
+        sub_dir = "videos/";
     }
-    File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/" + fileType);
-    File file = new File(directory, getName());
+    File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/" + sub_dir);
+
+    switch(fileType) {
+      case IMAGE:
+        name = getName() + ".png";
+        break;
+      case VIDEO:
+        name = getName() + ".mp4";
+    }
+    File file = new File(directory, name);
     return file.getAbsolutePath();
   }
 

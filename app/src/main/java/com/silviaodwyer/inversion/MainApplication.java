@@ -35,9 +35,8 @@ public class MainApplication extends Application {
     return video;
   }
 
-  public void setVideo(Video video, Bitmap videoThumbnail) {
+  public void setVideo(Video video) {
     this.video = video;
-    this.videoThumbnail = videoThumbnail;
   }
 
   /**
@@ -103,6 +102,10 @@ public class MainApplication extends Application {
       String jsonString = fileUtils.readFile(filename);
       metadata = new Gson().fromJson(jsonString, new TypeToken<List<FileMetadata>>(){}.getType());
       Log.d("DEBUG", "SAVED METADATA LENGTH: " + metadata.size());
+
+      for (FileMetadata metadata1: metadata) {
+        Log.d("DEBUG", "IMAGE NAME11: " + metadata1.getName());
+      }
     }
 
     Collections.reverse(metadata);
@@ -162,12 +165,13 @@ public class MainApplication extends Application {
 
   public void requestPermissions(Activity activity) {
     ActivityCompat.requestPermissions(activity,
-      new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+      new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+      Manifest.permission.INTERNET},
       1);
   }
 
   public void saveImageMetadata(FileMetadata metadata) {
-    String FILENAME = "";
+    String FILENAME = getSavedImageMetadataFilename();
     FileUtils fileUtils = new FileUtils(getApplicationContext());
 
     ArrayList<FileMetadata> savedFileMetadata = getSavedImageMetadata(getApplicationContext());
@@ -179,7 +183,7 @@ public class MainApplication extends Application {
   }
 
   public void saveVideoMetadata(VideoMetadata metadata) {
-    String FILENAME = "";
+    String FILENAME = getSavedVideoMetadataFilename();
     FileUtils fileUtils = new FileUtils(getApplicationContext());
 
     ArrayList<VideoMetadata> savedVideoMetadata = getSavedVideoMetadata(getApplicationContext());
@@ -203,6 +207,7 @@ public class MainApplication extends Application {
     switch(fileType){
       case IMAGE:
         FILENAME = getSavedImageMetadataFilename();
+        break;
       case VIDEO:
         FILENAME = getSavedVideoMetadataFilename();
     }
@@ -235,13 +240,5 @@ public class MainApplication extends Application {
    *
    */
   public void setPlayerView(EPlayerView playerView) {this.playerView = playerView;}
-
-  public Bitmap getVideoThumbnail() {
-    return this.videoThumbnail;
-  }
-
-  public void setVideoThumbnail(Bitmap thumbnail) {
-    this.videoThumbnail = thumbnail;
-  }
 
 }

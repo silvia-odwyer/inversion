@@ -1,14 +1,7 @@
 package com.silviaodwyer.inversion;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +14,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class Images extends AppCompatActivity implements ImagesRecyclerView.ItemClickListener {
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
@@ -28,6 +25,8 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   private ArrayList<FileMetadata> savedFileMetaData;
   private MainApplication mainApplication;
   private Button deleteBtn;
+  private RecyclerView recyclerView;
+  private int numImages;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     mainApplication = ((MainApplication)getApplication());
     savedFileMetaData = mainApplication.getSavedImageMetadata(this);
 
+    // setup the Recycler View
     initializeRecyclerView();
 
     uploadImage = findViewById(R.id.upload_img_btn);
@@ -64,12 +64,19 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   }
 
   private void initializeRecyclerView() {
-    RecyclerView recyclerView = findViewById(R.id.recycler_view);
+    recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
     adapter = new ImagesRecyclerView(this, savedFileMetaData, mainApplication);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
+    adapter.updateRecyclerView(savedImageMetadata);
   }
 
   @Override

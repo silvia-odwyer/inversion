@@ -1,14 +1,9 @@
 package com.silviaodwyer.inversion;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class FileMetadata {
   enum FileType {
@@ -51,7 +46,7 @@ public class FileMetadata {
   }
 
   /**
-   * Get the name for this image.
+   * Get the image name.
    *
    */
   public String getName() {
@@ -59,14 +54,14 @@ public class FileMetadata {
   }
 
   /**
-   * Set the name for this image.
+   * Set the image name.
    *
    */
   public void setName(String name) {
     this.name = name;
   }
 
-  public String generateName() {
+  private String generateName() {
     String file_name = "";
     switch(fileType) {
       case IMAGE:

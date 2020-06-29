@@ -1,7 +1,5 @@
 package com.silviaodwyer.inversion;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EffectDetail extends AppCompatActivity {
   private TextView effectTitle;
@@ -24,7 +24,7 @@ public class EffectDetail extends AppCompatActivity {
 
     mainApplication = ((MainApplication)getApplication());
 
-
+    // initialize file names
     initializeFileNames();
   }
 

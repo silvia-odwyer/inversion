@@ -2,9 +2,12 @@ package com.silviaodwyer.inversion.main_ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.Video;
 import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
@@ -40,9 +44,14 @@ public class HomeScreenFragment extends Fragment {
   private View root;
   private Context context;
   private Button openVideoSaver;
+  private LinearLayout imagesThumbnailsLinLayout;
+  private LinearLayout videosThumbnailsLinLayout;
+
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
+  private int numImages;
+  private int numVideos;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +60,8 @@ public class HomeScreenFragment extends Fragment {
     context = getActivity().getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
+    imagesThumbnailsLinLayout = root.findViewById(R.id.images);
+    videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) getActivity().getApplication();
 
@@ -62,6 +73,24 @@ public class HomeScreenFragment extends Fragment {
     mainApplication.requestPermissions(getActivity());
 
     return root;
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Log.d("DEBUG", "HOME SCREEN FRAGMENT RESUMED");
+    ArrayList<VideoMetadata> savedVideoMetadata = mainApplication.getSavedVideoMetadata(context);
+    ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(context);
+
+    // if new images or videos detected, clear the thumbnails and re-append.
+    if (savedVideoMetadata.size() != numVideos) {
+      videosThumbnailsLinLayout.removeAllViews();
+      this.appendVideoThumbnails();
+    }
+    if (savedImageMetadata.size() != numImages) {
+      imagesThumbnailsLinLayout.removeAllViews();
+      this.appendImageThumbnails();
+    }
   }
 
   private void initEffectList() {
@@ -110,21 +139,21 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void initImages() {
-    LinearLayout imagesLinLayout = root.findViewById(R.id.images);
-
-    appendImageThumbnails(imagesLinLayout);
+    appendImageThumbnails();
+    // TODO setup RecyclerView for images.
   }
 
   private void initVideos() {
-    LinearLayout linLayout = root.findViewById(R.id.videos);
+    appendVideoThumbnails();
 
-    appendVideoThumbnails(linLayout);
+    // TODO setup RecyclerView for videos.
   }
 
-  private void appendImageThumbnails(LinearLayout linLayout) {
+  private void appendImageThumbnails() {
     ArrayList<FileMetadata> savedFileMetadata = mainApplication.getSavedImageMetadata(context);
 
     int totalImageNum = 0;
+    numImages = savedFileMetadata.size();
     if (savedFileMetadata.size() < 4) {
       totalImageNum = savedFileMetadata.size();
     }
@@ -136,12 +165,13 @@ public class HomeScreenFragment extends Fragment {
 
       ImageView imageView = createImageView(metadata);
 
-      linLayout.addView(imageView);
+      imagesThumbnailsLinLayout.addView(imageView);
     }
   }
 
-  private void appendVideoThumbnails(LinearLayout linLayout) {
+  private void appendVideoThumbnails() {
     ArrayList<VideoMetadata> savedFileMetadata = mainApplication.getSavedVideoMetadata(context);
+    numVideos = savedFileMetadata.size();
 
     int totalImageNum = 0;
     if (savedFileMetadata.size() < 4) {
@@ -155,7 +185,30 @@ public class HomeScreenFragment extends Fragment {
       final VideoMetadata metadata = savedFileMetadata.get(i);
 
       ImageView imageView = createVideoThumbnail(metadata);
-      linLayout.addView(imageView);
+      imageView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          ImageUtils imageUtils = new ImageUtils(getActivity().getApplicationContext());
+
+          Video video = new Video(metadata);
+          mainApplication.setVideo(video);
+          Intent intent = new Intent(getActivity().getBaseContext(), VideoEditor.class);
+          File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+
+          String name = metadata.getName() + ".mp4";
+          File file = new File(directory, name);
+
+          String videoUrl = String.valueOf(Uri.fromFile(file));
+          String videoPath = videoUrl;
+          intent.putExtra("videoPath", videoPath);
+          intent.putExtra("videoUrl", videoUrl);
+
+          // Now that we have the bitmap thumbnail of the video, we can start the video editor activity.
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          getActivity().getApplication().startActivity(intent);
+        }
+      });
+      videosThumbnailsLinLayout.addView(imageView);
     }
   }
 
@@ -230,5 +283,10 @@ public class HomeScreenFragment extends Fragment {
     });
 
     return imageView;
+  }
+
+  private void clearThumbnails() {
+    imagesThumbnailsLinLayout.removeAllViews();
+    videosThumbnailsLinLayout.removeAllViews();
   }
 }

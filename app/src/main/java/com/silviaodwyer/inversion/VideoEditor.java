@@ -1,17 +1,9 @@
 package com.silviaodwyer.inversion;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,59 +17,43 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.daasuu.epf.EPlayerView;
-import com.daasuu.epf.filter.GlFilter;
-import com.daasuu.epf.filter.GlLuminanceFilter;
-import com.daasuu.epf.filter.GlSepiaFilter;
-import com.daasuu.mp4compose.FillMode;
-import com.daasuu.mp4compose.Rotation;
-import com.daasuu.mp4compose.composer.Mp4Composer;
-import com.daasuu.mp4compose.filter.GlFilterGroup;
-import com.daasuu.mp4compose.filter.GlMonochromeFilter;
-import com.daasuu.mp4compose.filter.GlVignetteFilter;
+import com.daasuu.gpuv.composer.FillMode;
+import com.daasuu.gpuv.composer.GPUMp4Composer;
+import com.daasuu.gpuv.egl.filter.GlFilter;
+import com.daasuu.gpuv.egl.filter.GlFilterGroup;
+import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
+import com.daasuu.gpuv.player.GPUPlayerView;
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import static com.bumptech.glide.load.resource.UnitTransformation.get;
 
 public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
-  private ProgressBar progressBar;
-  private EPlayerView ePlayerView;
+  private GPUPlayerView ePlayerView;
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
   private Context context;
   private String videoPath;
+  private String videoUrl;
   private Video video;
   private ImageView imageView;
+  private GlFilter activeFilter = new GlSepiaFilter();
   private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
   private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
 
@@ -93,11 +69,12 @@ public class VideoEditor extends AppCompatActivity {
 
     Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
 
-//      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-//
-//      String name = video.getMetadata().getName() + ".mp4";
-//
-//      File file = new File(directory, name);
+      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+
+      String name = video.getMetadata().getName() + ".mp4";
+
+      File file = new File(directory, name);
+
 
     if (player != null) {
         player = null;
@@ -106,6 +83,7 @@ public class VideoEditor extends AppCompatActivity {
     }
 
     videoPath = getIntent().getExtras().getString("videoPath");
+    videoUrl = getIntent().getExtras().getString("videoUrl");
     Log.d("DEBUG", "Video Path is: " + videoPath);
 
     this.setupPlayer();
@@ -115,7 +93,7 @@ public class VideoEditor extends AppCompatActivity {
     btn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        saveVideo();
+        openDownloadActivity();
       }
     });
 
@@ -123,15 +101,17 @@ public class VideoEditor extends AppCompatActivity {
 
   public void setupPlayer() {
     player = ExoPlayerFactory.newSimpleInstance(context);
-    ePlayerView = new EPlayerView(context);
+    ePlayerView = new GPUPlayerView(context);
 
     ePlayerView.setSimpleExoPlayer(player);
+    Uri uri = Uri.parse(videoUrl);
+
     ePlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context,"Inversion"));
 
     MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-      .createMediaSource(Uri.parse(videoPath));
+      .createMediaSource(uri);
 //
 //    player.addListener(new Player.EventListener() {
 //
@@ -170,12 +150,14 @@ public class VideoEditor extends AppCompatActivity {
   }
 
   public void end() {
-    player.stop();
-    player.setPlayWhenReady(false);
+      if (player != null) {
+          player.stop();
+          player.setPlayWhenReady(false);
 
-    // Set player to null to avoid overuse of memory
-    player.release();
-    player = null;
+          // Set player to null to avoid overuse of memory
+          player.release();
+          player = null;
+      }
   }
 
   public void setUpNavController() {
@@ -237,7 +219,7 @@ public class VideoEditor extends AppCompatActivity {
       case 1: {
         if (grantResults.length > 0
           && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          saveVideo();
+          openDownloadActivity();
         } else {
           // permission was denied
         }
@@ -265,61 +247,11 @@ public class VideoEditor extends AppCompatActivity {
       }
   }
 
-  private void saveVideo() {
-    initProgressBar();
-
-    ImageUtils imageUtils = new ImageUtils(context);
-    File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-    dst.mkdirs();
-    VideoMetadata metadata = new VideoMetadata();
-    video.setMetadata(metadata);
-    mainApplication.saveVideoMetadata(video.getMetadata());
-    File outputFile = new File(dst.getPath() + File.separator + video.getMetadata().getName() + ".mp4");
-    final String destMp4Path = outputFile.getPath();
-
-    new Mp4Composer(videoPath, destMp4Path)
-      .size( 540,  960)
-      .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-      .filter(new GlFilterGroup(new GlVignetteFilter()))
-      .listener(new Mp4Composer.Listener() {
-        @Override
-        public void onProgress(double progress) {
-          int progress_res = (int) Math.round((progress * 100));
-          Log.d("DEBUG", "Progress:  " + progress_res);
-          progressBar.setProgress(progress_res);
-        }
-
-        @Override
-        public void onCompleted() {
-          progressBar.setProgress(100);
-          sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
-          getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
-
-            Log.d("DEBUG", "onCompleted()");
-
-            // Save video to store
-
-            imageUtils.writeThumbnail(video);
-        }
-
-        @Override
-        public void onCanceled() {
-          Log.d("DEBUG", "Saving video cancelled");
-        }
-
-        @Override
-        public void onFailed(Exception exception) {
-          Log.e("DEBUG", "onFailed()", exception);
-          Toast.makeText(getApplicationContext(), "Error when saving video.", Toast.LENGTH_SHORT).show();
-        }
-      })
-      .start();
+  public void openDownloadActivity() {
+    Intent intent = new Intent(VideoEditor.this, DownloadProgress.class);
+    intent.putExtra("videoPath", videoPath);
+    startActivity(intent);
   }
 
-  private void initProgressBar() {
-    progressBar = findViewById(R.id.progress_bar);
-    progressBar.setProgress(0);
-    progressBar.setVisibility(View.VISIBLE);
-  }
 
 }

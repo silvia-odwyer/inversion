@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
     Glide
       .with(context)
       .load(file.getAbsolutePath())
-      .apply(new RequestOptions().override(450, 450))
+      .apply(new RequestOptions().override(500, 500))
       .into(holder.imageView);
   }
 
@@ -73,7 +74,15 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
     public void onClick(View view) {
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
+
+        File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+        String name = data.get(getAdapterPosition()).getName() + ".mp4";
+        File file = new File(directory, name);
+
         Intent intent = new Intent(context, VideoEditor.class);
+
+        String videoUrl = String.valueOf(Uri.fromFile(file));
+        intent.putExtra("videoUrl", videoUrl);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         VideoMetadata metadata = data.get(getAdapterPosition());
         Video video = new Video(metadata);
@@ -82,11 +91,16 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
 
         intent.putExtra("videoPath", metadata.getAbsolutePath());
 
-
         context.startActivity(intent);
       }
     }
 
+  }
+
+  public void updateRecyclerView(ArrayList<VideoMetadata> updatedFiles) {
+    this.data.clear();
+    this.data = updatedFiles;
+    notifyDataSetChanged();
   }
 
   FileMetadata getItem(int id) {

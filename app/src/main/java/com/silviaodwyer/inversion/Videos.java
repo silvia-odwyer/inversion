@@ -33,6 +33,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private String videoUrl;
   private Button deleteAllVideosBtn;
   private Video video;
+  private int numVideos;
   private VideosRecyclerView recyclerViewAdapter;
   private ArrayList<VideoMetadata> savedVideoMetadata;
 
@@ -44,7 +45,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     mainApplication = ((MainApplication)getApplication());
     fileUtils = new FileUtils(getApplicationContext());
     savedVideoMetadata = mainApplication.getSavedVideoMetadata(getApplicationContext());
-
+    numVideos = savedVideoMetadata.size();
     setUpRecyclerView();
 
     uploadVideo = findViewById(R.id.upload_video_btn);
@@ -82,7 +83,10 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     super.onResume();
     Log.d("DEBUG", "RESUMED IMAGES ACTIVITY");
     ArrayList<VideoMetadata> savedVideoMetadata = mainApplication.getSavedVideoMetadata(getApplicationContext());
-    recyclerViewAdapter.updateRecyclerView(savedVideoMetadata);
+
+    if (savedVideoMetadata.size() != numVideos) {
+        recyclerViewAdapter.updateRecyclerView(savedVideoMetadata);
+    }
   }
 
   @Override
@@ -130,7 +134,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     File src = new File(videoPath);
     fileUtils.copyFile(src, outputFile);
     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
-
   }
 
   @Override
@@ -139,6 +142,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   }
 
   public void thumbnailVideo(final String videoPath) throws ExecutionException, InterruptedException {
+    // thumbnail the video in a background thread
     new Thread(new Runnable() {
       @Override
       public void run() {

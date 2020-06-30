@@ -68,7 +68,6 @@
     android:layout_height="wrap_content"
     app:defaultNavHost="true"
     app:layout_constraintBottom_toTopOf="@id/nav_view"
-
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@+id/guideline8"

@@ -1,8 +1,6 @@
 package com.silviaodwyer.inversion;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,6 +92,10 @@ public class ImageUtils {
     Bitmap bmp = gpuImage.getBitmapWithFilterApplied(originalImageBitmap);
   }
 
+  /**
+   * Convert an image URI to a bitmap.
+   *
+   */
   public Bitmap imageUriToBitmap(Uri imageUri) {
     Bitmap bmp = null;
     try {
@@ -105,6 +106,10 @@ public class ImageUtils {
     return bmp;
   }
 
+  /**
+   * Resize a bitmap.
+   *
+   */
   public Bitmap resizeBitmap(Bitmap bitmap, float maxWidth, float maxHeight) {
     float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
     // resize bitmap to thumbnail size
@@ -132,6 +137,10 @@ public class ImageUtils {
     }
   }
 
+  /**
+   * Given an image's name, retrieves the image as a bitmap from the device's external storage.
+   *
+   */
   public static Image getImageFromFilename(FileMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
     if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -153,6 +162,10 @@ public class ImageUtils {
     return image;
   }
 
+  /**
+   * Save a video's thumbnail to the device's external storage.
+   *
+   */
   public void writeThumbnail(Video video) {
     FileOutputStream fileOutputStream = null;
     try {

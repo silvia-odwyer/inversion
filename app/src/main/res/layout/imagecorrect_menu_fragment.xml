@@ -26,20 +26,51 @@
         android:id="@+id/brightness"
         android:max="100"
         android:progress="0"
+        android:tag="brightness"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <HorizontalScrollView
+    <TextView
+        android:id="@+id/saturationTextVal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="Saturation"/>
 
-      <LinearLayout
-          android:id="@+id/correctedImageThumbnails"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+    <SeekBar
+        android:id="@+id/saturation"
+        android:max="100"
+        android:progress="0"
+        android:tag="saturation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-      </LinearLayout>
-    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/contrastTextVal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contrast"/>
+
+    <SeekBar
+        android:id="@+id/contrast"
+        android:max="100"
+        android:progress="0"
+        android:tag="contrast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--      <LinearLayout-->
+<!--          android:id="@+id/correctedImageThumbnails"-->
+<!--          android:layout_width="wrap_content"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:orientation="horizontal">-->
+
+<!--      </LinearLayout>-->
+<!--    </HorizontalScrollView>-->
   </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

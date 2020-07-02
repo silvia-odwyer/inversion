@@ -65,19 +65,11 @@
 
     </LinearLayout>
 
-    <HorizontalScrollView
-      android:layout_width="match_parent"
-      android:layout_marginStart="20dp"
-      android:layout_height="wrap_content">
-      <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/images">
-
-      </LinearLayout>
-
-    </HorizontalScrollView>
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_marginStart="20dp"
+          android:id="@+id/recycler_view_images"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"/>
 
 
   </LinearLayout>

@@ -19,6 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,6 +34,7 @@ import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
 import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
+import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.Video;
@@ -46,6 +53,8 @@ public class HomeScreenFragment extends Fragment {
   private Button openVideoSaver;
   private LinearLayout imagesThumbnailsLinLayout;
   private LinearLayout videosThumbnailsLinLayout;
+  private RecyclerView recyclerView;
+  private ImagesRecyclerView adapter;
 
   private LinearLayout effectList;
   private MainApplication mainApplication;
@@ -60,19 +69,39 @@ public class HomeScreenFragment extends Fragment {
     context = getActivity().getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
-    imagesThumbnailsLinLayout = root.findViewById(R.id.images);
+//    imagesThumbnailsLinLayout = root.findViewById(R.id.images);
     videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) getActivity().getApplication();
 
     setUpOnClickListeners();
-    initImages();
+    initRecyclerViews();
     initVideos();
     initEffectList();
 
     mainApplication.requestPermissions(getActivity());
 
     return root;
+  }
+
+  public void initRecyclerViews() {
+      recyclerView = root.findViewById(R.id.recycler_view_images);
+      LinearLayoutManager layoutManager
+            = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, true);
+
+      int numberOfColumns = 3;
+      recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), numberOfColumns));
+      ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(context);
+
+      recyclerView.setLayoutManager(layoutManager);
+      adapter = new ImagesRecyclerView(getActivity().getApplicationContext(), savedImageMetadata, mainApplication);
+      //adapter.setClickListener();
+
+      recyclerView.setAdapter(adapter);
+
+      SnapHelper helper = new PagerSnapHelper();
+      helper.attachToRecyclerView(recyclerView);
+
   }
 
   @Override
@@ -88,8 +117,8 @@ public class HomeScreenFragment extends Fragment {
       this.appendVideoThumbnails();
     }
     if (savedImageMetadata.size() != numImages) {
-      imagesThumbnailsLinLayout.removeAllViews();
-      this.appendImageThumbnails();
+
+//      this.appendImageThumbnails();
     }
   }
 

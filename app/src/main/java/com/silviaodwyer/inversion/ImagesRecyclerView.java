@@ -28,7 +28,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private ArrayList<FileMetadata> metaDataArray;
   private ImageUtils imageUtils;
 
-  ImagesRecyclerView(Context context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
+  public ImagesRecyclerView(Context context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;

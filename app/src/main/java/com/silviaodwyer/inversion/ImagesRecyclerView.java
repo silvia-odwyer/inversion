@@ -1,5 +1,8 @@
 package com.silviaodwyer.inversion;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,14 +27,16 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private ArrayList<FileMetadata> data;
   private ItemClickListener clickListener;
   private LayoutInflater inflater;
-  private Context context;
+  private Activity context;
   private MainApplication mainApplication;
   private ArrayList<FileMetadata> metaDataArray;
   private ImageUtils imageUtils;
+  private Activity activity;
 
-  public ImagesRecyclerView(Context context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
+  public ImagesRecyclerView(Activity context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
+    this.activity = activity;
     this.context = context;
     this.mainApplication = mainApplication;
     this.imageUtils = new ImageUtils(context);
@@ -52,6 +58,23 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull ImagesRecyclerView.ViewHolder holder, int position) {
+
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(context, ImageEditor.class);
+        //
+        // ActivityOptions options = ActivityOptions
+        //.makeSceneTransitionAnimation(activity, view, "robot");
+
+        FileMetadata metadata = data.get(position);
+        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
+        mainApplication.setImage(image);
+        context.startActivity(intent);
+      }
+
+    });
+
     File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
 
     File file = new File(inversionDirectory, data.get(position).getName() + ".png");
@@ -82,11 +105,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     public void onClick(View view) {
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
-        Intent intent = new Intent(context, ImageEditor.class);
-        FileMetadata metadata = data.get(getAdapterPosition());
-        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
-        mainApplication.setImage(image);
-        context.startActivity(intent);
+
       }
     }
   }
@@ -95,7 +114,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     return data.get(id);
   }
 
-  void setClickListener(ItemClickListener itemClickListener) {
+  public void setClickListener(ItemClickListener itemClickListener) {
     this.clickListener = itemClickListener;
   }
 

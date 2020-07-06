@@ -1,5 +1,6 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -55,6 +56,7 @@ public class HomeScreenFragment extends Fragment {
   private LinearLayout videosThumbnailsLinLayout;
   private RecyclerView recyclerView;
   private ImagesRecyclerView adapter;
+  private Activity activity;
 
   private LinearLayout effectList;
   private MainApplication mainApplication;
@@ -66,13 +68,14 @@ public class HomeScreenFragment extends Fragment {
                            ViewGroup container, Bundle savedInstanceState) {
 
     root = inflater.inflate(R.layout.fragment_homescreen, container, false);
-    context = getActivity().getApplicationContext();
+    activity = getActivity();
+    context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
 //    imagesThumbnailsLinLayout = root.findViewById(R.id.images);
     videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
-    mainApplication = (MainApplication) getActivity().getApplication();
+    mainApplication = (MainApplication) activity.getApplication();
 
     setUpOnClickListeners();
     initRecyclerViews();
@@ -87,15 +90,12 @@ public class HomeScreenFragment extends Fragment {
   public void initRecyclerViews() {
       recyclerView = root.findViewById(R.id.recycler_view_images);
       LinearLayoutManager layoutManager
-            = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, true);
+            = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
-      int numberOfColumns = 3;
-      recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), numberOfColumns));
       ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(context);
 
       recyclerView.setLayoutManager(layoutManager);
-      adapter = new ImagesRecyclerView(getActivity().getApplicationContext(), savedImageMetadata, mainApplication);
-      //adapter.setClickListener();
+      adapter = new ImagesRecyclerView(activity, savedImageMetadata, mainApplication);
 
       recyclerView.setAdapter(adapter);
 
@@ -103,6 +103,7 @@ public class HomeScreenFragment extends Fragment {
       helper.attachToRecyclerView(recyclerView);
 
   }
+
 
   @Override
   public void onResume() {
@@ -117,9 +118,11 @@ public class HomeScreenFragment extends Fragment {
       this.appendVideoThumbnails();
     }
     if (savedImageMetadata.size() != numImages) {
-
+      adapter.updateRecyclerView(savedImageMetadata);
 //      this.appendImageThumbnails();
     }
+
+
   }
 
   private void initEffectList() {

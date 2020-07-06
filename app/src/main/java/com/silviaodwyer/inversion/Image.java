@@ -120,30 +120,15 @@ public class Image {
     this.originalImageBitmap = originalImageBitmap;
   }
 
+  /**
+   * Get the image thumbnail as a bitmap.
+   *
+   * @return      image thumbnail
+   */
   public Bitmap getThumbnail(int maxWidth, int maxHeight) {
     ImageUtils imageUtils = new ImageUtils(context);
     final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
     return resultBitmap;
-  }
-
-  /**
-   * Returns the GPUImage instance of the image.
-   *
-   * @return  the GPUImage instance of the image
-   */
-  public GPUImage getmGPUImage() {
-    return mGPUImage;
-  }
-
-  /**
-   * Set the GPUImage instance of the image, which
-   * allows image processing to be performed on the GPU.
-   *
-   * @return      the image editor activity
-   */
-  public void setmGPUImage(GPUImage mGPUImage) {
-    this.mGPUImage = mGPUImage;
-    this.bitmap = mGPUImage.getBitmapWithFilterApplied();
   }
 
   /**

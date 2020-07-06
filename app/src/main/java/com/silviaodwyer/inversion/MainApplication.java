@@ -7,13 +7,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.daasuu.gpuv.player.GPUPlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import com.daasuu.epf.EPlayerView;
 import androidx.core.app.ActivityCompat;
 
 public class MainApplication extends Application {
@@ -21,7 +21,7 @@ public class MainApplication extends Application {
   private Video video;
   private ImageEditor imageEditorActivity;
   private Image image;
-  private EPlayerView playerView;
+  private GPUPlayerView playerView;
   private Bitmap videoThumbnail;
   private ArrayList<FileMetadata> fileMetaDataArrayList = new ArrayList<>();
   private VideoEditor videoEditorActivity;
@@ -37,23 +37,6 @@ public class MainApplication extends Application {
 
   public void setVideo(Video video) {
     this.video = video;
-  }
-
-  /**
-   * Set the active video URL
-   *
-   */
-  public void setVideoUrl(String vidUrl) {
-    this.videoUrl = vidUrl;
-  }
-
-  /**
-   * Returns the active video URL
-   *
-   * @return      active video URL
-   */
-  public String getVideoUrl() {
-    return videoUrl;
   }
 
   /**
@@ -76,15 +59,6 @@ public class MainApplication extends Application {
 
   public void setImage(Image image) {
     this.image = image;
-  }
-
-  /**
-   * Returns the name of the directory in internal storage where saved images are stored
-   *
-   * @return      the image editor activity
-   */
-  public static String getImagesDirectory() {
-    return IMAGES_DIRECTORY;
   }
 
   /**
@@ -233,12 +207,12 @@ public class MainApplication extends Application {
    *
    * @return      instance of the video player's PlayerView
    */
-  public EPlayerView getPlayerView() {return this.playerView;}
+  public GPUPlayerView getPlayerView() {return this.playerView;}
 
   /**
    * Set the playerview instance of the video player
    *
    */
-  public void setPlayerView(EPlayerView playerView) {this.playerView = playerView;}
+  public void setPlayerView(GPUPlayerView playerView) {this.playerView = playerView;}
 
 }

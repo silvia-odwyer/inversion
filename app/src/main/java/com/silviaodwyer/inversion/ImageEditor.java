@@ -57,7 +57,8 @@ public class ImageEditor extends AppCompatActivity {
     saveBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        saveImage();
+        // get permission to write to external storage
+        mainApplication.requestPermissions(ImageEditor.this);
       }
     });
   }
@@ -69,32 +70,7 @@ public class ImageEditor extends AppCompatActivity {
       case 1: {
         if (grantResults.length > 0
           && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          FileOutputStream fileOutputStream = null;
-          try {
-            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
-            directory.mkdirs();
-
-            File outputFile = new File(directory.toString(), image.getMetaData().getName() + ".png");
-            Log.d("DEBUG", "IMAGE OUTPUTTED TO: " + outputFile.getAbsolutePath());
-
-            fileOutputStream = new FileOutputStream(outputFile);
-            gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
-
-          }
-          catch (IOException e) {
-            Log.d("DEBUG", "Could not write file!" + e);
-          }
-          finally {
-            try {
-              fileOutputStream.close();
-              Toast.makeText(this, "Image saved successfully", Toast.LENGTH_SHORT).show();
-              getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
-
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
+          saveImage();
         } else {
           // permission was denied
         }
@@ -102,7 +78,6 @@ public class ImageEditor extends AppCompatActivity {
       }
     }
   }
-
 
   public Bitmap getBitmap() {
     return bitmap;
@@ -113,10 +88,38 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void saveImage() {
+    // create new metadata
     FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
     image.setMetaData(metadata);
-    mainApplication.saveImageMetadata(metadata);
-    mainApplication.requestPermissions(ImageEditor.this);
+
+    FileOutputStream fileOutputStream = null;
+    try {
+      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
+      directory.mkdirs();
+
+      File outputFile = new File(directory.toString(), image.getMetaData().getName() + ".png");
+      Log.d("DEBUG", "Saved image, path is: " + outputFile.getAbsolutePath());
+
+      fileOutputStream = new FileOutputStream(outputFile);
+      gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
+      mainApplication.saveImageMetadata(metadata);
+      sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
+
+    }
+    catch (IOException e) {
+      Log.d("DEBUG", "Could not write file!" + e);
+    }
+    finally {
+      try {
+        fileOutputStream.close();
+        Toast.makeText(this, "Image saved successfully", Toast.LENGTH_SHORT).show();
+        getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
 }

@@ -5,7 +5,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -108,9 +107,7 @@ public class FileUtils {
     FileUtils fileUtils = new FileUtils(context);
     fileUtils.deleteDirectory(directory, context);
     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
-
   }
-
 
   public void copyFile(File src, File expFile) {
 

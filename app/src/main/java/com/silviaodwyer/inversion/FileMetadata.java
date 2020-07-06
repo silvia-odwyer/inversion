@@ -14,17 +14,25 @@ public class FileMetadata {
   private String name;
   private String timestamp;
   private FileType fileType;
+  private String url;
 
   public FileMetadata(String name, String timestamp, FileType fileType) {
     this.name = name;
     this.timestamp = timestamp;
     this.fileType = fileType;
+    this.url = getAbsolutePath();
   }
 
   public FileMetadata(FileType fileType) {
     this.timestamp = FileUtils.createTimestamp();
     this.fileType = fileType;
     this.name = generateName();
+    this.url = getAbsolutePath();
+  }
+
+  public FileMetadata(FileType fileType, String url) {
+    this.fileType = fileType;
+    this.url = url;
   }
 
   /**
@@ -75,6 +83,15 @@ public class FileMetadata {
     Log.d("DEBUG", "NAME GENERATED: " + file_name);
     return file_name;
   }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
 
   public FileType getFileType() {
     return fileType;

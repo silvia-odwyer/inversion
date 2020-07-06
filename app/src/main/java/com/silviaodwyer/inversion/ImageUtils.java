@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -94,7 +95,6 @@ public class ImageUtils {
 
   /**
    * Convert an image URI to a bitmap.
-   *
    */
   public Bitmap imageUriToBitmap(Uri imageUri) {
     Bitmap bmp = null;
@@ -108,10 +108,9 @@ public class ImageUtils {
 
   /**
    * Resize a bitmap.
-   *
    */
   public Bitmap resizeBitmap(Bitmap bitmap, float maxWidth, float maxHeight) {
-    float scale = Math.min(((float)maxHeight / bitmap.getWidth()), ((float)maxWidth / bitmap.getHeight()));
+    float scale = Math.min(((float) maxHeight / bitmap.getWidth()), ((float) maxWidth / bitmap.getHeight()));
     // resize bitmap to thumbnail size
     Matrix matrix = new Matrix();
     matrix.postScale(scale, scale);
@@ -125,13 +124,13 @@ public class ImageUtils {
    * for date formatting according to the locale when generating
    * image names, etc.,
    *
-   * @return     locale
+   * @return locale
    */
   private Locale getLocale() {
     // check if API Level is greater than 24
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       return context.getResources().getConfiguration().getLocales().get(0);
-    } else{
+    } else {
       Log.d("DEBUG", "API Level less than 24");
       return context.getResources().getConfiguration().locale;
     }
@@ -139,7 +138,6 @@ public class ImageUtils {
 
   /**
    * Given an image's name, retrieves the image as a bitmap from the device's external storage.
-   *
    */
   public static Image getImageFromFilename(FileMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
@@ -164,7 +162,6 @@ public class ImageUtils {
 
   /**
    * Save a video's thumbnail to the device's external storage.
-   *
    */
   public void writeThumbnail(Video video) {
     FileOutputStream fileOutputStream = null;
@@ -177,11 +174,9 @@ public class ImageUtils {
 
       fileOutputStream = new FileOutputStream(outputFile);
       video.getThumbnail().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       Log.d("DEBUG", "Could not write file!" + e);
-    }
-    finally {
+    } finally {
       try {
         fileOutputStream.close();
 
@@ -191,4 +186,24 @@ public class ImageUtils {
     }
   }
 
+  public Bitmap getBitmapFromUrl(String url_string) {
+    Bitmap bitmap = null;
+    try {
+      URL url = new URL(url_string);
+      bitmap = BitmapFactory.decodeStream(url.openStream());
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+    return bitmap;
+  }
+
+
+  public ArrayList<FileMetadata> createImageMetadataFromURLs(String[] urls) {
+    ArrayList<FileMetadata> fileMetadataArrayList = new ArrayList<FileMetadata>();
+    for (String url : urls) {
+      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, url);
+      fileMetadataArrayList.add(metadata);
+    }
+    return fileMetadataArrayList;
+  }
 }

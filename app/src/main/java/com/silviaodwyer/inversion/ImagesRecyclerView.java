@@ -36,7 +36,6 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   public ImagesRecyclerView(Activity context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
-    this.activity = activity;
     this.context = context;
     this.mainApplication = mainApplication;
     this.imageUtils = new ImageUtils(context);
@@ -74,14 +73,11 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       }
 
     });
-
-    File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
-
-    File file = new File(inversionDirectory, data.get(position).getName() + ".png");
+    FileMetadata metadata = data.get(position);
 
     Glide
       .with(context)
-      .load(file.getAbsolutePath())
+      .load(metadata.getUrl())
       .apply(new RequestOptions().override(250, 250))
       .into(holder.imageView);
   }

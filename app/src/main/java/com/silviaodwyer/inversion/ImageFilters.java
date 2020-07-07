@@ -14,6 +14,12 @@ import jp.co.cyberagent.android.gpuimage.filter.*;
 public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<GPUImageFilter> correctionFilters;
+  private GPUImageFilterGroup activeFilterGroup = new GPUImageFilterGroup();
+
+  private GPUImageBrightnessFilter brightnessFilter;
+  private GPUImageContrastFilter contrastFilter;
+  private GPUImageSaturationFilter saturationFilter;
+
 
   public enum FilterType {
     EFFECT,
@@ -23,11 +29,19 @@ public class ImageFilters {
   public ImageFilters() {
     filters = new ArrayList<GPUImageFilter>();
     addEffectFilters();
+    initCorrectionFilters();
+  }
 
+  public void initCorrectionFilters() {
     correctionFilters = new ArrayList<GPUImageFilter>();
-    correctionFilters.add(new GPUImageBrightnessFilter(0.2f));
-    correctionFilters.add(new GPUImageContrastFilter(0.9f));
-    correctionFilters.add(new GPUImageGammaFilter());
+
+    brightnessFilter = new GPUImageBrightnessFilter();
+    contrastFilter = new GPUImageContrastFilter();
+    saturationFilter = new GPUImageSaturationFilter();
+
+    activeFilterGroup.addFilter(brightnessFilter);
+    activeFilterGroup.addFilter(contrastFilter);
+    activeFilterGroup.addFilter(saturationFilter);
   }
 
   public void addEffectFilters() {
@@ -336,19 +350,23 @@ public class ImageFilters {
     activity.updateGPUImage(filter);
   }
 
+  public void addEffect(GPUImageFilter filter, Image image) {
+    ImageEditor activity = image.getActivity();
+    activity.updateGPUImage(activeFilterGroup);
+  }
+
   public void brightenImage(Image image, float amt) {
-    GPUImageFilter brightnessFilter = new GPUImageBrightnessFilter(amt);
-    filterImage(brightnessFilter, image);
+    brightnessFilter.setBrightness(amt);
+    addEffect(brightnessFilter, image);
   }
 
   public void adjustSaturation(Image image, float amt) {
-    GPUImageFilter saturationFilter = new GPUImageSaturationFilter(amt);
-    filterImage(saturationFilter, image);
+    saturationFilter.setSaturation(amt);
+    addEffect(saturationFilter, image);
   }
 
   public void adjustContrast(Image image, float amt) {
-    Log.d("DEBUG", "ADJUST CONTRAST");
-    GPUImageFilter contrastFilter = new GPUImageContrastFilter((float) 0.9);
-    filterImage(contrastFilter, image);
+    contrastFilter.setContrast(amt);
+    addEffect(contrastFilter, image);
   }
 }

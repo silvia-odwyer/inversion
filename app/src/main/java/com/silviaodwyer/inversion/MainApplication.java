@@ -30,7 +30,6 @@ public class MainApplication extends Application {
   private static String IMAGES_DIRECTORY = "imagesDirectory";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
 
-
   public Video getVideo() {
     return video;
   }
@@ -215,4 +214,13 @@ public class MainApplication extends Application {
    */
   public void setPlayerView(GPUPlayerView playerView) {this.playerView = playerView;}
 
+  public ArrayList<FileMetadata> getPlaceholderMetadata() {
+
+    String[] urls = {"https://source.unsplash.com/collection/190727/1600x900",
+            "https://source.unsplash.com/collection/190727/1600x900",
+    "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fm=png&fit=crop&w=1423&q=80"};
+
+    ArrayList<FileMetadata> imageMetadata = ImageUtils.createImageMetadataFromURLs(urls);
+    return imageMetadata;
+  }
 }

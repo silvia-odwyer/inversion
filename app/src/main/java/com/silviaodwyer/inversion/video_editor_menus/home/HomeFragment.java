@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import com.daasuu.epf.filter.GlFilter;
+import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.VideoFilters;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
   private ArrayList<GlFilter> filters;

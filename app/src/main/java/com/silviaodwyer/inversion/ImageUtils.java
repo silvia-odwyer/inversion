@@ -198,7 +198,7 @@ public class ImageUtils {
   }
 
 
-  public ArrayList<FileMetadata> createImageMetadataFromURLs(String[] urls) {
+  public static ArrayList<FileMetadata> createImageMetadataFromURLs(String[] urls) {
     ArrayList<FileMetadata> fileMetadataArrayList = new ArrayList<FileMetadata>();
     for (String url : urls) {
       FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, url);

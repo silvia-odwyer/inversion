@@ -36,7 +36,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     savedFileMetaData = mainApplication.getSavedImageMetadata(this);
 
     // setup the Recycler View
-    initializeRecyclerView();
+    setupImages();
 
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +63,27 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     this.getSavedImages();
   }
 
-  private void initializeRecyclerView() {
+  private void setupImages() {
+    // get num of images
+    numImages = savedFileMetaData.size();
+
+    ArrayList<FileMetadata> imageMetadata = null;
+    if (numImages == 0) {
+      imageMetadata = mainApplication.getPlaceholderMetadata();
+      Log.d("DEBUG", "USING PLACEHOLDER METADATA: " + numImages);
+    }
+    else {
+      imageMetadata = savedFileMetaData;
+    }
+    initializeRecyclerView(imageMetadata);
+
+  }
+
+  private void initializeRecyclerView(ArrayList<FileMetadata> imageMetadata) {
     recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-    adapter = new ImagesRecyclerView(this, savedFileMetaData, mainApplication);
+    adapter = new ImagesRecyclerView(this, imageMetadata, mainApplication);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
   }

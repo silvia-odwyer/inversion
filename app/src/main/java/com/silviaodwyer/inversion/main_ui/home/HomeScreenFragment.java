@@ -44,7 +44,10 @@ import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class HomeScreenFragment extends Fragment {
   private TextView viewImages;
@@ -57,7 +60,7 @@ public class HomeScreenFragment extends Fragment {
   private RecyclerView recyclerView;
   private ImagesRecyclerView adapter;
   private Activity activity;
-
+  private ArrayList<FileMetadata> savedImageMetadata;
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
@@ -76,9 +79,10 @@ public class HomeScreenFragment extends Fragment {
     videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
+    savedImageMetadata = mainApplication.getSavedImageMetadata(context);
 
     setUpOnClickListeners();
-    initRecyclerViews();
+    setUpImages();
     initVideos();
     initEffectList();
 
@@ -87,15 +91,29 @@ public class HomeScreenFragment extends Fragment {
     return root;
   }
 
-  public void initRecyclerViews() {
+  private void setUpImages() {
+    ImageUtils imageUtils = new ImageUtils(context);
+    // get num of images
+    numImages = savedImageMetadata.size();
+    Log.d("DEBUG", "NUM IMAGES: " + numImages);
+    ArrayList<FileMetadata> imageMetadata = null;
+    if (numImages == 0) {
+      imageMetadata = mainApplication.getPlaceholderMetadata();
+    }
+    else {
+      imageMetadata = savedImageMetadata;
+    }
+    initRecyclerViews(imageMetadata);
+
+  }
+
+  public void initRecyclerViews(ArrayList<FileMetadata> imageMetadata) {
       recyclerView = root.findViewById(R.id.recycler_view_images);
       LinearLayoutManager layoutManager
             = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
-      ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(context);
-
       recyclerView.setLayoutManager(layoutManager);
-      adapter = new ImagesRecyclerView(activity, savedImageMetadata, mainApplication);
+      adapter = new ImagesRecyclerView(activity, imageMetadata, mainApplication);
 
       recyclerView.setAdapter(adapter);
 
@@ -110,7 +128,7 @@ public class HomeScreenFragment extends Fragment {
     super.onResume();
     Log.d("DEBUG", "HOME SCREEN FRAGMENT RESUMED");
     ArrayList<VideoMetadata> savedVideoMetadata = mainApplication.getSavedVideoMetadata(context);
-    ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(context);
+    savedImageMetadata = mainApplication.getSavedImageMetadata(context);
 
     // if new images or videos detected, clear the thumbnails and re-append.
     if (savedVideoMetadata.size() != numVideos) {
@@ -168,11 +186,6 @@ public class HomeScreenFragment extends Fragment {
       }
     });
 
-  }
-
-  private void initImages() {
-    appendImageThumbnails();
-    // TODO setup RecyclerView for images.
   }
 
   private void initVideos() {

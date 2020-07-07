@@ -2,11 +2,18 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
+import android.util.Log;
 
-import com.daasuu.epf.EPlayerView;
-import com.daasuu.epf.filter.*;
+import com.bumptech.glide.annotation.GlideModule;
+import com.daasuu.gpuv.egl.filter.*;
+import com.daasuu.gpuv.player.GPUPlayerView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageToneCurveFilter;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
@@ -22,8 +29,7 @@ public class VideoFilters {
     this.videoFilters.add(vignetteGrayscaleFilter());
     this.videoFilters.add(sepiaVignetteFilter());
     this.videoFilters.add(rubrikFilter());
-
-
+    this.videoFilters.add(neueFilter());
   }
 
   public ArrayList<GlFilter> getVideoFilters() {
@@ -58,12 +64,18 @@ public class VideoFilters {
     return rubrikFilter;
   }
 
+  public GlFilterGroup neueFilter() {
+    GlFilter bilateralFilter = new GlBilateralFilter();
+    GlFilterGroup filterGroup = new GlFilterGroup(bilateralFilter);
+    return filterGroup;
+  }
 
   /**
    * Filter the video by applying the filter passed.
    **/
-  public void filterVideo(GlFilter filter, EPlayerView ePlayerView) {
+  public void filterVideo(GlFilter filter, GPUPlayerView ePlayerView) {
     ePlayerView.setGlFilter(filter);
+
   }
 
 }

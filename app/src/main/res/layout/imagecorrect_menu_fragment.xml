@@ -16,47 +16,56 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/brightnessTextVal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Brightness"/>
-
     <SeekBar
-        android:id="@+id/brightness"
+        android:id="@+id/slider"
         android:max="100"
         android:progress="0"
         android:tag="brightness"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/saturationTextVal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Saturation"/>
+        android:orientation="horizontal">
 
-    <SeekBar
-        android:id="@+id/saturation"
-        android:max="100"
-        android:progress="0"
-        android:tag="saturation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/contrastTextVal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contrast"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/brightness_24dp"
+            android:tag="brightness"
+            android:id="@+id/btn_brightness"/>
 
-    <SeekBar
-        android:id="@+id/contrast"
-        android:max="100"
-        android:progress="0"
-        android:tag="contrast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:text="Brightness"/>
+      </LinearLayout>
+
+      <ImageButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@android:color/transparent"
+          android:src="@drawable/ic_brightness_6_black_24dp"
+          android:tag="contrast"
+          android:id="@+id/btn_contrast"/>
+
+      <ImageButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/brightness_24dp"
+          android:background="@android:color/transparent"
+          android:tag="saturation"
+          android:id="@+id/btn_saturation"/>
+
+    </LinearLayout>
 
 
 

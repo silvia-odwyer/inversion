@@ -42,6 +42,7 @@
     </LinearLayout>
 
     <jp.co.cyberagent.android.gpuimage.GPUImageView
+      android:transitionName="robot"
       android:id="@+id/gpuimageview"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

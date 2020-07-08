@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,10 +29,13 @@ public class CorrectMenuFragment extends Fragment {
   private Image image;
   private ImageFilters imageFilters;
   private TextView brightnessTextVal;
+  private String[] correctionEffects = {"brightness", "contrast", "saturation"};
+  private String activeFilter = correctionEffects[0];
+  private View root;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-    View root = inflater.inflate(R.layout.imagecorrect_menu_fragment, container, false);
+    root = inflater.inflate(R.layout.imagecorrect_menu_fragment, container, false);
     activity = (ImageEditor) getActivity();
     MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
@@ -39,30 +43,38 @@ public class CorrectMenuFragment extends Fragment {
 
     imageFilters = new ImageFilters();
 
-//    LinearLayout filteredImagesLinLayout = root.findViewById(R.id.correctedImageThumbnails);
-//    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.CORRECTION);
-//    imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
-
     // set a change listener on the SeekBar
-    SeekBar brightnessSlider = root.findViewById(R.id.brightness);
-    brightnessSlider.setOnSeekBarChangeListener(sliderChangeListener);
+    SeekBar slider = root.findViewById(R.id.slider);
+    slider.setOnSeekBarChangeListener(sliderChangeListener);
 
-    SeekBar contrastSlider = root.findViewById(R.id.contrast);
-    brightnessSlider.setOnSeekBarChangeListener(sliderChangeListener);
-
-    SeekBar saturationSlider = root.findViewById(R.id.saturation);
-    saturationSlider.setOnSeekBarChangeListener(sliderChangeListener);
+    for (int index = 0; index < correctionEffects.length; index++) {
+      int id = getResources().getIdentifier("btn_" + correctionEffects[index], "id", activity.getPackageName());
+      ImageButton imgBtn = (ImageButton) root.findViewById(id);
+      imgBtn.setOnClickListener(onClickListener);
+    }
 
     return root;
   }
+
+  ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      for (int index = 0; index < correctionEffects.length; index++) {
+        int id = getResources().getIdentifier("btn_" + correctionEffects[index], "id", activity.getPackageName());
+        ImageButton imgBtn = (ImageButton) root.findViewById(id);
+        imgBtn.setBackgroundColor(getResources().getColor(R.color.backgroundColor));
+      }
+      view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+      activeFilter = view.getTag().toString();
+    }
+  };
 
   SeekBar.OnSeekBarChangeListener sliderChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
     @Override
     public void onProgressChanged(SeekBar slider, int progress, boolean fromUser) {
-      String sliderTag = slider.getTag().toString();
 
-      switch (sliderTag) {
+      switch (activeFilter) {
         case "brightness":
           imageFilters.brightenImage(image, (float) (progress / 100.0));
           break;

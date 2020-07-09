@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.VideoFilters;
+import com.silviaodwyer.inversion.utils.VideoFilters;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
 
     root = inflater.inflate(R.layout.fragment_video_editor_home, container, false);
 
-    videoFilters = new VideoFilters();
+    videoFilters = new VideoFilters(getActivity().getApplicationContext());
     filters = videoFilters.getVideoFilters();
     mainApplication = (MainApplication) getActivity().getApplication();
 

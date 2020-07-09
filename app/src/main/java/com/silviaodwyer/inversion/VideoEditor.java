@@ -6,29 +6,21 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.daasuu.gpuv.composer.FillMode;
-import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.daasuu.gpuv.egl.filter.GlFilter;
-import com.daasuu.gpuv.egl.filter.GlFilterGroup;
 import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
 import com.daasuu.gpuv.player.GPUPlayerView;
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -97,6 +89,7 @@ public class VideoEditor extends AppCompatActivity {
       }
     });
 
+
   }
 
   public void setupPlayer() {
@@ -147,6 +140,7 @@ public class VideoEditor extends AppCompatActivity {
     videoContainer.addView(ePlayerView);
 
     ePlayerView.onResume();
+
   }
 
   public void end() {

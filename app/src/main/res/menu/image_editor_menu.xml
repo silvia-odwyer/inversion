@@ -3,8 +3,8 @@
 
   <item
     android:id="@+id/navigation_image_editor_home"
-    android:icon="@drawable/ic_home_black_24dp"
-    android:title="@string/title_home" />
+    android:icon="@drawable/ic_collections_black_24dp"
+    android:title="Filters" />
 
   <item
     android:id="@+id/navigation_effects_menu"
@@ -13,7 +13,7 @@
 
   <item
     android:id="@+id/navigation_imagecorrect_menu"
-    android:icon="@drawable/ic_notifications_black_24dp"
+    android:icon="@drawable/ic_photo_filter_gray_24dp"
     android:title="Correct" />
 
 </menu>

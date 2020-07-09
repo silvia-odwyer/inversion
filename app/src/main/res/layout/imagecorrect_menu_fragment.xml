@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:src="@drawable/brightness_24dp"
+            android:src="@drawable/ic_color_lens_black_36dp"
             android:tag="brightness"
             android:id="@+id/btn_brightness"/>
 
@@ -53,21 +53,19 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:background="@android:color/transparent"
-          android:src="@drawable/ic_brightness_6_black_24dp"
+          android:src="@drawable/ic_brightness_6_black_36dp"
           android:tag="contrast"
           android:id="@+id/btn_contrast"/>
 
       <ImageButton
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:src="@drawable/brightness_24dp"
+          android:src="@drawable/ic_brightness_6_black_36dp"
           android:background="@android:color/transparent"
           android:tag="saturation"
           android:id="@+id/btn_saturation"/>
 
     </LinearLayout>
-
-
 
 <!--    <HorizontalScrollView-->
 <!--        android:layout_width="match_parent"-->

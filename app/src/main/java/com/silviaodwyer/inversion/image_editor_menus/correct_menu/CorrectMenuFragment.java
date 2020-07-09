@@ -1,6 +1,7 @@
 package com.silviaodwyer.inversion.image_editor_menus.correct_menu;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,8 @@ public class CorrectMenuFragment extends Fragment {
       for (int index = 0; index < correctionEffects.length; index++) {
         int id = getResources().getIdentifier("btn_" + correctionEffects[index], "id", activity.getPackageName());
         ImageButton imgBtn = (ImageButton) root.findViewById(id);
-        imgBtn.setBackgroundColor(getResources().getColor(R.color.backgroundColor));
+        imgBtn.setBackgroundColor(Color.TRANSPARENT);
+
       }
       view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
       activeFilter = view.getTag().toString();

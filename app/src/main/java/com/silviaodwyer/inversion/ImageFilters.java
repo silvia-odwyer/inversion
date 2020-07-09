@@ -46,14 +46,8 @@ public class ImageFilters {
 
   public void addEffectFilters() {
     filters.add(new GPUImageSepiaToneFilter());
-    filters.add(new GPUImageToonFilter());
-    filters.add(new GPUImageSolarizeFilter());
     filters.add(new GPUImageGrayscaleFilter());
-    filters.add(new GPUImageEmbossFilter());
     filters.add(new GPUImageVibranceFilter());
-    filters.add(new GPUImageColorInvertFilter());
-    filters.add(new GPUImageSketchFilter());
-    filters.add(new GPUImagePosterizeFilter());
     filters.add(getDramaticFilter());
     filters.add(getObsidianFilter());
     filters.add(getVibrancyFilter());

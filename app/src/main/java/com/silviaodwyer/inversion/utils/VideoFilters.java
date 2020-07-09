@@ -1,24 +1,26 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
-import android.util.Log;
+import android.graphics.BitmapFactory;
 
-import com.bumptech.glide.annotation.GlideModule;
 import com.daasuu.gpuv.egl.filter.*;
 import com.daasuu.gpuv.player.GPUPlayerView;
+import com.silviaodwyer.inversion.R;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageToneCurveFilter;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
+  private Context context;
 
-  public VideoFilters() {
+  public VideoFilters(Context context) {
+    this.context = context;
+    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.summer);
+
+    this.videoFilters.add(new GLSoftLightBlendFilter(bitmap));
+    this.videoFilters.add(new GLDarkenBlendFilter(bitmap));
+    this.videoFilters.add(new GLMultiplyBlendFilter(bitmap));
     this.videoFilters.add(new GlSepiaFilter());
     this.videoFilters.add(new GlSaturationFilter());
     this.videoFilters.add(new GlLuminanceFilter());

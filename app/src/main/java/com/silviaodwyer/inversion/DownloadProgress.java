@@ -49,7 +49,7 @@ public class DownloadProgress extends AppCompatActivity {
         ImageUtils imageUtils = new ImageUtils(getApplicationContext());
         File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
         dst.mkdirs();
-        VideoMetadata metadata = new VideoMetadata();
+        VideoMetadata metadata = new VideoMetadata(videoPath);
         video.setMetadata(metadata);
 
         File outputFile = new File(dst.getPath() + File.separator + video.getMetadata().getName() + ".mp4");

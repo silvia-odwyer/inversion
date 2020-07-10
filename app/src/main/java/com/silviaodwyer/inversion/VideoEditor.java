@@ -74,9 +74,8 @@ public class VideoEditor extends AppCompatActivity {
         dataSourceFactory = null;
     }
 
-    videoPath = getIntent().getExtras().getString("videoPath");
     videoUrl = getIntent().getExtras().getString("videoUrl");
-    Log.d("DEBUG", "Video Path is: " + videoPath);
+    Log.d("DEBUG", "Video Path is: " + videoUrl);
 
     this.setupPlayer();
     this.setUpNavController();
@@ -88,8 +87,6 @@ public class VideoEditor extends AppCompatActivity {
         openDownloadActivity();
       }
     });
-
-
   }
 
   public void setupPlayer() {
@@ -243,9 +240,7 @@ public class VideoEditor extends AppCompatActivity {
 
   public void openDownloadActivity() {
     Intent intent = new Intent(VideoEditor.this, DownloadProgress.class);
-    intent.putExtra("videoPath", videoPath);
+    intent.putExtra("videoPath", videoUrl);
     startActivity(intent);
   }
-
-
 }

@@ -97,7 +97,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       Uri videoUri = data.getData();
 
       // Convert the video URI to a path
-      videoPath = uriToPath(videoUri);
+      videoUrl = uriToPath(videoUri);
 
       try {
         thumbnailVideo(videoPath);
@@ -127,15 +127,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     }
   }
 
-  public void copyVideo(String videoPath) {
-    File dst = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-    dst.mkdirs();
-    File outputFile = new File(dst.getPath() + File.separator + "copied_video.mp4");
-    File src = new File(videoPath);
-    fileUtils.copyFile(src, outputFile);
-    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
-  }
-
   @Override
   public void onItemClick(View view, int position) {
 
@@ -163,7 +154,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       FutureTarget<Bitmap> futureTarget =
         Glide.with(getApplicationContext())
           .asBitmap()
-          .load(videoPath)
+          .load(videoUrl)
           .submit(300, 300);
 
       try {
@@ -183,17 +174,15 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     protected void onPostExecute(Bitmap result) {
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
       Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
-      video = new Video(resizedBitmap);
-
-      mainApplication.setVideo(video);
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
-      if (videoPath != null) {
-        intent.putExtra("videoPath", videoPath);
-      }
-      videoUrl = videoPath;
+      if (videoUrl != null) {
+        video = new Video(resizedBitmap, videoUrl);
 
-      intent.putExtra("videoUrl", videoUrl);
+        mainApplication.setVideo(video);
+        intent.putExtra("videoUrl", videoUrl);
+
+      }
 
       // Now that we have the bitmap thumbnail of the video, we can start the video editor activity.
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

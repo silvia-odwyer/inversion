@@ -53,18 +53,45 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Switch Theme">
 
-      </TextView>
-      <Switch
+    </TextView>
+    <Switch
         android:id="@+id/themeToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="Switch Theme"
         />
+  </LinearLayout>
+
+  <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explore Weekly"
+        android:textColor="@color/headingColor"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:text="Explore Weekly">
+
+      </TextView>
+      <Switch
+          android:id="@+id/explore_weekly_toggle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textOff="Emable Explore Weekly"
+          />
     </LinearLayout>
 
   </LinearLayout>

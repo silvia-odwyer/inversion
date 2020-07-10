@@ -45,6 +45,9 @@ public class ImageFilters {
   }
 
   public void addEffectFilters() {
+    filters.add(getOrbikFilter());
+    filters.add(getSaturnFilter());
+    filters.add(getAestheticaFilter());
     filters.add(new GPUImageSepiaToneFilter());
     filters.add(new GPUImageGrayscaleFilter());
     filters.add(new GPUImageVibranceFilter());
@@ -58,7 +61,6 @@ public class ImageFilters {
     filters.add(getRetroFilter());
     filters.add(getRetroFilter2());
     filters.add(getRetroFilter3());
-    filters.add(getRetroFilter4());
   }
 
   public GPUImageFilterGroup getDramaticFilter() {
@@ -128,7 +130,7 @@ public class ImageFilters {
     float g_amt = (float) 0.0;
     float b_amt = (float) 0.0;
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
-    filterGroup.addFilter(new GPUImageSaturationFilter(amt));
+    filterGroup.addFilter(new GPUImageSaturationFilter(r_amt));
     filterGroup.addFilter(new GPUImageRGBFilter(r_amt, g_amt, b_amt));
     filterGroup.addFilter(new GPUImageContrastFilter(amt2));
 
@@ -279,6 +281,35 @@ public class ImageFilters {
     saturation.setSaturation(0.8f);
     filterGroup.addFilter(saturation);
 
+    return filterGroup;
+  }
+
+  public GPUImageFilterGroup getAestheticaFilter() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    float amt = (float) 0.4;
+    float exp_amt = (float) 0.05;
+    filterGroup.addFilter(new GPUImageContrastFilter(amt));
+    filterGroup.addFilter(new GPUImagePixelationFilter());
+    return filterGroup;
+  }
+
+  public GPUImageFilterGroup getSaturnFilter() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    float amt = (float) 0.4;
+    float brightness_amt = (float) 0.15;
+    filterGroup.addFilter(new GPUImageContrastFilter(amt));
+    filterGroup.addFilter(new GPUImageBrightnessFilter(brightness_amt));
+    filterGroup.addFilter(new GPUImageVibranceFilter(amt));
+    return filterGroup;
+  }
+
+  public GPUImageFilterGroup getOrbikFilter() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    float amt = (float) 0.4;
+    float exp_amt = (float) 0.05;
+    filterGroup.addFilter(new GPUImageContrastFilter(amt));
+    filterGroup.addFilter(new GPUImageSaturationFilter(amt));
+    filterGroup.addFilter(new GPUImageVibranceFilter(exp_amt));
     return filterGroup;
   }
 

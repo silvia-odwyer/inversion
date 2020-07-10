@@ -21,6 +21,8 @@ public class UserAccountFragment extends Fragment {
   private Switch themeToggle;
   private Boolean nightThemeEnabled;
   private SharedPreferences sharedPreferences;
+  private Switch exploreWeeklyToggle;
+  private Boolean exploreWeeklyEnabled;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class UserAccountFragment extends Fragment {
     View root = inflater.inflate(R.layout.fragment_useraccount, container, false);
     sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
     themeToggle = root.findViewById(R.id.themeToggle);
+    exploreWeeklyToggle = root.findViewById(R.id.explore_weekly_toggle);
     initThemeToggle();
     themeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
@@ -70,6 +73,9 @@ public class UserAccountFragment extends Fragment {
     else {
       themeToggle.setChecked(true);
     }
+  }
+
+  private void initExploreWeeklyToggle() {
 
   }
 }

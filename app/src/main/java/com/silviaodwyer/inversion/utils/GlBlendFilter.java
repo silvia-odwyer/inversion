@@ -21,11 +21,11 @@ public abstract class GlBlendFilter extends GlFilter {
     private static int width = 720;
     private Size inputSize = new Size(width, height);
 
-    public GlBlendFilter(String FRAGMENT_SHADER) {
+    GlBlendFilter(String FRAGMENT_SHADER) {
         super(DEFAULT_VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
-    public void setResolution(Size resolution) {
+    private void setResolution(Size resolution) {
         this.inputSize = resolution;
     }
 

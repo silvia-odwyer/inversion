@@ -14,8 +14,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -148,4 +150,25 @@ public class FileUtils {
     Log.d("DEBUG", "COPIED VIDEO ");
   }
 
+  public static String getFileFromAssets(Context context, String filename) {
+    String jsonString = null;
+
+    try {
+      InputStream inputStream = context.getAssets().open(filename);
+      int size = inputStream.available();
+
+      // create buffer
+      byte[] buffer = new byte[size];
+      inputStream.read(buffer);
+
+      // close
+      inputStream.close();
+      jsonString = new String(buffer, StandardCharsets.UTF_8);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+      return null;
+    }
+
+    return jsonString;
+  }
 }

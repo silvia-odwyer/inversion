@@ -23,7 +23,6 @@ import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
 import java.io.File;
 
 public class DownloadProgress extends AppCompatActivity {
-
     private Video video;
     private ProgressBar progressBar;
     private String videoPath;
@@ -56,8 +55,7 @@ public class DownloadProgress extends AppCompatActivity {
         final String destMp4Path = outputFile.getPath();
 
         new GPUMp4Composer(videoPath, destMp4Path)
-                .size( 540,  960)
-                .fillMode(FillMode.PRESERVE_ASPECT_FIT)
+                .fillMode(FillMode.PRESERVE_ASPECT_CROP)
                 .filter(new GlFilterGroup(activeFilter))
                 .listener(new GPUMp4Composer.Listener() {
                     @Override

@@ -15,24 +15,28 @@ public class FileMetadata {
   private String timestamp;
   private FileType fileType;
   private String url;
+  private String originalFileUrl;
 
-  public FileMetadata(String name, String timestamp, FileType fileType) {
+  public FileMetadata(String name, String timestamp, FileType fileType, String originalFilePath) {
     this.name = name;
     this.timestamp = timestamp;
     this.fileType = fileType;
     this.url = getAbsolutePath();
+    this.originalFileUrl = originalFilePath;
   }
 
-  public FileMetadata(FileType fileType) {
+  public FileMetadata(FileType fileType, String originalFilePath) {
     this.timestamp = FileUtils.createTimestamp();
     this.fileType = fileType;
     this.name = generateName();
     this.url = getAbsolutePath();
+    this.originalFileUrl = originalFilePath;
   }
 
-  public FileMetadata(FileType fileType, String url) {
+  public FileMetadata(FileType fileType, String url, String originalFilePath) {
     this.fileType = fileType;
     this.url = url;
+    this.originalFileUrl = originalFilePath;
   }
 
   /**
@@ -125,5 +129,14 @@ public class FileMetadata {
     File file = new File(directory, name);
     return file.getAbsolutePath();
   }
+
+  public String getOriginalFileUrl() {
+    return originalFileUrl;
+  }
+
+  public void setOriginalFileUrl(String originalFileUrl) {
+    this.originalFileUrl = originalFileUrl;
+  }
+
 
 }

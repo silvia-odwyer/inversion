@@ -3,6 +3,7 @@ package com.silviaodwyer.inversion.main_ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -44,6 +45,7 @@ import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +77,7 @@ public class HomeScreenFragment extends Fragment {
     context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
-//    imagesThumbnailsLinLayout = root.findViewById(R.id.images);
+
     videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
@@ -107,7 +109,7 @@ public class HomeScreenFragment extends Fragment {
 
   }
 
-  public void initRecyclerViews(ArrayList<FileMetadata> imageMetadata) {
+  private void initRecyclerViews(ArrayList<FileMetadata> imageMetadata) {
       recyclerView = root.findViewById(R.id.recycler_view_images);
       LinearLayoutManager layoutManager
             = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -148,6 +150,13 @@ public class HomeScreenFragment extends Fragment {
     effectNames.add("Chromatic");
     effectNames.add("Sepia");
     effectNames.add("Vintage");
+
+    // import JSON file
+    try {
+      activity.getAssets().open("effects.json");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     for (int i = 0; i < effectNames.size(); i++) {
       final String effectName = effectNames.get(i);
@@ -328,10 +337,5 @@ public class HomeScreenFragment extends Fragment {
     });
 
     return imageView;
-  }
-
-  private void clearThumbnails() {
-    imagesThumbnailsLinLayout.removeAllViews();
-    videosThumbnailsLinLayout.removeAllViews();
   }
 }

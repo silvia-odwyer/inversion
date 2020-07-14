@@ -27,11 +27,11 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     private ArrayList<FileMetadata> data;
     private ItemClickListener clickListener;
     private LayoutInflater inflater;
-    private Activity context;
-    private MainApplication mainApplication;
     private ArrayList<FileMetadata> metaDataArray;
     private ImageUtils imageUtils;
     private Activity activity;
+    private Activity context;
+    private MainApplication mainApplication;
 
     public WeeklyEditedImagesRecyclerView(Activity context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
         this.inflater = LayoutInflater.from(context);
@@ -94,7 +94,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-    
+
     public void update(ArrayList<FileMetadata> updatedFiles) {
         this.data.clear();
         this.data = updatedFiles;

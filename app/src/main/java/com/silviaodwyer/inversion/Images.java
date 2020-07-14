@@ -106,7 +106,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
+      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, imageUri.toString());
       Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);

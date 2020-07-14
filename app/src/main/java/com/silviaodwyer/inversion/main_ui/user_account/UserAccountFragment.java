@@ -20,36 +20,56 @@ import com.silviaodwyer.inversion.R;
 public class UserAccountFragment extends Fragment {
   private Switch themeToggle;
   private Boolean nightThemeEnabled;
+  private Boolean exploreWeeklyEnabled;
   private SharedPreferences sharedPreferences;
   private Switch exploreWeeklyToggle;
-  private Boolean exploreWeeklyEnabled;
+  private Context context;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
     View root = inflater.inflate(R.layout.fragment_useraccount, container, false);
-    sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
+    context = getActivity().getApplicationContext();
+    sharedPreferences = context.getSharedPreferences("PREF", Context.MODE_PRIVATE);
     themeToggle = root.findViewById(R.id.themeToggle);
     exploreWeeklyToggle = root.findViewById(R.id.explore_weekly_toggle);
     initThemeToggle();
+    initExploreWeeklyToggle();
     themeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         if (isChecked) {
           nightThemeEnabled = true;
-          UiModeManager umm = (UiModeManager) getActivity().getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+          UiModeManager umm = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
           umm.setNightMode(UiModeManager.MODE_NIGHT_YES);
-          Toast.makeText(getActivity().getApplicationContext(), "Night theme enabled", Toast.LENGTH_SHORT).show();
+          Toast.makeText(context, "Night theme enabled", Toast.LENGTH_SHORT).show();
         } else {
           nightThemeEnabled = false;
-          UiModeManager umm = (UiModeManager) getActivity().getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+          UiModeManager umm = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
           umm.setNightMode(UiModeManager.MODE_NIGHT_NO);
-          Toast.makeText(getActivity().getApplicationContext(), "Light theme enabled", Toast.LENGTH_SHORT).show();
+          Toast.makeText(context, "Light theme enabled", Toast.LENGTH_SHORT).show();
         }
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("nightThemeEnabled", nightThemeEnabled);
-        editor.commit();
+        editor.apply();
+      }
+    });
+
+    exploreWeeklyToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        if (isChecked) {
+          exploreWeeklyEnabled = true;
+          Toast.makeText(context, "Explore Weekly enabled", Toast.LENGTH_SHORT).show();
+        } else {
+          exploreWeeklyEnabled = false;
+          Toast.makeText(context, "Explore Weekly enabled", Toast.LENGTH_SHORT).show();
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("exploreWeeklyEnabled", exploreWeeklyEnabled);
+        editor.apply();
       }
     });
 
@@ -76,6 +96,19 @@ public class UserAccountFragment extends Fragment {
   }
 
   private void initExploreWeeklyToggle() {
-
+    Boolean exploreWeeklyEnabled = false;
+    // check if key exists in sharedPreferences
+    if (sharedPreferences.contains("exploreWeeklyEnabled")) {
+      exploreWeeklyEnabled = sharedPreferences.getBoolean("exploreWeeklyEnabled", exploreWeeklyEnabled);
+      if (exploreWeeklyEnabled) {
+        exploreWeeklyToggle.setChecked(true);
+      }
+      else {
+        exploreWeeklyToggle.setChecked(false);
+      }
+    }
+    else {
+      exploreWeeklyToggle.setChecked(true);
+    }
   }
 }

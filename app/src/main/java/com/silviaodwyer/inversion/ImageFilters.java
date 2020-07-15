@@ -84,14 +84,26 @@ public class ImageFilters {
 
     // create blend filters
     createBlendFilters();
+    createGradientFilters();
   }
 
   public void createBlendFilters() {
-    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.lensflare, R.mipmap.background);
+    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.lensflare, R.mipmap.background);
 
     for (int k = 0; k < blend_backgrounds.size(); k++) {
       int background = blend_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageAddBlendFilter.class, background);
+      filters.add(filter);
+    }
+  }
+
+  public void createGradientFilters() {
+    List<Integer> gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
+            R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars);
+
+    for (int k = 0; k < gradient_backgrounds.size(); k++) {
+      int background = gradient_backgrounds.get(k);
+      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageMultiplyBlendFilter.class, background);
       filters.add(filter);
     }
   }

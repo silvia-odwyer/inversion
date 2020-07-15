@@ -62,13 +62,10 @@
     app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
     app:layout_constraintVertical_bias="0.096">
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Explore re-imaginings of your images here. New filters applied to your images will be added here in our 'Explore Weekly' function. "
-      android:textSize="25sp"
-      android:textColor="@color/headingColor" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imgs_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
   </LinearLayout>
 

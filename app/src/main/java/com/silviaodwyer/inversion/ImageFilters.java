@@ -1,6 +1,8 @@
 package com.silviaodwyer.inversion;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.Log;
@@ -8,6 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.*;
 
@@ -15,18 +20,18 @@ public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<GPUImageFilter> correctionFilters;
   private GPUImageFilterGroup activeFilterGroup = new GPUImageFilterGroup();
-
+  private Context context;
   private GPUImageBrightnessFilter brightnessFilter;
   private GPUImageContrastFilter contrastFilter;
   private GPUImageSaturationFilter saturationFilter;
-
 
   public enum FilterType {
     EFFECT,
     CORRECTION,
   }
 
-  public ImageFilters() {
+  public ImageFilters(Context context) {
+    this.context = context;
     filters = new ArrayList<GPUImageFilter>();
     addEffectFilters();
     initCorrectionFilters();
@@ -42,6 +47,21 @@ public class ImageFilters {
     activeFilterGroup.addFilter(brightnessFilter);
     activeFilterGroup.addFilter(contrastFilter);
     activeFilterGroup.addFilter(saturationFilter);
+  }
+
+  private static GPUImageFilter createTwoBlendFilter(Context context, Class<? extends GPUImageTwoInputFilter> twoInputFilterClass,
+                                                  int resource) {
+    try {
+      // create a two input filter
+      GPUImageTwoInputFilter filter = twoInputFilterClass.newInstance();
+
+      // set bitmap to blend with
+      filter.setBitmap(BitmapFactory.decodeResource(context.getResources(), resource));
+      return filter;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   public void addEffectFilters() {
@@ -61,6 +81,19 @@ public class ImageFilters {
     filters.add(getRetroFilter());
     filters.add(getRetroFilter2());
     filters.add(getRetroFilter3());
+
+    // create blend filters
+    createBlendFilters();
+  }
+
+  public void createBlendFilters() {
+    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.lensflare, R.mipmap.background);
+
+    for (int k = 0; k < blend_backgrounds.size(); k++) {
+      int background = blend_backgrounds.get(k);
+      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageAddBlendFilter.class, background);
+      filters.add(filter);
+    }
   }
 
   public GPUImageFilterGroup getDramaticFilter() {
@@ -75,8 +108,8 @@ public class ImageFilters {
   }
 
   public GPUImageFilterGroup getRubrikFilter() {
-    float amount = (float) 1.1;
-    float amount2 = (float) 1.2;
+    float amount = (float) 0.8;
+    float amount2 = (float) 0.2;
 
     GPUImageFilterGroup rubrikFilter = new GPUImageFilterGroup();
     rubrikFilter.addFilter(new GPUImageContrastFilter(amount));
@@ -124,14 +157,10 @@ public class ImageFilters {
   }
 
   public GPUImageFilterGroup getCaliFilter() {
-    float amt = (float) 1.1;
+    float amt = (float) 0.7;
     float amt2 = (float) 1.2;
-    float r_amt = (float) 0.1;
-    float g_amt = (float) 0.0;
-    float b_amt = (float) 0.0;
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
-    filterGroup.addFilter(new GPUImageSaturationFilter(r_amt));
-    filterGroup.addFilter(new GPUImageRGBFilter(r_amt, g_amt, b_amt));
+    filterGroup.addFilter(new GPUImageSaturationFilter(amt));
     filterGroup.addFilter(new GPUImageContrastFilter(amt2));
 
     return filterGroup;

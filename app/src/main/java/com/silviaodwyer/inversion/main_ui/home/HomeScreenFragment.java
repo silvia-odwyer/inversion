@@ -286,8 +286,8 @@ public class HomeScreenFragment extends Fragment {
       @Override
       public void onClick(View view) {
         Intent intent = new Intent(context, ImageEditor.class);
-
-        Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
+        ImageUtils imageUtils = new ImageUtils(getActivity().getApplicationContext());
+        Image image = imageUtils.getImageFromFilename(metadata, context, mainApplication);
         mainApplication.setImage(image);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
           // TODO implement shared animations and transitions

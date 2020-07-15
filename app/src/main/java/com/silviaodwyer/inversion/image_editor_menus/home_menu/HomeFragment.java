@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
 
     image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
-    ImageFilters imageFilters = new ImageFilters();
+    ImageFilters imageFilters = new ImageFilters(getContext());
     ArrayList<GPUImageFilter> filters = imageFilters.getFilters();
 
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);

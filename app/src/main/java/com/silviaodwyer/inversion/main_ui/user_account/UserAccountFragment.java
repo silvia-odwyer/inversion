@@ -27,14 +27,15 @@ public class UserAccountFragment extends Fragment {
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-
     View root = inflater.inflate(R.layout.fragment_useraccount, container, false);
     context = getActivity().getApplicationContext();
     sharedPreferences = context.getSharedPreferences("PREF", Context.MODE_PRIVATE);
     themeToggle = root.findViewById(R.id.themeToggle);
     exploreWeeklyToggle = root.findViewById(R.id.explore_weekly_toggle);
+
     initThemeToggle();
     initExploreWeeklyToggle();
+
     themeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {

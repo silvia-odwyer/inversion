@@ -42,7 +42,7 @@ public class CorrectMenuFragment extends Fragment {
 
     image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
-    imageFilters = new ImageFilters();
+    imageFilters = new ImageFilters(getContext());
 
     // set a change listener on the SeekBar
     SeekBar slider = root.findViewById(R.id.slider);

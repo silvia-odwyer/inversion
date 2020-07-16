@@ -22,7 +22,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   private Button uploadImage;
   private Integer RESULT_LOAD_IMG = 8;
   private ImagesRecyclerView adapter;
-  private ArrayList<FileMetadata> savedFileMetaData;
+  private ArrayList<ImageMetadata> savedFileMetaData;
   private MainApplication mainApplication;
   private Button deleteBtn;
   private RecyclerView recyclerView;
@@ -67,9 +67,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     // get num of images
     numImages = savedFileMetaData.size();
 
-    ArrayList<FileMetadata> imageMetadata = null;
+    ArrayList<ImageMetadata> imageMetadata = null;
     if (numImages == 0) {
-      imageMetadata = mainApplication.getPlaceholderMetadata();
+//      imageMetadata = mainApplication.getPlaceholderMetadata();
       Log.d("DEBUG", "USING PLACEHOLDER METADATA: " + numImages);
     }
     else {
@@ -79,7 +79,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
   }
 
-  private void initializeRecyclerView(ArrayList<FileMetadata> imageMetadata) {
+  private void initializeRecyclerView(ArrayList<ImageMetadata> imageMetadata) {
     recyclerView = findViewById(R.id.recycler_view);
     int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
@@ -91,7 +91,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   @Override
   public void onResume() {
     super.onResume();
-    ArrayList<FileMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
+    ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
     adapter.updateRecyclerView(savedImageMetadata);
   }
 
@@ -106,7 +106,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, imageUri.toString());
+      ImageMetadata metadata = new ImageMetadata(imageUri);
       Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);

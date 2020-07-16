@@ -15,28 +15,19 @@ public class FileMetadata {
   private String timestamp;
   private FileType fileType;
   private String url;
-  private String originalFileUrl;
 
-  public FileMetadata(String name, String timestamp, FileType fileType, String originalFilePath) {
+  public FileMetadata(String name, String timestamp, FileType fileType) {
     this.name = name;
     this.timestamp = timestamp;
     this.fileType = fileType;
     this.url = getAbsolutePath();
-    this.originalFileUrl = originalFilePath;
   }
 
-  public FileMetadata(FileType fileType, String originalFilePath) {
+  public FileMetadata(FileType fileType) {
     this.timestamp = FileUtils.createTimestamp();
     this.fileType = fileType;
     this.name = generateName();
     this.url = getAbsolutePath();
-    this.originalFileUrl = originalFilePath;
-  }
-
-  public FileMetadata(FileType fileType, String url, String originalFilePath) {
-    this.fileType = fileType;
-    this.url = url;
-    this.originalFileUrl = originalFilePath;
   }
 
   /**
@@ -58,15 +49,16 @@ public class FileMetadata {
   }
 
   /**
-   * Get the image name.
+   * Get the file name.
    *
+   * @return image's name
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Set the image name.
+   * Set the file name.
    *
    */
   public void setName(String name) {
@@ -97,10 +89,19 @@ public class FileMetadata {
   }
 
 
+  /**
+   * Get the file type.
+   *
+   * @return file's type, either image or video
+   */
   public FileType getFileType() {
     return fileType;
   }
 
+  /**
+   * Set the file type.
+   *
+   */
   public void setFileType(FileType fileType) {
     this.fileType = fileType;
   }
@@ -129,14 +130,5 @@ public class FileMetadata {
     File file = new File(directory, name);
     return file.getAbsolutePath();
   }
-
-  public String getOriginalFileUrl() {
-    return originalFileUrl;
-  }
-
-  public void setOriginalFileUrl(String originalFileUrl) {
-    this.originalFileUrl = originalFileUrl;
-  }
-
 
 }

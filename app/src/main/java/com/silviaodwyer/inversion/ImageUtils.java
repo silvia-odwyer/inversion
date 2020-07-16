@@ -139,7 +139,7 @@ public class ImageUtils {
   /**
    * Given an image's name, retrieves the image as a bitmap from the device's external storage.
    */
-  public static Image getImageFromFilename(FileMetadata metadata, Context context, MainApplication mainApplication) {
+  public static Image getImageFromFilename(ImageMetadata metadata, Context context, MainApplication mainApplication) {
     Image image = null;
     if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
       File imageFile = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images", metadata.getName() + ".png");
@@ -201,7 +201,7 @@ public class ImageUtils {
   public static ArrayList<FileMetadata> createImageMetadataFromURLs(String[] urls) {
     ArrayList<FileMetadata> fileMetadataArrayList = new ArrayList<FileMetadata>();
     for (String url : urls) {
-      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, url);
+      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
       fileMetadataArrayList.add(metadata);
     }
     return fileMetadataArrayList;

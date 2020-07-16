@@ -177,7 +177,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoUrl != null) {
-        video = new Video(resizedBitmap, videoUrl);
+        video = new Video(resizedBitmap);
 
         mainApplication.setVideo(video);
         intent.putExtra("videoUrl", videoUrl);

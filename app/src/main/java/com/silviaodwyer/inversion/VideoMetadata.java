@@ -5,12 +5,12 @@ import android.os.Environment;
 import java.io.File;
 
 public class VideoMetadata extends FileMetadata {
-    public VideoMetadata(String name, String timestamp, String originalVideoPath) {
-        super(name, timestamp, FileType.VIDEO, originalVideoPath);
+    public VideoMetadata(String name, String timestamp) {
+        super(name, timestamp, FileType.VIDEO);
     }
 
-    public VideoMetadata(String originalVideoPath) {
-        super(FileType.VIDEO, originalVideoPath);
+    public VideoMetadata() {
+        super(FileType.VIDEO);
     }
 
     public String getThumbnailPath() {

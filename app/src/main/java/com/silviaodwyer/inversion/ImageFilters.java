@@ -103,7 +103,7 @@ public class ImageFilters {
 
     for (int k = 0; k < gradient_backgrounds.size(); k++) {
       int background = gradient_backgrounds.get(k);
-      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageMultiplyBlendFilter.class, background);
+      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
       filters.add(filter);
     }
   }

@@ -2,6 +2,8 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
@@ -11,11 +13,12 @@ public class Image {
   private Bitmap bitmap;
   private Bitmap originalImageBitmap;
   private Context context;
+  private Uri imageUri;
   private ImageEditor activity;
   private ArrayList<Bitmap> filteredThumbnails;
   private String path;
   private ArrayList<Bitmap> correctedThumbnails;
-  private FileMetadata metaData;
+  private ImageMetadata metaData;
 
   /**
    * Returns all image thumbnails with image correction filters applied to them.
@@ -36,7 +39,7 @@ public class Image {
 
   // TODO remove ImageEditor activity and for image filtering, pass instance of gpuimage to
   //  a method below for filtering, similar to how it's done in the VideoEditor activity
-  public Image(Bitmap bitmap, Context ctx, ImageEditor activity, FileMetadata metaData) {
+  public Image(Bitmap bitmap, Context ctx, ImageEditor activity, ImageMetadata metaData) {
     this.context = ctx;
     this.bitmap = bitmap;
     this.originalImageBitmap = bitmap;
@@ -154,7 +157,7 @@ public class Image {
    *
    * @return metadata for this image
    */
-  public FileMetadata getMetaData() {
+  public ImageMetadata getMetaData() {
     return metaData;
   }
 
@@ -162,7 +165,8 @@ public class Image {
    * Set the metadata for this image.
    *
    */
-  public void setMetaData(FileMetadata metaData) {
+  public void setMetaData(ImageMetadata metaData) {
     this.metaData = metaData;
   }
+
 }

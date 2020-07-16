@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
@@ -37,7 +38,7 @@ public class EffectsFragment extends Fragment {
     return root;
   }
 
-  private void initRecyclerView(ArrayList<FileMetadata> imageMetadata) {
+  private void initRecyclerView(ArrayList<ImageMetadata> imageMetadata) {
     recyclerView = root.findViewById(R.id.imgs_recycler_view);
     int numberOfColumns = 4;
     recyclerView.setLayoutManager(new GridLayoutManager(context, numberOfColumns));

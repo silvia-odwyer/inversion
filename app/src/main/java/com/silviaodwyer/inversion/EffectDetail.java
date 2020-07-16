@@ -32,7 +32,7 @@ public class EffectDetail extends AppCompatActivity {
     final ImageUtils imageUtils = new ImageUtils(getApplicationContext());
     LinearLayout fileList = findViewById(R.id.effect_list);
 
-    ArrayList<FileMetadata> fileMetaData = mainApplication.getSavedImageMetadata(getApplicationContext());
+    ArrayList<ImageMetadata> fileMetaData = mainApplication.getSavedImageMetadata(getApplicationContext());
     int length = 0;
     if (fileMetaData.size() > 3) {
       length = 3;
@@ -42,7 +42,7 @@ public class EffectDetail extends AppCompatActivity {
     }
 
     for (int i = 0; i < length; i++) {
-      final FileMetadata metadata = fileMetaData.get(i);
+      final ImageMetadata metadata = fileMetaData.get(i);
       TextView textView = new TextView(getApplicationContext());
       String fileName = metadata.getName();
 

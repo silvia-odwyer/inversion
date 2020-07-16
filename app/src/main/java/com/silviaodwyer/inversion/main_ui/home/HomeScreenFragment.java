@@ -34,6 +34,7 @@ import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.ImagesRecyclerView;
@@ -62,7 +63,7 @@ public class HomeScreenFragment extends Fragment {
   private RecyclerView recyclerView;
   private ImagesRecyclerView adapter;
   private Activity activity;
-  private ArrayList<FileMetadata> savedImageMetadata;
+  private ArrayList<ImageMetadata> savedImageMetadata;
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
@@ -98,9 +99,9 @@ public class HomeScreenFragment extends Fragment {
     // get num of images
     numImages = savedImageMetadata.size();
     Log.d("DEBUG", "NUM IMAGES: " + numImages);
-    ArrayList<FileMetadata> imageMetadata = null;
+    ArrayList<ImageMetadata> imageMetadata = null;
     if (numImages == 0) {
-      imageMetadata = mainApplication.getPlaceholderMetadata();
+//      imageMetadata = mainApplication.getPlaceholderMetadata();
     }
     else {
       imageMetadata = savedImageMetadata;
@@ -109,7 +110,7 @@ public class HomeScreenFragment extends Fragment {
 
   }
 
-  private void initRecyclerViews(ArrayList<FileMetadata> imageMetadata) {
+  private void initRecyclerViews(ArrayList<ImageMetadata> imageMetadata) {
       recyclerView = root.findViewById(R.id.recycler_view_images);
       LinearLayoutManager layoutManager
             = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -204,10 +205,13 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void appendImageThumbnails() {
-    ArrayList<FileMetadata> savedFileMetadata = mainApplication.getSavedImageMetadata(context);
+    ArrayList<ImageMetadata> savedFileMetadata = mainApplication.getSavedImageMetadata(context);
 
     int totalImageNum = 0;
-    numImages = savedFileMetadata.size();
+    if (!savedFileMetadata.isEmpty()) {
+      numImages = savedFileMetadata.size();
+
+    }
     if (savedFileMetadata.size() < 4) {
       totalImageNum = savedFileMetadata.size();
     }
@@ -215,7 +219,7 @@ public class HomeScreenFragment extends Fragment {
       totalImageNum = 4;
     }
     for (int i = 0; i < totalImageNum; i++) {
-      final FileMetadata metadata = savedFileMetadata.get(i);
+      final ImageMetadata metadata = savedFileMetadata.get(i);
 
       ImageView imageView = createImageView(metadata);
 
@@ -266,7 +270,7 @@ public class HomeScreenFragment extends Fragment {
     }
   }
 
-  private ImageView createImageView(final FileMetadata metadata) {
+  private ImageView createImageView(final ImageMetadata metadata) {
     ImageView imageView = new ImageView(context);
     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     layoutParams.setMargins(10, 10, 10, 10);

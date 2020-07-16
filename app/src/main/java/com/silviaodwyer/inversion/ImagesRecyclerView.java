@@ -24,16 +24,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
 
-  private ArrayList<FileMetadata> data;
+  private ArrayList<ImageMetadata> data;
   private ItemClickListener clickListener;
   private LayoutInflater inflater;
   private Activity context;
   private MainApplication mainApplication;
-  private ArrayList<FileMetadata> metaDataArray;
+  private ArrayList<ImageMetadata> metaDataArray;
   private ImageUtils imageUtils;
   private Activity activity;
 
-  public ImagesRecyclerView(Activity context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
+  public ImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
@@ -41,7 +41,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     this.imageUtils = new ImageUtils(context);
   }
 
-  public void updateRecyclerView(ArrayList<FileMetadata> updatedFiles) {
+  public void updateRecyclerView(ArrayList<ImageMetadata> updatedFiles) {
     this.data.clear();
     this.data = updatedFiles;
     notifyDataSetChanged();
@@ -62,18 +62,17 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
       @Override
       public void onClick(View view) {
         Intent intent = new Intent(context, ImageEditor.class);
-        //
         // ActivityOptions options = ActivityOptions
         //.makeSceneTransitionAnimation(activity, view, "robot");
 
-        FileMetadata metadata = data.get(position);
+        ImageMetadata metadata = data.get(position);
         Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
         mainApplication.setImage(image);
         context.startActivity(intent);
       }
 
     });
-    FileMetadata metadata = data.get(position);
+    ImageMetadata metadata = data.get(position);
 
     Glide
       .with(context)
@@ -106,7 +105,7 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     }
   }
 
-  FileMetadata getItem(int id) {
+  ImageMetadata getItem(int id) {
     return data.get(id);
   }
 

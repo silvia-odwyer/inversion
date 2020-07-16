@@ -23,11 +23,9 @@ public class MainApplication extends Application {
   private Image image;
   private GPUPlayerView playerView;
   private Bitmap videoThumbnail;
-  private ArrayList<FileMetadata> fileMetaDataArrayList = new ArrayList<>();
   private VideoEditor videoEditorActivity;
   private static String savedImageMetadataFilename = "saved_image_paths.json";
   private static String savedVideoMetadataFilename = "saved_video_paths.json";
-  private static String IMAGES_DIRECTORY = "imagesDirectory";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
 
   public Video getVideo() {
@@ -65,18 +63,18 @@ public class MainApplication extends Application {
    *
    * @return      the image editor activity
    */
-  public ArrayList<FileMetadata> getSavedImageMetadata(Context context) {
+  public ArrayList<ImageMetadata> getSavedImageMetadata(Context context) {
     String filename = getSavedImageMetadataFilename();
     FileUtils fileUtils = new FileUtils(context);
 
-    ArrayList<FileMetadata> metadata = new ArrayList<>();
+    ArrayList<ImageMetadata> metadata = new ArrayList<>();
     boolean isFilePresent = fileUtils.isFilePresent(filename);
     if(isFilePresent) {
       String jsonString = fileUtils.readFile(filename);
-      metadata = new Gson().fromJson(jsonString, new TypeToken<List<FileMetadata>>(){}.getType());
+      metadata = new Gson().fromJson(jsonString, new TypeToken<List<ImageMetadata>>(){}.getType());
       Log.d("DEBUG", "SAVED METADATA LENGTH: " + metadata.size());
 
-      for (FileMetadata metadata1: metadata) {
+      for (ImageMetadata metadata1: metadata) {
         Log.d("DEBUG", "IMAGE NAME11: " + metadata1.getName());
       }
     }
@@ -143,11 +141,11 @@ public class MainApplication extends Application {
       1);
   }
 
-  public void saveImageMetadata(FileMetadata metadata) {
+  public void saveImageMetadata(ImageMetadata metadata) {
     String FILENAME = getSavedImageMetadataFilename();
     FileUtils fileUtils = new FileUtils(getApplicationContext());
 
-    ArrayList<FileMetadata> savedFileMetadata = getSavedImageMetadata(getApplicationContext());
+    ArrayList<ImageMetadata> savedFileMetadata = getSavedImageMetadata(getApplicationContext());
     savedFileMetadata.add(metadata);
     String json = new Gson().toJson(savedFileMetadata);
 

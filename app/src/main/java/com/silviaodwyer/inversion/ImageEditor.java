@@ -89,7 +89,7 @@ public class ImageEditor extends AppCompatActivity {
 
   public void saveImage() {
     // create new metadata
-    FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE, image.getPath());
+    ImageMetadata metadata = image.getMetaData();
     image.setMetaData(metadata);
 
     FileOutputStream fileOutputStream = null;

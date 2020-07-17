@@ -76,6 +76,8 @@ public class ImageFilters {
     filters.add(getVibrancyFilter());
     filters.add(getFourFilter());
     filters.add(getEightFilter());
+    filters.add(getRetroVignette());
+    filters.add(getRetroVignette2());
     filters.add(getRubrikFilter());
     filters.add(getCaliFilter());
     filters.add(getRetroFilter());
@@ -87,7 +89,7 @@ public class ImageFilters {
     createGradientFilters();
   }
 
-  public void createBlendFilters() {
+  private void createBlendFilters() {
     List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.lensflare, R.mipmap.background);
 
     for (int k = 0; k < blend_backgrounds.size(); k++) {
@@ -97,7 +99,7 @@ public class ImageFilters {
     }
   }
 
-  public void createGradientFilters() {
+  private void createGradientFilters() {
     List<Integer> gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
             R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars);
 
@@ -108,7 +110,7 @@ public class ImageFilters {
     }
   }
 
-  public GPUImageFilterGroup getDramaticFilter() {
+  private GPUImageFilterGroup getDramaticFilter() {
     float amount = (float) 1.4;
     float amount2 = (float) -0.3;
 
@@ -119,7 +121,7 @@ public class ImageFilters {
     return dramaticFilter;
   }
 
-  public GPUImageFilterGroup getRubrikFilter() {
+  private GPUImageFilterGroup getRubrikFilter() {
     float amount = (float) 0.8;
     float amount2 = (float) 0.2;
 
@@ -252,7 +254,7 @@ public class ImageFilters {
   }
 
 
-  public GPUImageFilterGroup getRetroFilter3() {
+  private GPUImageFilterGroup getRetroFilter3() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     float amt = (float) 0.8;
 
@@ -288,44 +290,7 @@ public class ImageFilters {
     return filterGroup;
   }
 
-
-  public GPUImageFilterGroup getRetroFilter4() {
-    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
-    float amt = (float) 0.8;
-
-    GPUImageGrayscaleFilter filter = new GPUImageGrayscaleFilter();
-    filterGroup.addFilter(filter);
-
-    GPUImageToneCurveFilter toneCurve = new GPUImageToneCurveFilter();
-    PointF[] rControlPoints = new PointF[] { new PointF(0.0f, 0.145f),
-            new PointF(0.063f, 0.153f), new PointF(0.251f, 0.278f),
-            new PointF(0.573f, 0.79f), new PointF(0.624f, 0.863f),
-            new PointF(0.682f, 0.22f), new PointF(0.792f, 0.965f),
-            new PointF(1.0f, 1.0f) };
-
-    PointF[] gControlPoints = new PointF[] { new PointF(0.0f, 0.0f),
-            new PointF(0.255f, 0.196f), new PointF(0.447f, 0.576f),
-            new PointF(0.686f, 0.875f), new PointF(1.0f, 1.0f) };
-
-    PointF[] bControlPoints = new PointF[] { new PointF(0.0f, 0.137f),
-            new PointF(0.51f, 0.51f), new PointF(0.15f, 0.376f),
-            new PointF(0.08f, 0.98f), new PointF(0.190f, 0.91f),
-            new PointF(1.0f, 0.941f) };
-
-    toneCurve.setRedControlPoints(rControlPoints);
-    toneCurve.setGreenControlPoints(gControlPoints);
-    toneCurve.setBlueControlPoints(bControlPoints);
-
-    filterGroup.addFilter(toneCurve);
-
-    GPUImageSaturationFilter saturation = new GPUImageSaturationFilter();
-    saturation.setSaturation(0.8f);
-    filterGroup.addFilter(saturation);
-
-    return filterGroup;
-  }
-
-  public GPUImageFilterGroup getAestheticaFilter() {
+  private GPUImageFilterGroup getAestheticaFilter() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     float amt = (float) 0.4;
     float exp_amt = (float) 0.05;
@@ -334,7 +299,7 @@ public class ImageFilters {
     return filterGroup;
   }
 
-  public GPUImageFilterGroup getSaturnFilter() {
+  private GPUImageFilterGroup getSaturnFilter() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     float amt = (float) 0.4;
     float brightness_amt = (float) 0.15;
@@ -344,7 +309,25 @@ public class ImageFilters {
     return filterGroup;
   }
 
-  public GPUImageFilterGroup getOrbikFilter() {
+  private GPUImageFilterGroup getRetroVignette() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    float amt = (float) 0.4;
+    float exp_amt = (float) 0.05;
+    filterGroup.addFilter(getRetroFilter());
+    filterGroup.addFilter(new GPUImageVignetteFilter());
+    filterGroup.addFilter(new GPUImageVibranceFilter(exp_amt));
+    return filterGroup;
+  }
+
+  public GPUImageFilterGroup getRetroVignette2() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    float exp_amt = (float) 0.15;
+    filterGroup.addFilter(getRetroFilter2());
+    filterGroup.addFilter(new GPUImageVignetteFilter());
+    return filterGroup;
+  }
+
+  private GPUImageFilterGroup getOrbikFilter() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     float amt = (float) 0.4;
     float exp_amt = (float) 0.05;

@@ -74,8 +74,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     }
     else {
       imageMetadata = savedFileMetaData;
+      initializeRecyclerView(imageMetadata);
+
     }
-    initializeRecyclerView(imageMetadata);
 
   }
 
@@ -91,8 +92,8 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   @Override
   public void onResume() {
     super.onResume();
-    ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
-    adapter.updateRecyclerView(savedImageMetadata);
+    //ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
+    //adapter.updateRecyclerView(savedImageMetadata);
   }
 
   @Override

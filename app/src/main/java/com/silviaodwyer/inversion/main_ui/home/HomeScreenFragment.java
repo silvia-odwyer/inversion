@@ -105,8 +105,9 @@ public class HomeScreenFragment extends Fragment {
     }
     else {
       imageMetadata = savedImageMetadata;
+      initRecyclerViews(imageMetadata);
+
     }
-    initRecyclerViews(imageMetadata);
 
   }
 

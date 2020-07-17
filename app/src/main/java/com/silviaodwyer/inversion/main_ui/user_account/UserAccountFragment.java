@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion.main_ui.user_account;
 
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.silviaodwyer.inversion.R;
@@ -111,5 +113,23 @@ public class UserAccountFragment extends Fragment {
     else {
       exploreWeeklyToggle.setChecked(true);
     }
+  }
+
+  public void displayThemeOptions() {
+    String[] themes = {"Lime Green", "Ocean Blue", "Future Wave", "Night Blue"};
+
+    // Create dialog builder
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+    builder.setTitle("Choose a theme: ");
+
+    // set items
+    builder.setItems(themes, new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int chosenIndex) {
+        String theme = themes[chosenIndex];
+        Log.d("DEBUG", "Chosen theme is: " + theme);
+      }
+    });
+    builder.show();
   }
 }

@@ -41,7 +41,7 @@
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/your_images"
+        android:text=""
         android:textColor="@color/headingColor"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -89,7 +89,9 @@
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recycler_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      android:layoutAnimation="@anim/layout_animation"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
   </LinearLayout>
 

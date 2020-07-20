@@ -1,84 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/container"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@color/backgroundColor">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor">
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toTopOf="@+id/guideline8"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.075">
-
-    <LinearLayout
+      android:id="@+id/image_editor_content"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="vertical"
+      app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.087">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
       <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit"
-        android:textColor="@color/headingColor"
-        android:textSize="40sp"
-        android:layout_marginRight="200dp"
-        android:textStyle="bold" />
+          android:id="@+id/textView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="200dp"
+          android:text="Edit"
+          android:textColor="@color/headingColor"
+          android:textSize="30sp"
+          android:textStyle="bold" />
 
       <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/save_btn"
-        android:src="@drawable/save_icon"/>
+          android:id="@+id/save_btn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/save_icon" />
     </LinearLayout>
+  </LinearLayout>
 
-    <jp.co.cyberagent.android.gpuimage.GPUImageView
-      android:transitionName="robot"
+  <jp.co.cyberagent.android.gpuimage.GPUImageView
       android:id="@+id/gpuimageview"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:gpuimage_show_loading="false"
-      app:gpuimage_surface_type="texture_view" />
-  </LinearLayout>
-
-  <com.google.android.material.bottomnavigation.BottomNavigationView
-    android:id="@+id/nav_view"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp"
-    android:background="?android:attr/windowBackground"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:menu="@menu/image_editor_menu" />
+      app:gpuimage_surface_type="texture_view"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/image_editor_content"
+      app:layout_constraintBottom_toTopOf="@id/nav_host_fragment"
+      />
 
   <fragment
-    android:id="@+id/nav_host_fragment"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:defaultNavHost="true"
-    app:layout_constraintBottom_toTopOf="@id/nav_view"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/guideline8"
-    app:navGraph="@navigation/image_editor_navigation" />
+      android:id="@+id/nav_host_fragment"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:defaultNavHost="true"
+      app:layout_constraintBottom_toTopOf="@id/nav_view"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/gpuimageview"
+      app:navGraph="@navigation/image_editor_navigation" />
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="0dp"
+      android:background="?android:attr/windowBackground"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:menu="@menu/image_editor_menu" />
 
   <androidx.constraintlayout.widget.Guideline
-    android:id="@+id/guideline8"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.76" />
+      android:id="@+id/guideline2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_percent="0.04" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

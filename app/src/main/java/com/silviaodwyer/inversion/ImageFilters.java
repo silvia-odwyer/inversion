@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
@@ -20,7 +22,9 @@ public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<GPUImageFilter> correctionFilters;
   private GPUImageFilterGroup activeFilterGroup = new GPUImageFilterGroup();
+  private List<String> filterNames;
   private Context context;
+  private List<Integer> gradient_backgrounds;
   private GPUImageBrightnessFilter brightnessFilter;
   private GPUImageContrastFilter contrastFilter;
   private GPUImageSaturationFilter saturationFilter;
@@ -32,7 +36,12 @@ public class ImageFilters {
 
   public ImageFilters(Context context) {
     this.context = context;
-    filters = new ArrayList<GPUImageFilter>();
+    filters = new ArrayList<>();
+    gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
+            R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars);
+
+    filterNames = Arrays.asList("neonPink", "rubrik", "eight");
+
     addEffectFilters();
     initCorrectionFilters();
   }
@@ -65,32 +74,18 @@ public class ImageFilters {
   }
 
   public void addEffectFilters() {
-    filters.add(getOrbikFilter());
+    filters.add(getNeonPinkFilter());
+    filters.add(getOribitonFilter());
     filters.add(getSaturnFilter());
-    filters.add(getAestheticaFilter());
-    filters.add(new GPUImageSepiaToneFilter());
-    filters.add(new GPUImageGrayscaleFilter());
-    filters.add(new GPUImageVibranceFilter());
-    filters.add(getDramaticFilter());
-    filters.add(getObsidianFilter());
-    filters.add(getVibrancyFilter());
-    filters.add(getFourFilter());
-    filters.add(getEightFilter());
-    filters.add(getRetroVignette());
-    filters.add(getRetroVignette2());
-    filters.add(getRubrikFilter());
-    filters.add(getCaliFilter());
-    filters.add(getRetroFilter());
-    filters.add(getRetroFilter2());
-    filters.add(getRetroFilter3());
-
     // create blend filters
-    createBlendFilters();
-    createGradientFilters();
+    //createBlendFilters();
+    //createGradientFilters();
+    //createGradientGrayscaleFilters();
   }
 
   private void createBlendFilters() {
-    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.lensflare, R.mipmap.background);
+    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.lensflare, R.mipmap.scrapbook,
+            R.mipmap.galaxy, R.mipmap.background2);
 
     for (int k = 0; k < blend_backgrounds.size(); k++) {
       int background = blend_backgrounds.get(k);
@@ -100,14 +95,38 @@ public class ImageFilters {
   }
 
   private void createGradientFilters() {
-    List<Integer> gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
-            R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars);
-
     for (int k = 0; k < gradient_backgrounds.size(); k++) {
       int background = gradient_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
       filters.add(filter);
     }
+  }
+
+  private void createGradientGrayscaleFilters() {
+    for (int k = 0; k < gradient_backgrounds.size(); k++) {
+      GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+      filterGroup.addFilter(getObsidianFilter());
+      int background = gradient_backgrounds.get(k);
+      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
+      filterGroup.addFilter(filter);
+      filters.add(filterGroup);
+    }
+  }
+
+  private GPUImageFilterGroup getOribitonFilter() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    filterGroup.addFilter(getObsidianFilter());
+    GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, R.mipmap.purple);
+    filterGroup.addFilter(filter);
+    return filterGroup;
+  }
+
+  private GPUImageFilterGroup getNeonPinkFilter() {
+    GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+    filterGroup.addFilter(getObsidianFilter());
+    GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, R.mipmap.pink);
+    filterGroup.addFilter(filter);
+    return filterGroup;
   }
 
   private GPUImageFilterGroup getDramaticFilter() {
@@ -140,7 +159,6 @@ public class ImageFilters {
     eightFilter.addFilter(new GPUImageBrightnessFilter(amount2));
     return eightFilter;
   }
-
 
   public GPUImageFilterGroup getFourFilter() {
     float amount = (float) 1.2;
@@ -337,18 +355,6 @@ public class ImageFilters {
     return filterGroup;
   }
 
-  public ArrayList<GPUImageFilter> getFilters() {
-    return filters;
-  }
-
-  public void setFilters(ArrayList<GPUImageFilter> filters) {
-    this.filters = filters;
-  }
-
-  public void addFilter(GPUImageFilter filter) {
-    this.filters.add(filter);
-  }
-
   public ArrayList<GPUImageFilter> getCorrectionFilters() {
     return correctionFilters;
   }
@@ -356,14 +362,14 @@ public class ImageFilters {
   public ArrayList<Bitmap> generateThumbnails(final Image image, ImageFilters.FilterType filterType) {
     final ArrayList<Bitmap> thumbnails = new ArrayList<Bitmap>();
 
-    switch(filterType) {
-      case EFFECT:
-        filters = getFilters();
-        break;
-      case CORRECTION:
-        filters = getCorrectionFilters();
-        break;
-    }
+//    switch(filterType) {
+//      case EFFECT:
+//        filters = getImageFilters();
+//        break;
+//      case CORRECTION:
+//        filters = getCorrectionFilters();
+//        break;
+//    }
     Bitmap thumbnail = image.getThumbnail(150, 150);
 
     GPUImage.getBitmapForMultipleFilters(thumbnail, filters, new GPUImage.ResponseListener<Bitmap>() {
@@ -381,17 +387,86 @@ public class ImageFilters {
                                     ArrayList<Bitmap> filteredImages) {
 
     for (int index = 0; index < filteredImages.size(); index++) {
-      final int index_final = index;
       final ImageView imageView = new ImageView(image.getContext());
       imageView.setImageBitmap(filteredImages.get(index));
+      GPUImageFilter filter = filters.get(index);
+
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          filterImage(filters.get(index_final), image);
+          filterImage(filter, image);
         }
       });
       filteredImagesLinLayout.addView(imageView);
     }
+  }
+
+  public void filterImageFromName(String filterName, Image image) {
+    GPUImageFilter filter = getFilterFromName(filterName);
+    image.getMetaData().setAppliedFilter(filterName);
+
+    ImageEditor activity = image.getActivity();
+    activity.updateGPUImage(filter);
+  }
+
+  public GPUImageFilter getFilterFromName(String filterName) {
+    GPUImageFilter filter = null;
+    switch(filterName) {
+      case "neonPink":
+        filter = getNeonPinkFilter();
+        break;
+      case "eight":
+        filter = getEightFilter();
+        break;
+      case "orbiton":
+        filter = getOribitonFilter();
+        break;
+      case "aesthetica":
+        filter = getAestheticaFilter();
+        break;
+      case "sepia":
+        filter = new GPUImageSepiaToneFilter();
+        break;
+      case "grayscale":
+        filter = new GPUImageGrayscaleFilter();
+        break;
+      case "vibrance":
+        filter = new GPUImageVibranceFilter();
+        break;
+      case "dramatic":
+        filter = getDramaticFilter();
+        break;
+      case "obsidian":
+        filter = getObsidianFilter();
+        break;
+      case "vibrancy":
+        filter = getVibrancyFilter();
+        break;
+      case "rubrik":
+        filter = getRubrikFilter();
+        break;
+      case "cali":
+        filter = getCaliFilter();
+        break;
+      case "retro":
+        filter = getRetroFilter();
+        break;
+      case "retro2":
+        filter = getRetroFilter2();
+        break;
+      case "retro3":
+        filter = getRetroFilter3();
+        break;
+      case "retroVignette":
+        filter = getRetroVignette();
+        break;
+      case "retroVignette2":
+        filter = getRetroVignette2();
+        break;
+      default:
+        filter = getOrbikFilter();
+    }
+    return filter;
   }
 
   public void filterImage(GPUImageFilter filter, Image image) {
@@ -418,4 +493,5 @@ public class ImageFilters {
     contrastFilter.setContrast(amt);
     addEffect(contrastFilter, image);
   }
+
 }

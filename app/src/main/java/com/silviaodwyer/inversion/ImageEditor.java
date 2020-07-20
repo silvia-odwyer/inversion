@@ -13,17 +13,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
@@ -33,6 +35,7 @@ public class ImageEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private GPUImageView gpuImageView;
   private Image image;
+  private ImageFilters imageFilters;
 
   @SuppressLint("WrongThread")
   @Override
@@ -41,7 +44,6 @@ public class ImageEditor extends AppCompatActivity {
     setContentView(R.layout.activity_image_editor);
 
     BottomNavigationView navView = findViewById(R.id.nav_view);
-
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupWithNavController(navView, navController);
 
@@ -50,17 +52,35 @@ public class ImageEditor extends AppCompatActivity {
     image = mainApplication.getImage();
 
     gpuImageView = findViewById(R.id.gpuimageview);
-    gpuImageView.setImage(image.getBitmap());
-    bitmap = image.getBitmap();
 
-    ImageView saveBtn = findViewById(R.id.save_btn);
-    saveBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        // get permission to write to external storage
-        mainApplication.requestPermissions(ImageEditor.this);
-      }
-    });
+    gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
+
+    bitmap = image.getOriginalImageBitmap();
+    gpuImageView.setImage(bitmap);
+
+//    ImageView saveBtn = findViewById(R.id.save_btn);
+//    saveBtn.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        // get permission to write to external storage
+//        mainApplication.requestPermissions(ImageEditor.this);
+//      }
+//    });
+    imageFilters = new ImageFilters(getApplicationContext());
+
+    initFilter();
+
+  }
+
+  public void initFilter() {
+    Log.d("DEBUG", "IMAGE EDITOR METADATA: " + image.getMetaData().getAppliedFilter());
+    String appliedFilter = image.getMetaData().getAppliedFilter();
+
+    // if an applied filter exists, then filter; note an empty string signifies no filter
+    if (!appliedFilter.equals("")) {
+      GPUImageFilter filter = this.imageFilters.getFilterFromName(image.getMetaData().getAppliedFilter());
+      updateGPUImage(filter);
+    }
   }
 
   @Override

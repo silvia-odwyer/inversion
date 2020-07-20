@@ -1,8 +1,10 @@
 package com.silviaodwyer.inversion.main_ui.home;
 
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -44,6 +46,7 @@ import com.silviaodwyer.inversion.Video;
 import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.VideoMetadata;
 import com.silviaodwyer.inversion.Videos;
+import com.silviaodwyer.inversion.VideosRecyclerView;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,9 +64,12 @@ public class HomeScreenFragment extends Fragment {
   private LinearLayout imagesThumbnailsLinLayout;
   private LinearLayout videosThumbnailsLinLayout;
   private RecyclerView recyclerView;
+  private RecyclerView videosRecyclerView;
+  private VideosRecyclerView videosAdapter;
   private ImagesRecyclerView adapter;
   private Activity activity;
   private ArrayList<ImageMetadata> savedImageMetadata;
+  private ArrayList<VideoMetadata> savedVideoMetadata;
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
@@ -79,11 +85,12 @@ public class HomeScreenFragment extends Fragment {
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
 
-    videosThumbnailsLinLayout = root.findViewById(R.id.videos);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
     savedImageMetadata = mainApplication.getSavedImageMetadata(context);
+    savedVideoMetadata = mainApplication.getSavedVideoMetadata(context);
 
+    initTheme();
     setUpOnClickListeners();
     setUpImages();
     initVideos();
@@ -101,28 +108,56 @@ public class HomeScreenFragment extends Fragment {
     Log.d("DEBUG", "NUM IMAGES: " + numImages);
     ArrayList<ImageMetadata> imageMetadata = null;
     if (numImages == 0) {
-//      imageMetadata = mainApplication.getPlaceholderMetadata();
+      imageMetadata = mainApplication.getPlaceholderMetadata();
     }
     else {
       imageMetadata = savedImageMetadata;
-      initRecyclerViews(imageMetadata);
-
     }
+    initRecyclerViews(imageMetadata);
+
+  }
+
+  private void initVideoRecyclerView() {
+      videosRecyclerView = root.findViewById(R.id.saved_videos_recycler_view);
+      LinearLayoutManager layoutManager
+            = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+
+      videosRecyclerView.setLayoutManager(layoutManager);
+      videosAdapter = new VideosRecyclerView(activity, savedVideoMetadata, mainApplication);
+
+      videosRecyclerView.setAdapter(videosAdapter);
+
+      SnapHelper helper = new PagerSnapHelper();
+      helper.attachToRecyclerView(videosRecyclerView);
 
   }
 
   private void initRecyclerViews(ArrayList<ImageMetadata> imageMetadata) {
-      recyclerView = root.findViewById(R.id.recycler_view_images);
-      LinearLayoutManager layoutManager
+    recyclerView = root.findViewById(R.id.recycler_view_images);
+    LinearLayoutManager layoutManager
             = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
-      recyclerView.setLayoutManager(layoutManager);
-      adapter = new ImagesRecyclerView(activity, imageMetadata, mainApplication);
+    recyclerView.setLayoutManager(layoutManager);
+    adapter = new ImagesRecyclerView(activity, imageMetadata, mainApplication);
 
-      recyclerView.setAdapter(adapter);
+    recyclerView.setAdapter(adapter);
 
-      SnapHelper helper = new PagerSnapHelper();
-      helper.attachToRecyclerView(recyclerView);
+    SnapHelper helper = new PagerSnapHelper();
+    helper.attachToRecyclerView(recyclerView);
+
+  }
+
+  private void initTheme() {
+    SharedPreferences sharedPreferences = context.getSharedPreferences("PREF", Context.MODE_PRIVATE);
+    if (! sharedPreferences.contains("nightThemeEnabled")) {
+      UiModeManager umm = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+      umm.setNightMode(UiModeManager.MODE_NIGHT_YES);
+
+      // save night mode to shared preferences
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean("nightThemeEnabled", true);
+      editor.apply();
+    }
 
   }
 
@@ -136,15 +171,11 @@ public class HomeScreenFragment extends Fragment {
 
     // if new images or videos detected, clear the thumbnails and re-append.
     if (savedVideoMetadata.size() != numVideos) {
-      videosThumbnailsLinLayout.removeAllViews();
-      this.appendVideoThumbnails();
+      // update videos recyclerview
     }
     if (savedImageMetadata.size() != numImages) {
       adapter.updateRecyclerView(savedImageMetadata);
-//      this.appendImageThumbnails();
     }
-
-
   }
 
   private void initEffectList() {
@@ -152,7 +183,11 @@ public class HomeScreenFragment extends Fragment {
     effectNames.add("Chromatic");
     effectNames.add("Sepia");
     effectNames.add("Vintage");
-
+    effectNames.add("Vintage2");
+    effectNames.add("Vintage3");
+    effectNames.add("Vintage4");
+    effectNames.add("Vintage5");
+    effectNames.add("Vintage6");
     // import JSON file
     try {
       activity.getAssets().open("effects.json");
@@ -183,7 +218,6 @@ public class HomeScreenFragment extends Fragment {
     viewImages.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Toast.makeText(getActivity().getApplicationContext(), "Opened images", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), Images.class);
         startActivity(intent);
       }
@@ -200,9 +234,9 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void initVideos() {
-    appendVideoThumbnails();
-
     // TODO setup RecyclerView for videos.
+    initVideoRecyclerView();
+
   }
 
   private void appendImageThumbnails() {

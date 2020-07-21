@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,11 +13,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+// TODO check if images have been moved or deleted from original locations
 
 public class Images extends AppCompatActivity implements ImagesRecyclerView.ItemClickListener {
   private Button uploadImage;
@@ -69,14 +73,13 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
     ArrayList<ImageMetadata> imageMetadata = null;
     if (numImages == 0) {
-//      imageMetadata = mainApplication.getPlaceholderMetadata();
+      imageMetadata = mainApplication.getPlaceholderMetadata();
       Log.d("DEBUG", "USING PLACEHOLDER METADATA: " + numImages);
     }
     else {
       imageMetadata = savedFileMetaData;
-      initializeRecyclerView(imageMetadata);
-
     }
+    initializeRecyclerView(imageMetadata);
 
   }
 
@@ -92,8 +95,8 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   @Override
   public void onResume() {
     super.onResume();
-    //ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
-    //adapter.updateRecyclerView(savedImageMetadata);
+    ArrayList<ImageMetadata> savedImageMetadata = mainApplication.getSavedImageMetadata(getApplicationContext());
+    adapter.updateRecyclerView(savedImageMetadata);
   }
 
   @Override
@@ -103,26 +106,46 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     if (resultCode == RESULT_OK) {
       final Uri imageUri = data.getData();
       ImageUtils imageUtils = new ImageUtils(getApplicationContext());
-      Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
+      FileUtils fileUtils = new FileUtils(getApplicationContext());
 
       // set the image attribute for the application,
       MainApplication application = ((MainApplication)getApplication());
-      ImageMetadata metadata = new ImageMetadata(imageUri);
+      String abs_path = fileUtils.getPathFromUri(imageUri);
+      ImageMetadata metadata = new ImageMetadata(abs_path);
+
+      Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
+
+      // Create new image and set it in MainApplication
       Image image = new Image(bitmap, getApplicationContext(), application.getImageEditorActivity(), metadata);
       application.setImage(image);
       Intent intent = new Intent(Images.this, ImageEditor.class);
 
       startActivity(intent);
     }
-    else {
-      // user has not chosen an image, display a Toast message
-      Toast.makeText(this, "No image chosen.", Toast.LENGTH_LONG).show();
-    }
+
   }
 
   @Override
   public void onItemClick(View view, int position) {
 
+  }
+
+  public Bitmap getBitmapFromPath(String path) {
+    Bitmap bitmap=null;
+
+    try {
+      File file = new File(path);
+
+      BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+      bmOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+      bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, bmOptions);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return bitmap ;
   }
 
   private void getSavedImages() {

@@ -76,7 +76,14 @@ public class ImageFilters {
   public void addEffectFilters() {
     filters.add(getNeonPinkFilter());
     filters.add(getOribitonFilter());
-    filters.add(getSaturnFilter());
+    filters.add(getObsidianFilter());
+    filters.add(new GPUImageGrayscaleFilter());
+    filters.add(new GPUImageMonochromeFilter());
+    filters.add(new GPUImageSharpenFilter());
+    filters.add(getAestheticaFilter());
+    filters.add(getDramaticFilter());
+    filters.add(new GPUImageSepiaToneFilter());
+    filters.add(new GPUImageSolarizeFilter());
     // create blend filters
     //createBlendFilters();
     //createGradientFilters();

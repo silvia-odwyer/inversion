@@ -56,16 +56,17 @@ public class ImageEditor extends AppCompatActivity {
     gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
 
     bitmap = image.getOriginalImageBitmap();
+    gpuImageView.setRatio((float) 0.99);
     gpuImageView.setImage(bitmap);
 
-//    ImageView saveBtn = findViewById(R.id.save_btn);
-//    saveBtn.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        // get permission to write to external storage
-//        mainApplication.requestPermissions(ImageEditor.this);
-//      }
-//    });
+    ImageView saveBtn = findViewById(R.id.save_btn);
+    saveBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        // get permission to write to external storage
+        mainApplication.requestPermissions(ImageEditor.this);
+      }
+    });
     imageFilters = new ImageFilters(getApplicationContext());
 
     initFilter();
@@ -89,7 +90,7 @@ public class ImageEditor extends AppCompatActivity {
     switch (reqCode) {
       case 1: {
         if (grantResults.length > 0
-          && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           saveImage();
         } else {
           // permission was denied

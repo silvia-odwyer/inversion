@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import androidx.core.app.ActivityCompat;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class MainApplication extends Application {
   private String videoUrl;
@@ -22,6 +23,7 @@ public class MainApplication extends Application {
   private ImageEditor imageEditorActivity;
   private Image image;
   private GPUPlayerView playerView;
+  private GPUImage gpuImage;
   private Bitmap videoThumbnail;
   private VideoEditor videoEditorActivity;
   private static String savedImageMetadataFilename = "saved_image_paths.json";
@@ -34,6 +36,15 @@ public class MainApplication extends Application {
 
   public void setVideo(Video video) {
     this.video = video;
+  }
+
+
+  public GPUImage getGpuImage() {
+    return gpuImage;
+  }
+
+  public void setGpuImage(GPUImage gpuImage) {
+    this.gpuImage = gpuImage;
   }
 
   /**
@@ -212,13 +223,13 @@ public class MainApplication extends Application {
    */
   public void setPlayerView(GPUPlayerView playerView) {this.playerView = playerView;}
 
-  public ArrayList<FileMetadata> getPlaceholderMetadata() {
+  public ArrayList<ImageMetadata> getPlaceholderMetadata() {
 
     String[] urls = {"https://source.unsplash.com/collection/190727/1600x900",
             "https://source.unsplash.com/collection/190727/1600x900",
     "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fm=png&fit=crop&w=1423&q=80"};
 
-    ArrayList<FileMetadata> imageMetadata = ImageUtils.createImageMetadataFromURLs(urls);
+    ArrayList<ImageMetadata> imageMetadata = ImageUtils.createImageMetadataFromURLs(urls);
     return imageMetadata;
   }
 }

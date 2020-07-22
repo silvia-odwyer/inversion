@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@color/backgroundColor"
-  tools:context=".image_editor_menus.home_menu.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".image_editor_menus.home_menu.HomeFragment">
 
   <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:orientation="vertical"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.041">
+      app:layout_constraintVertical_bias="0.147">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,13 +56,13 @@
 
       </LinearLayout>
 
-
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recycler_view_images"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
-          android:layout_marginStart="20dp" />
-
+          android:layout_marginStart="20dp"
+          android:layoutAnimation="@anim/layout_animation"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -81,27 +81,21 @@
             android:id="@+id/view_videos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:text="View all"
             android:textColor="@color/headingColor"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:paddingBottom="12dp"/>
       </LinearLayout>
 
-      <HorizontalScrollView
-          android:layout_width="match_parent"
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/saved_videos_recycler_view"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp">
-
-        <LinearLayout
-            android:id="@+id/videos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
-      </HorizontalScrollView>
+          android:layout_marginStart="20dp"
+          android:layoutAnimation="@anim/layout_animation"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
       <TextView
           android:layout_width="wrap_content"
@@ -112,15 +106,14 @@
           android:textStyle="bold" />
 
       <LinearLayout
+          android:id="@+id/effects"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="10dp"
-          android:id="@+id/effects"
+          android:layout_marginBottom="30dp"
           android:orientation="vertical">
 
       </LinearLayout>
     </LinearLayout>
   </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

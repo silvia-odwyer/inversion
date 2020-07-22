@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -52,14 +53,13 @@ public class ImageEditor extends AppCompatActivity {
     image = mainApplication.getImage();
 
     gpuImageView = findViewById(R.id.gpuimageview);
-
     gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
 
     bitmap = image.getOriginalImageBitmap();
     gpuImageView.setRatio((float) 0.99);
     gpuImageView.setImage(bitmap);
 
-    ImageView saveBtn = findViewById(R.id.save_btn);
+    ImageButton saveBtn = findViewById(R.id.save_btn);
     saveBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -109,10 +109,6 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void saveImage() {
-    // create new metadata
-    ImageMetadata metadata = image.getMetaData();
-    image.setMetaData(metadata);
-
     FileOutputStream fileOutputStream = null;
     try {
       File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/images");
@@ -124,7 +120,7 @@ public class ImageEditor extends AppCompatActivity {
       fileOutputStream = new FileOutputStream(outputFile);
       gpuImageView.getGPUImage().getBitmapWithFilterApplied().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
 
-      mainApplication.saveImageMetadata(metadata);
+      mainApplication.saveImageMetadata(image.getMetaData());
       sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
 
     }

@@ -2,8 +2,12 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
@@ -23,7 +27,7 @@ public class Image {
   /**
    * Returns all image thumbnails with image correction filters applied to them.
    *
-   * @return      image thumbnails with image correction filters applied to them
+   * @return      image thumbnails with image correction filters applied
    */
   public ArrayList<Bitmap> getCorrectedThumbnails() {
     return correctedThumbnails;
@@ -42,11 +46,15 @@ public class Image {
   public Image(Bitmap bitmap, Context ctx, ImageEditor activity, ImageMetadata metaData) {
     this.context = ctx;
     this.bitmap = bitmap;
-    this.originalImageBitmap = bitmap;
+    this.metaData = metaData;
+
+    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+    Log.d("DEBUG", "URL: " + getMetaData().getOriginalImagePath());
+    originalImageBitmap = BitmapFactory.decodeFile(getMetaData().getOriginalImagePath(), bmOptions);
+
     filteredThumbnails = new ArrayList<>();
     correctedThumbnails = new ArrayList<>();
     this.activity = activity;
-    this.metaData = metaData;
     this.createGPUImage();
   }
 
@@ -116,21 +124,13 @@ public class Image {
   }
 
   /**
-   * Set the original image bitmap for this application.
-   *
-   */
-  public void setOriginalImageBitmap(Bitmap originalImageBitmap) {
-    this.originalImageBitmap = originalImageBitmap;
-  }
-
-  /**
    * Get the image thumbnail as a bitmap.
    *
    * @return      image thumbnail
    */
   public Bitmap getThumbnail(int maxWidth, int maxHeight) {
     ImageUtils imageUtils = new ImageUtils(context);
-    final Bitmap resultBitmap = imageUtils.resizeBitmap(bitmap, maxWidth, maxHeight);
+    final Bitmap resultBitmap = imageUtils.resizeBitmap(originalImageBitmap, maxWidth, maxHeight);
     return resultBitmap;
   }
 

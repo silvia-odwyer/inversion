@@ -4,7 +4,9 @@ import android.app.Application;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -111,44 +113,6 @@ public class FileUtils {
     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
   }
 
-  public void copyFile(File src, File expFile) {
-
-    FileChannel inChannel = null;
-    FileChannel outChannel = null;
-
-
-    Log.d("DEBUG", "INPUT FILE: " + src.getPath());
-    Log.d("DEBUG", "OUTPUT FILE: " + expFile.getPath());
-
-    try {
-      inChannel = new FileInputStream(src).getChannel();
-      outChannel = new FileOutputStream(expFile).getChannel();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    try {
-      inChannel.transferTo(0, inChannel.size(), outChannel);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (inChannel != null) {
-        try {
-          inChannel.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-      if (outChannel != null) {
-        try {
-          outChannel.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    Log.d("DEBUG", "COPIED VIDEO ");
-  }
 
   public static String getFileFromAssets(Context context, String filename) {
     String jsonString = null;
@@ -170,6 +134,23 @@ public class FileUtils {
     }
 
     return jsonString;
+  }
+
+  public String getPathFromUri (Uri uri) {
+    String abs_path = null;
+    String[] data = { MediaStore.MediaColumns.DATA };
+
+    // get cursor
+    Cursor cursor = context.getContentResolver().query(uri, data, null, null, null);
+
+    if (cursor.moveToFirst()) {
+      int col_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+
+      // get path as a string using the column index
+      abs_path = cursor.getString(col_index);
+    }
+    cursor.close();
+    return abs_path;
   }
 
 }

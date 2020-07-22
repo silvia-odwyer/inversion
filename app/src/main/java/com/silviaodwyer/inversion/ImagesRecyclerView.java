@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.ViewHolder> {
 
@@ -68,11 +69,14 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
         ImageMetadata metadata = data.get(position);
         Image image = ImageUtils.getImageFromFilename(metadata, context, mainApplication);
         mainApplication.setImage(image);
+        GPUImage gpuImage = new GPUImage(context);
+        mainApplication.setGpuImage(gpuImage);
         context.startActivity(intent);
       }
 
     });
     ImageMetadata metadata = data.get(position);
+    Log.d("DEBUG", "Metadata is: " + metadata.toString());
 
     Glide
       .with(context)

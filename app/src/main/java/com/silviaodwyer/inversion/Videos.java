@@ -71,6 +71,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private void setUpRecyclerView() {
     // set up the RecyclerView
     RecyclerView recyclerView = findViewById(R.id.videos_recycler_view);
+
     int noOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), noOfColumns));
     recyclerViewAdapter = new VideosRecyclerView(getApplicationContext(), savedVideoMetadata, mainApplication);
@@ -181,7 +182,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
         mainApplication.setVideo(video);
         intent.putExtra("videoUrl", videoUrl);
-
       }
 
       // Now that we have the bitmap thumbnail of the video, we can start the video editor activity.
@@ -208,7 +208,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
 
     if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
       File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-
       ArrayList<String> filepaths = new ArrayList<String>();
 
       File files[] = inversionDirectory.listFiles();

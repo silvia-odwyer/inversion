@@ -78,7 +78,6 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         public void onClick(View view) {
             if (clickListener != null) {
                 clickListener.onItemClick(view, getAdapterPosition());
-
             }
         }
     }

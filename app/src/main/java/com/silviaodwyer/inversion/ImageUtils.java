@@ -114,9 +114,7 @@ public class ImageUtils {
     // resize bitmap to thumbnail size
     Matrix matrix = new Matrix();
     matrix.postScale(scale, scale);
-
-    final Bitmap resultBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    return resultBitmap;
+    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
   }
 
   /**
@@ -198,10 +196,10 @@ public class ImageUtils {
   }
 
 
-  public static ArrayList<FileMetadata> createImageMetadataFromURLs(String[] urls) {
-    ArrayList<FileMetadata> fileMetadataArrayList = new ArrayList<FileMetadata>();
+  public static ArrayList<ImageMetadata> createImageMetadataFromURLs(String[] urls) {
+    ArrayList<ImageMetadata> fileMetadataArrayList = new ArrayList<>();
     for (String url : urls) {
-      FileMetadata metadata = new FileMetadata(FileMetadata.FileType.IMAGE);
+      ImageMetadata metadata = new ImageMetadata(url);
       fileMetadataArrayList.add(metadata);
     }
     return fileMetadataArrayList;

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
 import com.daasuu.gpuv.player.GPUPlayerView;
+import com.daasuu.gpuv.player.PlayerScaleType;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -92,7 +93,8 @@ public class VideoEditor extends AppCompatActivity {
   public void setupPlayer() {
     player = ExoPlayerFactory.newSimpleInstance(context);
     ePlayerView = new GPUPlayerView(context);
-
+    // resize video view
+    ePlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_FIT_WIDTH);
     ePlayerView.setSimpleExoPlayer(player);
     Uri uri = Uri.parse(videoUrl);
 

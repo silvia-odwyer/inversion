@@ -54,6 +54,7 @@ public class ImageEditor extends AppCompatActivity {
 
     gpuImageView = findViewById(R.id.gpuimageview);
     gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
+    gpuImageView.setBackgroundColor(239, 239, 244);
 
     bitmap = image.getOriginalImageBitmap();
     gpuImageView.setRatio((float) 0.99);
@@ -105,7 +106,12 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void updateGPUImage(GPUImageFilter filter) {
+
     gpuImageView.setFilter(filter);
+    gpuImageView.requestRender();
+    gpuImageView.setBackgroundColor(239, 239, 244);
+    gpuImageView.forceSize = new GPUImageView.Size(300, 200);
+    // TODO use ImageView and deleteImage after requesting bitmap
   }
 
   public void saveImage() {

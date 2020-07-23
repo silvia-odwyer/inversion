@@ -9,6 +9,8 @@ import com.daasuu.gpuv.player.GPUPlayerView;
 import com.silviaodwyer.inversion.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
@@ -16,11 +18,7 @@ public class VideoFilters {
 
   public VideoFilters(Context context) {
     this.context = context;
-    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.summer);
-
-    this.videoFilters.add(new GLSoftLightBlendFilter(bitmap));
-    this.videoFilters.add(new GLDarkenBlendFilter(bitmap));
-    this.videoFilters.add(new GLMultiplyBlendFilter(bitmap));
+    this.addBlendFilters();
     this.videoFilters.add(new GlSepiaFilter());
     this.videoFilters.add(new GlSaturationFilter());
     this.videoFilters.add(new GlLuminanceFilter());
@@ -32,6 +30,20 @@ public class VideoFilters {
     this.videoFilters.add(sepiaVignetteFilter());
     this.videoFilters.add(rubrikFilter());
     this.videoFilters.add(neueFilter());
+  }
+
+  public void addBlendFilters() {
+    List<Integer> bitmaps = Arrays.asList(R.mipmap.galaxy, R.mipmap.rainbow,
+            R.mipmap.cosmic, R.mipmap.pink);
+
+    for (Integer bitmapResource: bitmaps) {
+      Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
+
+      this.videoFilters.add(new GLSoftLightBlendFilter(bitmap));
+      this.videoFilters.add(new GLDarkenBlendFilter(bitmap));
+      this.videoFilters.add(new GLMultiplyBlendFilter(bitmap));
+    }
+
   }
 
   public ArrayList<GlFilter> getVideoFilters() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.ViewHolder> {
 
@@ -27,7 +29,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
   private MainApplication mainApplication;
   private ImageUtils imageUtils;
 
-  VideosRecyclerView(Context context, ArrayList<VideoMetadata> data, MainApplication mainApplication) {
+  public VideosRecyclerView(Context context, ArrayList<VideoMetadata> data, MainApplication mainApplication) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
@@ -44,6 +46,28 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
   // binds the bitmap to the ImageView
   @Override
   public void onBindViewHolder(@NonNull VideosRecyclerView.ViewHolder holder, int position) {
+
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+        Log.d("DEBUG", "VIDEO CLICKED");
+        String name = data.get(position).getName() + ".mp4";
+        File file = new File(directory, name);
+
+        Intent intent = new Intent(context, VideoEditor.class);
+        VideoMetadata metadata = data.get(position);
+        Video video = new Video(metadata);
+
+        String videoUrl = String.valueOf(Uri.fromFile(file));
+        intent.putExtra("videoUrl", videoUrl);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        mainApplication.setVideo(video);
+        context.startActivity(intent);
+      }
+    });
+
     File inversionDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos/thumbnails");
 
     File file = new File(inversionDirectory, data.get(position).getName() + ".png");
@@ -51,7 +75,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
     Glide
       .with(context)
       .load(file.getAbsolutePath())
-      .apply(new RequestOptions().override(500, 500))
+      .apply(new RequestOptions().override(200, 200))
       .into(holder.imageView);
   }
 
@@ -72,22 +96,25 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
 
     @Override
     public void onClick(View view) {
+      Log.d("DEBUG", "VID CLICKED");
+
       if (clickListener != null) {
         clickListener.onItemClick(view, getAdapterPosition());
 
         File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
+        Log.d("DEBUG", "VIDEO CLICKED");
         String name = data.get(getAdapterPosition()).getName() + ".mp4";
         File file = new File(directory, name);
 
         Intent intent = new Intent(context, VideoEditor.class);
         VideoMetadata metadata = data.get(getAdapterPosition());
         Video video = new Video(metadata);
+
         String videoUrl = String.valueOf(Uri.fromFile(file));
         intent.putExtra("videoUrl", videoUrl);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         mainApplication.setVideo(video);
-
         context.startActivity(intent);
       }
     }

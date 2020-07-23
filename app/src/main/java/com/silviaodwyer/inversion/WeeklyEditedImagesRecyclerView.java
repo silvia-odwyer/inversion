@@ -24,16 +24,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyEditedImagesRecyclerView.ViewHolder> {
 
-    private ArrayList<FileMetadata> data;
+    private ArrayList<ImageMetadata> data;
     private ItemClickListener clickListener;
     private LayoutInflater inflater;
-    private ArrayList<FileMetadata> metaDataArray;
+    private ArrayList<ImageMetadata> metaDataArray;
     private ImageUtils imageUtils;
     private Activity activity;
     private Activity context;
     private MainApplication mainApplication;
 
-    public WeeklyEditedImagesRecyclerView(Activity context, ArrayList<FileMetadata> data, MainApplication mainApplication) {
+    public WeeklyEditedImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
         this.context = context;
@@ -51,11 +51,11 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     // binds the bitmap to the ImageView
     @Override
     public void onBindViewHolder(@NonNull WeeklyEditedImagesRecyclerView.ViewHolder holder, int position) {
-        FileMetadata metadata = data.get(position);
+        ImageMetadata metadata = data.get(position);
 
         Glide
                 .with(context)
-                .load(metadata.getUrl())
+                .load(metadata.getOriginalImagePath())
                 .apply(new RequestOptions().override(250, 250))
                 .into(holder.imageView);
     }
@@ -82,7 +82,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         }
     }
 
-    FileMetadata getItem(int id) {
+    ImageMetadata getItem(int id) {
         return data.get(id);
     }
 
@@ -94,7 +94,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         void onItemClick(View view, int position);
     }
 
-    public void update(ArrayList<FileMetadata> updatedFiles) {
+    public void update(ArrayList<ImageMetadata> updatedFiles) {
         this.data.clear();
         this.data = updatedFiles;
         notifyDataSetChanged();

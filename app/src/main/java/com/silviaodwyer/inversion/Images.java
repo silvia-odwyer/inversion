@@ -112,7 +112,6 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
       MainApplication application = ((MainApplication)getApplication());
       String abs_path = fileUtils.getPathFromUri(imageUri);
       ImageMetadata metadata = new ImageMetadata(abs_path);
-
       Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
 
       // Create new image and set it in MainApplication

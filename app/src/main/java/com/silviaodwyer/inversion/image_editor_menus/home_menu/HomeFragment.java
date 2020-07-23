@@ -29,6 +29,7 @@ import com.silviaodwyer.inversion.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class HomeFragment extends Fragment {
   private Image image;
@@ -43,7 +44,6 @@ public class HomeFragment extends Fragment {
     image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
     ImageFilters imageFilters = new ImageFilters(getContext());
-    ArrayList<GPUImageFilter> filters = imageFilters.getFilters();
 
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
     ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);

@@ -22,7 +22,8 @@
         android:text="Edit Image"
         android:textColor="@color/headingColor"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center_vertical"/>
 
     <ImageButton
         android:id="@+id/save_btn"
@@ -72,7 +73,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.07" />
+      app:layout_constraintGuide_percent="0.08" />
 
   <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline4"
@@ -86,6 +87,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.02" />
+      app:layout_constraintGuide_percent="0.03" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

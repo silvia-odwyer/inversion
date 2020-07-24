@@ -45,14 +45,6 @@
       android:orientation="horizontal">
 
       <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_videos"
-        android:textColor="@color/headingColor"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-
-      <TextView
         android:id="@+id/sort_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

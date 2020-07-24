@@ -52,6 +52,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     @Override
     public void onBindViewHolder(@NonNull WeeklyEditedImagesRecyclerView.ViewHolder holder, int position) {
         ImageMetadata metadata = data.get(position);
+        Log.d("DEBUG", "original img path: " + metadata.getOriginalImagePath());
 
         Glide
                 .with(context)

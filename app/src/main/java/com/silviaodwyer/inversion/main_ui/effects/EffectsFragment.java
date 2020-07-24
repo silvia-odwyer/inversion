@@ -17,13 +17,14 @@ import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.WeeklyEditedImagesRecyclerView;
 
 import java.util.ArrayList;
 
 public class EffectsFragment extends Fragment {
   private RecyclerView recyclerView;
   private View root;
-  private ImagesRecyclerView adapter;
+  private WeeklyEditedImagesRecyclerView adapter;
   private MainApplication mainApplication;
   private Context context;
 
@@ -42,7 +43,7 @@ public class EffectsFragment extends Fragment {
     recyclerView = root.findViewById(R.id.imgs_recycler_view);
     int numberOfColumns = 4;
     recyclerView.setLayoutManager(new GridLayoutManager(context, numberOfColumns));
-    adapter = new ImagesRecyclerView(getActivity(), imageMetadata, mainApplication);
+    adapter = new WeeklyEditedImagesRecyclerView(getActivity(), imageMetadata, mainApplication);
 
     recyclerView.setAdapter(adapter);
   }

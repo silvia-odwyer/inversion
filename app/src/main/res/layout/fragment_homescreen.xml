@@ -61,6 +61,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="10dp"
+          android:visibility="gone"
           android:background="@drawable/gradient_blue_violet"
           android:text="Upload New Image"
           android:padding="10dp"
@@ -105,6 +106,7 @@
           android:id="@+id/upload_video_home_btn"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:visibility="gone"
           android:layout_marginTop="10dp"
           android:background="@drawable/gradient_blue_violet"
           android:text="Upload New Video"
@@ -112,7 +114,7 @@
           android:layout_marginEnd="40dp"
           android:textAllCaps="false"
           android:textStyle="bold" />
-      
+
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/saved_videos_recycler_view"
           android:layout_width="wrap_content"

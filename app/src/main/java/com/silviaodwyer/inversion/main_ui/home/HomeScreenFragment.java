@@ -90,6 +90,15 @@ public class HomeScreenFragment extends Fragment {
     savedImageMetadata = mainApplication.getSavedImageMetadata(context);
     savedVideoMetadata = mainApplication.getSavedVideoMetadata(context);
 
+    if (savedImageMetadata.size() == 0) {
+      // TODO display button to upload image
+      initEmptyImagesButton();
+    }
+    if (savedVideoMetadata.size() == 0) {
+      // TODO display button to upload video
+      initEmptyVideosButton();
+    }
+
     initTheme();
     setUpOnClickListeners();
     setUpImages();
@@ -310,5 +319,15 @@ public class HomeScreenFragment extends Fragment {
     });
 
     return imageView;
+  }
+
+  private void initEmptyImagesButton() {
+    Button uploadImageBtn = root.findViewById(R.id.upload_img_home_btn);
+    uploadImageBtn.setVisibility(View.VISIBLE);
+  }
+
+  private void initEmptyVideosButton() {
+    Button uploadVideoBtn = root.findViewById(R.id.upload_video_home_btn);
+    uploadVideoBtn.setVisibility(View.VISIBLE);
   }
 }

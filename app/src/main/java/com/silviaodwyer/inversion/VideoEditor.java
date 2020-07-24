@@ -20,9 +20,11 @@ import com.daasuu.gpuv.player.GPUPlayerView;
 import com.daasuu.gpuv.player.PlayerScaleType;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -97,8 +99,10 @@ public class VideoEditor extends AppCompatActivity {
 
     ePlayerView = new GPUPlayerView(context);
 
-    // resize video view
+    PlayerControlView controls = findViewById(R.id.video_player_controls);
+    controls.setPlayer(player);
 
+    // resize video view
     ePlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_FIT_WIDTH);
     ePlayerView.setSimpleExoPlayer(player);
     Uri uri = Uri.parse(videoUrl);
@@ -109,31 +113,6 @@ public class VideoEditor extends AppCompatActivity {
 
     MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
       .createMediaSource(uri);
-//
-//    player.addListener(new Player.EventListener() {
-//
-//      @Override
-//      public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
-//
-//      @Override
-//      public void onLoadingChanged(boolean isLoading) {}
-//
-//      @Override
-//      public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//        if (playbackState == Player.STATE_BUFFERING){
-//          progressBar.setVisibility(View.VISIBLE);
-//        } else {
-//          progressBar.setVisibility(View.INVISIBLE);
-//        }
-//      }
-//
-//      @Override
-//      public void onPlayerError(ExoPlaybackException error) {}
-//
-//
-//      @Override
-//      public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
-//    });
 
     player.prepare(videoSource);
     player.setPlayWhenReady(true);

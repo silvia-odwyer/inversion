@@ -2,6 +2,7 @@ package com.silviaodwyer.inversion;
 
 import android.app.Application;
 import android.app.DownloadManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -79,7 +80,6 @@ public class FileUtils {
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     return dateFormat.format(calendar.getTime());
-
   }
 
   public static void deleteDirectory(File dir, Context context) {
@@ -151,6 +151,20 @@ public class FileUtils {
     }
     cursor.close();
     return abs_path;
+  }
+
+  public String videoUriToPath(Uri uri, ContentResolver contentResolver) {
+    String[] projection = {MediaStore.Video.Media.DATA};
+
+    try (Cursor cursor = contentResolver.query(uri, projection, null, null, null)) {
+      if (cursor != null) {
+        int columnIndex = cursor
+                .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(columnIndex);
+      } else
+        return null;
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,9 @@ import androidx.navigation.ui.NavigationUI;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 public class ImageEditor extends AppCompatActivity {
   private Bitmap bitmap;
@@ -36,6 +40,7 @@ public class ImageEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private GPUImageView gpuImageView;
   private Image image;
+  private ImageView imageView;
   private ImageFilters imageFilters;
 
   @SuppressLint("WrongThread")
@@ -53,11 +58,12 @@ public class ImageEditor extends AppCompatActivity {
     image = mainApplication.getImage();
 
     gpuImageView = findViewById(R.id.gpuimageview);
-    gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
-    gpuImageView.setBackgroundColor(239, 239, 244);
 
     bitmap = image.getOriginalImageBitmap();
-    gpuImageView.setRatio((float) 0.99);
+    gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
+    gpuImageView.setRatio((float)bitmap.getWidth() / bitmap.getHeight());
+
+    //    gpuImageView.setRatio((float) 0.99);
     gpuImageView.setImage(bitmap);
 
     ImageButton saveBtn = findViewById(R.id.save_btn);
@@ -68,10 +74,9 @@ public class ImageEditor extends AppCompatActivity {
         mainApplication.requestPermissions(ImageEditor.this);
       }
     });
+
     imageFilters = new ImageFilters(getApplicationContext());
-
     initFilter();
-
   }
 
   public void initFilter() {
@@ -106,12 +111,9 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void updateGPUImage(GPUImageFilter filter) {
-
+     gpuImageView.setImage(bitmap);
     gpuImageView.setFilter(filter);
-    gpuImageView.requestRender();
-    gpuImageView.setBackgroundColor(239, 239, 244);
-    gpuImageView.forceSize = new GPUImageView.Size(300, 200);
-    // TODO use ImageView and deleteImage after requesting bitmap
+//    gpuImageView.forceSize = new GPUImageView.Size(300, 200);
   }
 
   public void saveImage() {

@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +33,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
 import com.silviaodwyer.inversion.EffectDetail;
+import com.silviaodwyer.inversion.FileUtils;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
@@ -54,15 +58,21 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static android.app.Activity.RESULT_OK;
 
 public class HomeScreenFragment extends Fragment {
   private TextView viewImages;
   private TextView viewVideos;
+  private String videoUrl;
+  private Video video;
   private View root;
   private Context context;
-  private Button openVideoSaver;
-  private LinearLayout imagesThumbnailsLinLayout;
-  private LinearLayout videosThumbnailsLinLayout;
+
+  private static Integer RESULT_LOAD_VIDEO = 7;
+  private static Integer RESULT_LOAD_IMG = 3;
+
   private RecyclerView recyclerView;
   private RecyclerView videosRecyclerView;
   private VideosRecyclerView videosAdapter;
@@ -73,8 +83,11 @@ public class HomeScreenFragment extends Fragment {
   private LinearLayout effectList;
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
+  private FileUtils fileUtils;
   private int numImages;
   private int numVideos;
+  private Button uploadImageBtn;
+  private Button uploadVideoBtn;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +97,7 @@ public class HomeScreenFragment extends Fragment {
     context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
-
+    fileUtils = new FileUtils(context);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
     savedImageMetadata = mainApplication.getSavedImageMetadata(context);
@@ -322,12 +335,131 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void initEmptyImagesButton() {
-    Button uploadImageBtn = root.findViewById(R.id.upload_img_home_btn);
+    uploadImageBtn = root.findViewById(R.id.upload_img_home_btn);
     uploadImageBtn.setVisibility(View.VISIBLE);
+
+    uploadImageBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+        }
+    });
   }
 
   private void initEmptyVideosButton() {
-    Button uploadVideoBtn = root.findViewById(R.id.upload_video_home_btn);
+    uploadVideoBtn = root.findViewById(R.id.upload_video_home_btn);
     uploadVideoBtn.setVisibility(View.VISIBLE);
+    uploadVideoBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent videoPickerIntent = new Intent(Intent.ACTION_PICK);
+            videoPickerIntent.setType("video/*");
+            startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
+        }
+    });
   }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        Log.d("DEBUG", "REQUEST CODE: " + reqCode);
+        if (resultCode == RESULT_OK) {
+            if (reqCode == RESULT_LOAD_IMG) {
+                startImageActivity(data);
+            }
+            else if (reqCode == RESULT_LOAD_VIDEO) {
+                startVideoActivity(data);
+            }
+        }
+    }
+
+    private void startImageActivity(Intent data) {
+        final Uri imageUri = data.getData();
+        ImageUtils imageUtils = new ImageUtils(context);
+        FileUtils fileUtils = new FileUtils(context);
+
+        // set the image attribute for the application,
+        String abs_path = fileUtils.getPathFromUri(imageUri);
+        ImageMetadata metadata = new ImageMetadata(abs_path);
+        Bitmap bitmap = imageUtils.imageUriToBitmap(imageUri);
+
+        // Create new image and set it in MainApplication
+        Image image = new Image(bitmap, context, mainApplication.getImageEditorActivity(), metadata);
+        mainApplication.setImage(image);
+        Intent intent = new Intent(getActivity(), ImageEditor.class);
+
+        startActivity(intent);
+    }
+
+    private void startVideoActivity(Intent data) {
+        Uri videoUri = data.getData();
+
+        // Convert the video URI to a path
+        videoUrl = fileUtils.videoUriToPath(videoUri, activity.getContentResolver());
+
+        try {
+            thumbnailVideo(videoUrl);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    class BitmapAsyncTask extends AsyncTask<Void, Integer, Bitmap> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Bitmap doInBackground(Void...arg0) {
+            Bitmap bitmap = null;
+            FutureTarget<Bitmap> futureTarget =
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(videoUrl)
+                            .submit(300, 300);
+
+            try {
+                bitmap = futureTarget.get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onProgressUpdate(Integer...a) {
+            super.onProgressUpdate(a);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            ImageUtils imageUtils = new ImageUtils(context);
+            Bitmap resizedBitmap = imageUtils.resizeBitmap(result, 200, 200);
+            Intent intent = new Intent(activity.getBaseContext(), VideoEditor.class);
+
+            if (videoUrl != null) {
+                video = new Video(resizedBitmap);
+
+                mainApplication.setVideo(video);
+                intent.putExtra("videoUrl", videoUrl);
+            }
+
+            // Now that we have the bitmap thumbnail of the video, we can start the video editor activity.
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.getApplication().startActivity(intent);
+            super.onPostExecute(result);
+        }
+    }
+
+    private void thumbnailVideo(final String videoPath) throws ExecutionException, InterruptedException {
+        // thumbnail the video in a background thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new BitmapAsyncTask().execute();
+            }
+        }).start();
+    }
+
 }

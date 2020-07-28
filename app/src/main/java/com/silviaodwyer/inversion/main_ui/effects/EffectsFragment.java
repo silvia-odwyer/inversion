@@ -41,7 +41,7 @@ public class EffectsFragment extends Fragment {
 
   private void initRecyclerView(ArrayList<ImageMetadata> imageMetadata) {
     recyclerView = root.findViewById(R.id.imgs_recycler_view);
-    int numberOfColumns = 4;
+    int numberOfColumns = 3;
     recyclerView.setLayoutManager(new GridLayoutManager(context, numberOfColumns));
     adapter = new WeeklyEditedImagesRecyclerView(getActivity(), imageMetadata, mainApplication);
 

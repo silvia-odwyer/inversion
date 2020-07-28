@@ -41,9 +41,9 @@ public class HomeFragment extends Fragment {
     activity = (ImageEditor) getActivity();
     MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
-    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
+    image = activity.getImage();
 
-    ImageFilters imageFilters = new ImageFilters(getContext());
+    ImageFilters imageFilters = activity.getImageFilters();
 
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
     ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);

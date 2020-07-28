@@ -98,10 +98,10 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       Uri videoUri = data.getData();
 
       // Convert the video URI to a path
-      videoUrl = uriToPath(videoUri);
+      videoUrl = fileUtils.videoUriToPath(videoUri, getContentResolver());
 
       try {
-        thumbnailVideo(videoPath);
+        thumbnailVideo(videoUrl);
       } catch (ExecutionException e) {
         e.printStackTrace();
       } catch (InterruptedException e) {
@@ -111,20 +111,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     else {
       // user has not chosen an image, display a Toast message
       Toast.makeText(this, "You haven't chosen a video.", Toast.LENGTH_LONG).show();
-    }
-  }
-
-  public String uriToPath(Uri uri) {
-    String[] projection = {MediaStore.Video.Media.DATA};
-
-    try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
-      if (cursor != null) {
-        int columnIndex = cursor
-          .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(columnIndex);
-      } else
-        return null;
     }
   }
 
@@ -138,13 +124,13 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     new Thread(new Runnable() {
       @Override
       public void run() {
-        new BitmapAsyncTask().execute();
+        new ThumbnailAsyncTask().execute();
       }
     }).start();
 
   }
 
-  class BitmapAsyncTask extends AsyncTask<Void, Integer, Bitmap> {
+  class ThumbnailAsyncTask extends AsyncTask<Void, Integer, Bitmap> {
 
     protected void onPreExecute() {
       super.onPreExecute();
@@ -153,16 +139,13 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     protected Bitmap doInBackground(Void...arg0) {
       Bitmap bitmap = null;
       FutureTarget<Bitmap> futureTarget =
-        Glide.with(getApplicationContext())
-          .asBitmap()
-          .load(videoUrl)
-          .submit(300, 300);
-
+              Glide.with(getApplicationContext())
+                      .asBitmap()
+                      .load(videoUrl)
+                      .submit(300, 300);
       try {
         bitmap = futureTarget.get();
-      } catch (ExecutionException e) {
-        e.printStackTrace();
-      } catch (InterruptedException e) {
+      } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }
       return bitmap;
@@ -190,6 +173,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       super.onPostExecute(result);
     }
   }
+
 
   public void deleteAllVideos() {
     File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/videos");

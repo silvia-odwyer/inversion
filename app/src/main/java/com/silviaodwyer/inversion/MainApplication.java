@@ -29,6 +29,7 @@ public class MainApplication extends Application {
   private static String savedImageMetadataFilename = "saved_image_paths.json";
   private static String savedVideoMetadataFilename = "saved_video_paths.json";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
+  private long startTime;
 
   public Video getVideo() {
     return video;
@@ -232,4 +233,13 @@ public class MainApplication extends Application {
     ArrayList<ImageMetadata> imageMetadata = ImageUtils.createImageMetadataFromURLs(urls);
     return imageMetadata;
   }
+
+    public void setStartTime(long startTime) {
+    this.startTime = startTime;
+    }
+
+    public long getStartTime() {
+      return startTime;
+    }
+
 }

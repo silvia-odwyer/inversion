@@ -59,7 +59,7 @@ public class ImageFilters {
   }
 
   private static GPUImageFilter createTwoBlendFilter(Context context, Class<? extends GPUImageTwoInputFilter> twoInputFilterClass,
-                                                  int resource) {
+                                                     int resource) {
     try {
       // create a two input filter
       GPUImageTwoInputFilter filter = twoInputFilterClass.newInstance();

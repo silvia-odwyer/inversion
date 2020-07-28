@@ -62,6 +62,8 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        long startTime = System.nanoTime();
+        mainApplication.setStartTime(startTime);
         Intent intent = new Intent(context, ImageEditor.class);
         // ActivityOptions options = ActivityOptions
         //.makeSceneTransitionAnimation(activity, view, "robot");

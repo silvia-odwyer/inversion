@@ -51,7 +51,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
       @Override
       public void onClick(View view) {
         File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-        Log.d("DEBUG", "VIDEO CLICKED");
+
         String name = data.get(position).getName() + ".mp4";
         File file = new File(directory, name);
 

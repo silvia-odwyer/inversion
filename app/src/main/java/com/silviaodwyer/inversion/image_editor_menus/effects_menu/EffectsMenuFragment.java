@@ -8,15 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.silviaodwyer.inversion.ImageEditor;
+import com.silviaodwyer.inversion.ImageFilters;
 import com.silviaodwyer.inversion.R;
 
 public class EffectsMenuFragment extends Fragment {
+  private ImageFilters imageFilters;
+  private ImageEditor activity;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
 
     View root = inflater.inflate(R.layout.effects_menu_fragment, container, false);
+    activity = (ImageEditor) getActivity();
 
+    imageFilters = activity.getImageFilters();
+
+    // init new effects filters
+    imageFilters.createGradientGrayscaleFilters();
+    imageFilters.createGradientFilters();
     return root;
   }
 }

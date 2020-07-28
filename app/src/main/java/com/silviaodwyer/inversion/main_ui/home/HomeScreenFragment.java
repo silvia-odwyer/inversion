@@ -77,6 +77,7 @@ public class HomeScreenFragment extends Fragment {
   private RecyclerView videosRecyclerView;
   private VideosRecyclerView videosAdapter;
   private ImagesRecyclerView adapter;
+  private SharedPreferences sharedPreferences;
   private Activity activity;
   private ArrayList<ImageMetadata> savedImageMetadata;
   private ArrayList<VideoMetadata> savedVideoMetadata;
@@ -102,6 +103,13 @@ public class HomeScreenFragment extends Fragment {
     mainApplication = (MainApplication) activity.getApplication();
     savedImageMetadata = mainApplication.getSavedImageMetadata(context);
     savedVideoMetadata = mainApplication.getSavedVideoMetadata(context);
+    sharedPreferences = context.getSharedPreferences("PREF", Context.MODE_PRIVATE);
+    boolean userOnboarded = false;
+    userOnboarded = sharedPreferences.getBoolean("userOnboarded", userOnboarded);
+
+    if (!userOnboarded) {
+        onboardUser();
+    }
 
     if (savedImageMetadata.size() == 0) {
       // TODO display button to upload image
@@ -121,6 +129,16 @@ public class HomeScreenFragment extends Fragment {
     mainApplication.requestPermissions(getActivity());
 
     return root;
+  }
+
+  private void onboardUser() {
+
+      // TODO add tutorial with ViewPager.
+
+      // save, as user is now onboarded
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean("userOnboarded", true);
+      editor.apply();
   }
 
   private void setUpImages() {

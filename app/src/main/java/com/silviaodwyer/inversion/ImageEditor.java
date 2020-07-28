@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
@@ -56,6 +58,7 @@ public class ImageEditor extends AppCompatActivity {
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
+    imageFilters = new ImageFilters(getApplicationContext());
 
     gpuImageView = findViewById(R.id.gpuimageview);
 
@@ -75,13 +78,36 @@ public class ImageEditor extends AppCompatActivity {
       }
     });
 
-    imageFilters = new ImageFilters(getApplicationContext());
     initFilter();
     long startTime = mainApplication.getStartTime();
     long endTime = System.nanoTime();
 
     long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.
     Log.d("DEBUG", "Time to open activity: " + duration);
+
+    initTutorial();
+  }
+
+  public void initTutorial() {
+    TapTargetView.showFor(this,
+            TapTarget.forView( findViewById(R.id.save_btn), "Save your image", "This allows you to save your image.")
+                    .targetRadius(75)
+                    .outerCircleColor(R.color.colorPrimary)
+                    .outerCircleAlpha(0.96f)
+                    .targetCircleColor(R.color.backgroundColor)
+                    .titleTextSize(20)
+                    .titleTextColor(R.color.textColor)
+                    .dimColor(R.color.backgroundColor)
+                    .cancelable(false)
+                    .drawShadow(true)
+                    .tintTarget(false)
+                    .transparentTarget(false),
+            new TapTargetView.Listener() {
+              @Override
+              public void onTargetClick(TapTargetView view) {
+                super.onTargetClick(view);
+              }
+            });
   }
 
   public void initFilter() {
@@ -109,6 +135,10 @@ public class ImageEditor extends AppCompatActivity {
         return;
       }
     }
+  }
+
+  public ImageFilters getImageFilters() {
+    return imageFilters;
   }
 
   public Bitmap getBitmap() {
@@ -150,6 +180,10 @@ public class ImageEditor extends AppCompatActivity {
         e.printStackTrace();
       }
     }
+  }
+
+  public Image getImage() {
+    return image;
   }
 
 }

@@ -1,0 +1,33 @@
+nav ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+nav ul li {
+    list-style: none;
+    margin-right: 3em;
+}
+
+.logo {
+    flex-grow: 1;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-width: 100%;
+    padding-left: 20vw;
+}
+  
+.logo {
+    flex-grow: 1;
+    margin-left: 3em;
+    text-decoration: none;
+    color: rgb(228, 228, 228);
+}
+
+.logo:hover {
+    color: silver;
+}

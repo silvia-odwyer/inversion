@@ -1,0 +1,22 @@
+.hero {
+    width: 80%;
+	display: grid;
+	grid-template-columns: 55% 45%;
+	grid-template-rows: auto;
+    grid-template-areas: "hero-left hero-right";
+    margin-top: 10vh;
+}
+
+.hero_image {
+    grid-area: hero-right;
+}
+
+.hero_text {
+    grid-area: hero-left;
+    margin-top: 15vh;
+}
+
+h2 {
+    font-size: 0.8em;
+    color: gainsboro;
+}

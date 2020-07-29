@@ -5,7 +5,7 @@ import LandingHero from './components/LandingHero/LandingHero';
 
 function App() {
   return (
-    <div className="App">
+    <div className="content">
       <header className="App-header">
         <HeaderNav></HeaderNav>
         <LandingHero></LandingHero>

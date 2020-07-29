@@ -18,7 +18,7 @@ nav {
     flex-direction: row;
     align-items: center;
     max-width: 100%;
-    padding-left: 20vw;
+    font-size: 1em;
 }
   
 .logo {

@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: #0b0d0f;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

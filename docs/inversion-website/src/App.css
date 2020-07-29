@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+
 .App-header {
-  background-color: #1c1f25;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   color: white;
+  font-family: "Inter", sans-serif;
+}
+
+.content {
+  margin-left: 15vw;
 }

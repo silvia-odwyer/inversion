@@ -35,11 +35,16 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.FileUtils;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.ImageFilterMetadata;
 import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.Images;
@@ -107,9 +112,8 @@ public class HomeScreenFragment extends Fragment {
     boolean userOnboarded = false;
     userOnboarded = sharedPreferences.getBoolean("userOnboarded", userOnboarded);
 
-    if (!userOnboarded) {
-        onboardUser();
-    }
+    // for testing purposes only
+    onboardUser();
 
     if (savedImageMetadata.size() == 0) {
       // TODO display button to upload image
@@ -169,7 +173,6 @@ public class HomeScreenFragment extends Fragment {
 
       SnapHelper helper = new PagerSnapHelper();
       helper.attachToRecyclerView(videosRecyclerView);
-
   }
 
   private void initRecyclerViews(ArrayList<ImageMetadata> imageMetadata) {
@@ -184,7 +187,6 @@ public class HomeScreenFragment extends Fragment {
 
     SnapHelper helper = new PagerSnapHelper();
     helper.attachToRecyclerView(recyclerView);
-
   }
 
   private void initTheme() {
@@ -200,8 +202,7 @@ public class HomeScreenFragment extends Fragment {
     }
 
   }
-
-
+  
   @Override
   public void onResume() {
     super.onResume();
@@ -220,38 +221,28 @@ public class HomeScreenFragment extends Fragment {
 
   private void initEffectList() {
     // adding sample effect names for now, effects will be imported via JSON file
-    effectNames.add("Chromatic");
-    effectNames.add("Sepia");
-    effectNames.add("Vintage");
-    effectNames.add("Vintage2");
-    effectNames.add("Vintage3");
-    effectNames.add("Vintage4");
-    effectNames.add("Vintage5");
-    effectNames.add("Vintage6");
-    // import JSON file
-    try {
-      activity.getAssets().open("effects.json");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+      String jsonString = FileUtils.getFileFromAssets(context, MainApplication.getFilterListFilename());
+      Log.d("DEBUG", jsonString);
 
-    for (int i = 0; i < effectNames.size(); i++) {
-      final String effectName = effectNames.get(i);
+      Gson gson = new Gson();
 
-      TextView textView = new TextView(root.getContext());
-      textView.setText(effectName);
-      textView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          Intent intent = new Intent(getActivity(), EffectDetail.class);
-          intent.putExtra("effectName", effectName);
-          startActivity(intent);
-        }
-      });
+      List<ImageFilterMetadata> imageFilterMetadata = gson.fromJson(jsonString, new TypeToken<List<ImageFilterMetadata>>(){}.getType());
+      for (int i = 0; i < imageFilterMetadata.size(); i++) {
+          final String effectName = imageFilterMetadata.get(i).getName();
 
-      effectList.addView(textView);
+          TextView textView = new TextView(root.getContext());
+          textView.setText(effectName);
+          textView.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  Intent intent = new Intent(getActivity(), EffectDetail.class);
+                  intent.putExtra("effectName", effectName);
+                  startActivity(intent);
+              }
+          });
 
-    }
+          effectList.addView(textView);
+      }
   }
 
   private void setUpOnClickListeners() {

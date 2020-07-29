@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
                               .drawShadow(true)
                               .tintTarget(false)
                               .transparentTarget(false),
-                      TapTarget.forView( findViewById(R.id.navigation_useraccount), "Customise your experience", "Set a theme, enabled night mode, and more.")
+                      TapTarget.forView( findViewById(R.id.navigation_useraccount), "Customise your experience", "Set a theme, enable night mode, and more.")
                               .targetRadius(60)
                               .outerCircleColor(R.color.colorPrimaryDark)
                               .outerCircleAlpha(0.96f)

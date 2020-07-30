@@ -1,14 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 
 .App-header {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  font-family: "Inter", sans-serif;
 }
 
 .content {
   margin-left: 15vw;
+}
+
+.landing {
+  color: white;
+  font-family: "Inter", sans-serif;
+  max-height: 70vh;
+  font-size: calc(10px + 2vmin);
+}
+
+button {
+  border: none;
+  padding: 1em 2em 1em 2em;
+  margin-right: 2em;
+  color: black;
+  cursor: pointer;
+}
+
+.gradient {
+  background: linear-gradient(200deg, hsla(182, 64%, 53%, 1) 0%, hsla(323, 100%, 47%, 1) 100%);
+
+  background: -moz-linear-gradient(200deg, hsla(182, 64%, 53%, 1) 0%, hsla(323, 100%, 47%, 1) 100%);
+
+  background: -webkit-linear-gradient(200deg, hsla(182, 64%, 53%, 1) 0%, hsla(323, 100%, 47%, 1) 100%);
+}
+
+.rounded {
+  border-radius: 2em;
 }

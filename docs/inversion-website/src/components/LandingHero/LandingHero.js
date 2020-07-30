@@ -14,19 +14,19 @@ class LandingHero extends React.Component {
 
   render() {
     return(
-      <section class="hero">
-          <section class="hero_text">
+      <section className="hero">
+          <section className="hero_text">
             <h1>Video Processing for Android</h1>
             <h2>Inversion helps transform your videos, allowing
                 you to apply special FX, filters and more to your videos.
                 Powered by the GPU.
             </h2>
 
-            <button>Download</button>
-            <button>Learn More</button>
+            <button className="gradient rounded">Download</button>
+            <button className="gradient rounded">Learn More</button>
           </section>
 
-          <section class="hero_image">
+          <section className="hero_image">
             <img src={homescreen} className="App-logo" alt="logo" />
           </section>
 

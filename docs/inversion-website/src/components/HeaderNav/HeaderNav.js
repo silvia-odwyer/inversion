@@ -16,7 +16,7 @@ class HeaderNav extends React.Component {
           <h3>Inversion</h3>
 
         <ul>
-          <li>Pricing</li>
+          <li>Features</li>
           <li>Download</li>
           <li>Contact</li>
         </ul>

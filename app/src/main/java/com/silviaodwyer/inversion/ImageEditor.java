@@ -111,7 +111,7 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void initFilter() {
-    Log.d("DEBUG", "IMAGE EDITOR METADATA: " + image.getMetaData().getAppliedFilter());
+    Log.d("DEBUG", "IMAGE EDITOR FILTER NAME: " + image.getMetaData().getAppliedFilter());
     String appliedFilter = image.getMetaData().getAppliedFilter();
 
     // if an applied filter exists, then filter; note an empty string signifies no filter

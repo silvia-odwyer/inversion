@@ -1,10 +1,14 @@
-.hero {
-    width: 80%;
-	display: grid;
-	grid-template-columns: 55% 45%;
-	grid-template-rows: auto;
-    grid-template-areas: "hero-left hero-right";
-    margin-top: 10vh;
+@media screen and (min-width: 35em) {  
+    .hero {
+        width: 80%;
+        display: grid;
+        grid-template-columns: 55% 45%;
+        grid-template-rows: auto;
+        grid-template-areas: "hero-left hero-right";
+        margin-top: 10vh;
+    }
+    
+
 }
 
 .hero_image {
@@ -19,4 +23,20 @@
 h2 {
     font-size: 0.8em;
     color: gainsboro;
+}
+
+h1 {
+    font-size: 2.4em;
+    margin: 0;
+}
+
+@media screen and (max-width: 52em) {  
+    h1 {
+        font-size: 2em;
+    }
+
+    button {
+        margin: 1em;
+    }
+
 }

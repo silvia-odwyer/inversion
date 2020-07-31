@@ -85,9 +85,7 @@ public class ImageFilters {
     filters.add(new GPUImageSepiaToneFilter());
     filters.add(new GPUImageSolarizeFilter());
     // create blend filters
-    //createBlendFilters();
-    //createGradientFilters();
-    //createGradientGrayscaleFilters();
+
   }
 
   private void createBlendFilters() {
@@ -101,7 +99,7 @@ public class ImageFilters {
     }
   }
 
-  private void createGradientFilters() {
+  public void createGradientFilters() {
     for (int k = 0; k < gradient_backgrounds.size(); k++) {
       int background = gradient_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
@@ -109,7 +107,7 @@ public class ImageFilters {
     }
   }
 
-  private void createGradientGrayscaleFilters() {
+  public void createGradientGrayscaleFilters() {
     for (int k = 0; k < gradient_backgrounds.size(); k++) {
       GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
       filterGroup.addFilter(getObsidianFilter());
@@ -396,14 +394,17 @@ public class ImageFilters {
     for (int index = 0; index < filteredImages.size(); index++) {
       final ImageView imageView = new ImageView(image.getContext());
       imageView.setImageBitmap(filteredImages.get(index));
-      GPUImageFilter filter = filters.get(index);
+      String filterName = filterNames.get(index);
+      GPUImageFilter filter = getFilterFromName(filterName);
 
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           filterImage(filter, image);
+//          image.getMetaData().setAppliedFilter(filterName);
         }
       });
+
       filteredImagesLinLayout.addView(imageView);
     }
   }
@@ -419,55 +420,55 @@ public class ImageFilters {
   public GPUImageFilter getFilterFromName(String filterName) {
     GPUImageFilter filter = null;
     switch(filterName) {
-      case "neonPink":
+      case "Neon Pink":
         filter = getNeonPinkFilter();
         break;
-      case "eight":
+      case "Eight":
         filter = getEightFilter();
         break;
-      case "orbiton":
+      case "Orbiton":
         filter = getOribitonFilter();
         break;
-      case "aesthetica":
+      case "Aesthetica":
         filter = getAestheticaFilter();
         break;
-      case "sepia":
+      case "Sepia":
         filter = new GPUImageSepiaToneFilter();
         break;
-      case "grayscale":
+      case "Grayscale":
         filter = new GPUImageGrayscaleFilter();
         break;
-      case "vibrance":
+      case "Vibrance":
         filter = new GPUImageVibranceFilter();
         break;
-      case "dramatic":
+      case "Dramatic":
         filter = getDramaticFilter();
         break;
-      case "obsidian":
+      case "Obsidian":
         filter = getObsidianFilter();
         break;
-      case "vibrancy":
+      case "Vibrancy":
         filter = getVibrancyFilter();
         break;
-      case "rubrik":
+      case "Rubrik":
         filter = getRubrikFilter();
         break;
-      case "cali":
+      case "Cali":
         filter = getCaliFilter();
         break;
-      case "retro":
+      case "Retro":
         filter = getRetroFilter();
         break;
-      case "retro2":
+      case "Retro2":
         filter = getRetroFilter2();
         break;
-      case "retro3":
+      case "Retro3":
         filter = getRetroFilter3();
         break;
-      case "retroVignette":
+      case "Retro Vignette":
         filter = getRetroVignette();
         break;
-      case "retroVignette2":
+      case "Retro Vignette2":
         filter = getRetroVignette2();
         break;
       default:

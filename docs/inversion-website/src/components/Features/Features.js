@@ -13,7 +13,7 @@ class Features extends React.Component {
 
   render() {
     return(
-    <section>
+    <section class="features">
 
         <section className="hero">
           <section className="hero_text">
@@ -50,6 +50,24 @@ class Features extends React.Component {
             <h1>Get Daily Inspiration</h1>
             <h2>
                 Check back daily to view edits of your uploaded photos, and get inspiration!
+            </h2>
+
+            </section>
+
+            <section className="hero_image">
+            </section>
+
+        </section>
+
+        
+        <section className="hero">
+            <section className="hero_text">
+            <h1>Over 100 Filters</h1>
+            <h2>
+                No matter how you want to transform your image, choose from a selection of over 100 filters.
+
+                From retro to glitch effects and everything in-between, Inversion contains filters for 
+                every ambience.
             </h2>
 
             </section>

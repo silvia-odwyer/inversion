@@ -29,6 +29,8 @@ public class MainApplication extends Application {
   private static String savedImageMetadataFilename = "saved_image_paths.json";
   private static String savedVideoMetadataFilename = "saved_video_paths.json";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
+  private static String FILTERS_LIST = "effects.json";
+
   private long startTime;
 
   public Video getVideo() {
@@ -240,6 +242,10 @@ public class MainApplication extends Application {
 
     public long getStartTime() {
       return startTime;
+    }
+
+    public static String getFilterListFilename() {
+      return FILTERS_LIST;
     }
 
 }

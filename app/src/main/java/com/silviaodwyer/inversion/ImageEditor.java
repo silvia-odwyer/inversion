@@ -1,7 +1,10 @@
 package com.silviaodwyer.inversion;
 
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -40,6 +43,7 @@ public class ImageEditor extends AppCompatActivity {
   private Bitmap bitmap;
   private ArrayList<Bitmap> filteredImages = new ArrayList<>();
   private MainApplication mainApplication;
+  private SharedPreferences sharedPreferences;
   private GPUImageView gpuImageView;
   private Image image;
   private ImageView imageView;
@@ -50,6 +54,7 @@ public class ImageEditor extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_editor);
+    sharedPreferences = getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
 
     BottomNavigationView navView = findViewById(R.id.nav_view);
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -89,25 +94,33 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void initTutorial() {
-    TapTargetView.showFor(this,
-            TapTarget.forView( findViewById(R.id.save_btn), "Save your image", "This allows you to save your image.")
-                    .targetRadius(75)
-                    .outerCircleColor(R.color.colorPrimary)
-                    .outerCircleAlpha(0.96f)
-                    .targetCircleColor(R.color.backgroundColor)
-                    .titleTextSize(20)
-                    .titleTextColor(R.color.textColor)
-                    .dimColor(R.color.backgroundColor)
-                    .cancelable(false)
-                    .drawShadow(true)
-                    .tintTarget(false)
-                    .transparentTarget(false),
-            new TapTargetView.Listener() {
-              @Override
-              public void onTargetClick(TapTargetView view) {
-                super.onTargetClick(view);
-              }
-            });
+    if (! sharedPreferences.contains("imageEditorTutorialCompleted")) {
+      TapTargetView.showFor(this,
+              TapTarget.forView( findViewById(R.id.save_btn), "Save your image", "This allows you to save your image.")
+                      .targetRadius(75)
+                      .outerCircleColor(R.color.colorPrimary)
+                      .outerCircleAlpha(0.96f)
+                      .targetCircleColor(R.color.backgroundColor)
+                      .titleTextSize(20)
+                      .titleTextColor(R.color.textColor)
+                      .dimColor(R.color.backgroundColor)
+                      .cancelable(false)
+                      .drawShadow(true)
+                      .tintTarget(false)
+                      .transparentTarget(false),
+              new TapTargetView.Listener() {
+                @Override
+                public void onTargetClick(TapTargetView view) {
+                  super.onTargetClick(view);
+                }
+              });
+
+      // save to shared preferences
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean("imageEditorTutorialCompleted", true);
+      editor.apply();
+    }
+
   }
 
   public void initFilter() {
@@ -116,8 +129,14 @@ public class ImageEditor extends AppCompatActivity {
 
     // if an applied filter exists, then filter; note an empty string signifies no filter
     if (!appliedFilter.equals("")) {
-      GPUImageFilter filter = this.imageFilters.getFilterFromName(image.getMetaData().getAppliedFilter());
-      updateGPUImage(filter);
+      GPUImageFilter filter = this.imageFilters.getFilterFromName(appliedFilter);
+
+      if (filter != null) {
+        updateGPUImage(filter);
+      }
+      else {
+        Toast.makeText(getApplicationContext(), "Filter not found", Toast.LENGTH_SHORT).show();
+      }
     }
   }
 

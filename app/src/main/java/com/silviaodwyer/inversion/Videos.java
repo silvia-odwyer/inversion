@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
   private int numVideos;
   private VideosRecyclerView recyclerViewAdapter;
   private ArrayList<VideoMetadata> savedVideoMetadata;
+  private AlphaAnimation clickAnimation;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +49,13 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     savedVideoMetadata = mainApplication.getSavedVideoMetadata(getApplicationContext());
     numVideos = savedVideoMetadata.size();
     setUpRecyclerView();
+    clickAnimation = new AlphaAnimation(1F, 0.8F);
 
     uploadVideo = findViewById(R.id.upload_video_btn);
     uploadVideo.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        view.startAnimation(clickAnimation);
         Intent videoPickerIntent = new Intent(Intent.ACTION_PICK);
         videoPickerIntent.setType("video/*");
         startActivityForResult(videoPickerIntent, RESULT_LOAD_VIDEO);
@@ -62,6 +66,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     deleteAllVideosBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        view.startAnimation(clickAnimation);
         deleteAllVideos();
       }
     });

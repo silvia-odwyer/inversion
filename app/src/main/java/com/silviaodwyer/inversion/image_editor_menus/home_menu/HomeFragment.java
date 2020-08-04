@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     activity = (ImageEditor) getActivity();
     MainApplication mainApplication = (MainApplication) getActivity().getApplication();
 
-    image = activity.getImage();
+    image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
     ImageFilters imageFilters = activity.getImageFilters();
 

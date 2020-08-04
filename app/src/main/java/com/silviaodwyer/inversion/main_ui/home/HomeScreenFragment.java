@@ -51,6 +51,7 @@ import com.silviaodwyer.inversion.Images;
 import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.Shop;
 import com.silviaodwyer.inversion.Video;
 import com.silviaodwyer.inversion.VideoEditor;
 import com.silviaodwyer.inversion.VideoMetadata;
@@ -90,6 +91,7 @@ public class HomeScreenFragment extends Fragment {
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
   private FileUtils fileUtils;
+  private TextView shop;
   private int numImages;
   private int numVideos;
   private Button uploadImageBtn;
@@ -103,6 +105,7 @@ public class HomeScreenFragment extends Fragment {
     context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
+    shop = root.findViewById(R.id.shop);
     fileUtils = new FileUtils(context);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
@@ -138,11 +141,12 @@ public class HomeScreenFragment extends Fragment {
   private void onboardUser() {
 
       // TODO add tutorial with ViewPager.
-
-      // save, as user is now onboarded
-      SharedPreferences.Editor editor = sharedPreferences.edit();
-      editor.putBoolean("userOnboarded", true);
-      editor.apply();
+      if (! sharedPreferences.contains("imageEditorTutorialCompleted")) {
+          // save, as user is now onboarded
+          SharedPreferences.Editor editor = sharedPreferences.edit();
+          editor.putBoolean("userOnboarded", true);
+          editor.apply();
+      }
   }
 
   private void setUpImages() {
@@ -202,7 +206,7 @@ public class HomeScreenFragment extends Fragment {
     }
 
   }
-  
+
   @Override
   public void onResume() {
     super.onResume();
@@ -220,7 +224,6 @@ public class HomeScreenFragment extends Fragment {
   }
 
   private void initEffectList() {
-    // adding sample effect names for now, effects will be imported via JSON file
       String jsonString = FileUtils.getFileFromAssets(context, MainApplication.getFilterListFilename());
       Log.d("DEBUG", jsonString);
 
@@ -260,6 +263,14 @@ public class HomeScreenFragment extends Fragment {
         Intent intent = new Intent(getActivity(), Videos.class);
         startActivity(intent);
       }
+    });
+
+    shop.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), Shop.class);
+            startActivity(intent);
+        }
     });
 
   }

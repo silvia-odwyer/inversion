@@ -16,11 +16,12 @@
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.147">
+      app:layout_constraintVertical_bias="1.0">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:orientation="vertical">
 
       <TextView
@@ -29,6 +30,17 @@
           android:text="@string/app_name"
           android:textColor="@color/headingColor"
           android:textSize="40sp"
+          android:paddingTop="14dp"
+          android:paddingBottom="4dp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Shop"
+          android:id="@+id/shop"
+          android:textColor="@color/headingColor"
+          android:textSize="24sp"
           android:textStyle="bold" />
 
       <LinearLayout
@@ -61,13 +73,13 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="10dp"
-          android:visibility="gone"
-          android:background="@drawable/gradient_blue_violet"
-          android:text="Upload New Image"
-          android:padding="10dp"
           android:layout_marginEnd="40dp"
+          android:background="@drawable/gradient_blue_violet"
+          android:padding="10dp"
+          android:text="Upload New Image"
           android:textAllCaps="false"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:visibility="gone" />
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recycler_view_images"
@@ -95,25 +107,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
+            android:paddingBottom="12dp"
             android:text="View all"
             android:textColor="@color/headingColor"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:paddingBottom="12dp"/>
+            android:textStyle="bold" />
       </LinearLayout>
 
       <Button
           android:id="@+id/upload_video_home_btn"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:visibility="gone"
           android:layout_marginTop="10dp"
-          android:background="@drawable/gradient_blue_violet"
-          android:text="Upload New Video"
-          android:padding="10dp"
           android:layout_marginEnd="40dp"
+          android:background="@drawable/gradient_blue_violet"
+          android:padding="10dp"
+          android:text="Upload New Video"
           android:textAllCaps="false"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:visibility="gone" />
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/saved_videos_recycler_view"
@@ -140,6 +152,8 @@
           android:orientation="vertical">
 
       </LinearLayout>
+
+
     </LinearLayout>
   </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

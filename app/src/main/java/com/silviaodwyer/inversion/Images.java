@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   private Button deleteBtn;
   private RecyclerView recyclerView;
   private int numImages;
+  private AlphaAnimation clickAnimation;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +53,12 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
     // setup the Recycler View
     setupImages();
-
+    clickAnimation = new AlphaAnimation(1F, 0.8F);
     uploadImage = findViewById(R.id.upload_img_btn);
     uploadImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        view.startAnimation(clickAnimation);
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
@@ -66,6 +69,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
     deleteBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        view.startAnimation(clickAnimation);
         FileUtils fileUtils = new FileUtils(getApplicationContext());
         File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/images");
         fileUtils.deleteDirectory(directory, getApplicationContext());

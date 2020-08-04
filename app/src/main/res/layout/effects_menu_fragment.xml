@@ -6,16 +6,46 @@
   android:layout_height="match_parent"
   tools:context=".image_editor_menus.effects_menu.EffectsMenuFragment">
 
-  <LinearLayout
+
+  <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
+      android:id="@+id/top_navigation_constraint"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
+      android:background="@android:color/white"
+      android:elevation="4dp"
+      android:padding="12dp"
+      app:bnc_mode="spread"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
+    <com.gauravk.bubblenavigation.BubbleToggleView
+        android:id="@+id/c_item_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bt_active="true"
+        app:bt_colorActive="@android:color/holo_blue_light"
+        app:bt_colorInactive="@android:color/darker_gray"
+        app:bt_icon="@drawable/search_icon"
+        app:bt_padding="4dp"
+        app:bt_title="Brightness"
+        app:bt_titlePadding="4dp" />
 
+    <com.gauravk.bubblenavigation.BubbleToggleView
+        android:id="@+id/c_item_rest1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bt_active="true"
+        app:bt_colorActive="@android:color/holo_blue_light"
+        app:bt_colorInactive="@android:color/darker_gray"
+        app:bt_icon="@drawable/search_icon"
+        app:bt_padding="3dp"
+        app:bt_title="Saturation"
+        app:bt_titlePadding="3dp" />
+    <!-- Add more child items here - max upto 5 -->
+
+  </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
 <!--    <HorizontalScrollView-->
 <!--        android:id="@+id/imageeditor_effects_menu"-->
 <!--        android:layout_width="match_parent"-->
@@ -35,7 +65,6 @@
 <!--          android:orientation="horizontal"></LinearLayout>-->
 
 <!--    </HorizontalScrollView>-->
-  </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

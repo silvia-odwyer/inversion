@@ -32,7 +32,7 @@ public class ImageFilters {
   private GPUImageBrightnessFilter brightnessFilter;
   private GPUImageContrastFilter contrastFilter;
   private GPUImageSaturationFilter saturationFilter;
-  private Object[][] effectFilters;
+  private List<List<Object>> effectFilters;
 
   public enum FilterType {
     EFFECT,
@@ -47,8 +47,13 @@ public class ImageFilters {
 
     filterNames = Arrays.asList("neonPink", "rubrik", "eight");
 
+
     addEffectFilters();
     initCorrectionFilters();
+  }
+
+  public ArrayList getFilters() {
+      return this.filters;
   }
 
   public void initCorrectionFilters() {
@@ -81,15 +86,25 @@ public class ImageFilters {
   public void addEffectFilters() {
 
     // create blend filters
-      effectFilters = new Object[][]{{"Neon Pink", getNeonPinkFilter()}, {"Orbiton", getOribitonFilter()},
-              {"Obsidian", getObsidianFilter()}, {"Grayscale", new GPUImageGrayscaleFilter()},
-              {"Monochrome", new GPUImageMonochromeFilter()}, {"Sharpen", new GPUImageSharpenFilter()},
-              {"Aesthetica", getAestheticaFilter()}, {"Dramatic", getDramaticFilter()}, {"Sepia Tone", new GPUImageSepiaToneFilter()},
-              {"Solarize", new GPUImageSolarizeFilter()}};
+      effectFilters = new ArrayList<>();
 
-      for (int i = 0; i < effectFilters.length; i++) {
-        filters.add((GPUImageFilter) effectFilters[i][1]);
+      effectFilters.add(Arrays.asList("Neon Pink", getNeonPinkFilter()));
+      effectFilters.add(Arrays.asList("Orbiton", getOribitonFilter()));
+      effectFilters.add(Arrays.asList("Obsidian", getObsidianFilter()));
+      effectFilters.add(Arrays.asList("Grayscale", new GPUImageGrayscaleFilter()));
+      effectFilters.add(Arrays.asList("Monochrome", new GPUImageMonochromeFilter()));
+      effectFilters.add(Arrays.asList("Sharpen", new GPUImageSharpenFilter()));
+      effectFilters.add(Arrays.asList("Aesthetica", getAestheticaFilter()));
+      effectFilters.add(Arrays.asList("Dramatic", getDramaticFilter()));
+      effectFilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
+      effectFilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
+
+      for (List filter: effectFilters) {
+          Log.d("DEBUG", "FILTER: " + filter.get(0));
+          filters.add((GPUImageFilter) filter.get(1));
       }
+
+
   }
 
   private void createBlendFilters() {
@@ -99,7 +114,8 @@ public class ImageFilters {
     for (int k = 0; k < blend_backgrounds.size(); k++) {
       int background = blend_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageAddBlendFilter.class, background);
-//      filters.add(filter);
+      effectFilters.add(Arrays.asList("Blend " + k, filter));
+      filters.add(filter);
     }
   }
 
@@ -107,7 +123,8 @@ public class ImageFilters {
     for (int k = 0; k < gradient_backgrounds.size(); k++) {
       int background = gradient_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
-//      filters.add(filter);
+      effectFilters.add(Arrays.asList("Gradient " + k, filter));
+      filters.add(filter);
     }
   }
 
@@ -118,7 +135,9 @@ public class ImageFilters {
       int background = gradient_backgrounds.get(k);
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
       filterGroup.addFilter(filter);
-//      filters.add(filterGroup);
+      effectFilters.add(Arrays.asList("Gradient BW " + k, filter));
+      filters.add(filterGroup);
+      
     }
   }
 
@@ -398,8 +417,8 @@ public class ImageFilters {
     for (int index = 0; index < filteredImages.size(); index++) {
       final ImageView imageView = new ImageView(image.getContext());
       imageView.setImageBitmap(filteredImages.get(index));
-      String filterName = (String) effectFilters[index][0];
-      GPUImageFilter filter = (GPUImageFilter) effectFilters[index][1];
+      String filterName = (String) effectFilters.get(index).get(0);
+      GPUImageFilter filter = (GPUImageFilter) effectFilters.get(index).get(1);
 
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override

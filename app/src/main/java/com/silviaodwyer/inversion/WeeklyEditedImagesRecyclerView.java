@@ -5,6 +5,9 @@ import android.app.ActivityOptions;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +18,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyEditedImagesRecyclerView.ViewHolder> {
 
@@ -32,6 +41,8 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     private Activity activity;
     private Activity context;
     private MainApplication mainApplication;
+    private ImageFilters imageFilters;
+    private ArrayList filters;
 
     public WeeklyEditedImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
         this.inflater = LayoutInflater.from(context);
@@ -39,6 +50,10 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         this.context = context;
         this.mainApplication = mainApplication;
         this.imageUtils = new ImageUtils(context);
+        this.imageFilters = new ImageFilters(context);
+        imageFilters.createGradientFilters();
+        imageFilters.createGradientGrayscaleFilters();
+        this.filters = imageFilters.getFilters();
     }
 
     @Override
@@ -52,13 +67,26 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     @Override
     public void onBindViewHolder(@NonNull WeeklyEditedImagesRecyclerView.ViewHolder holder, int position) {
         ImageMetadata metadata = data.get(position);
-        Log.d("DEBUG", "original img path: " + metadata.getOriginalImagePath());
 
-        Glide
-                .with(context)
+        Glide.with(context)
+                .asBitmap()
                 .load(metadata.getOriginalImagePath())
-                .apply(new RequestOptions().override(250, 250))
-                .into(holder.imageView);
+                .into(new CustomTarget<Bitmap>(250, 250) {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        GPUImage gpuImage = new GPUImage(context);
+                        gpuImage.setImage(resource);
+                        Random r = new Random();
+                        int index = r.nextInt(filters.size());
+                        gpuImage.setFilter((GPUImageFilter) filters.get(index));
+
+                        holder.imageView.setImageBitmap(gpuImage.getBitmapWithFilterApplied());
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 
     @Override

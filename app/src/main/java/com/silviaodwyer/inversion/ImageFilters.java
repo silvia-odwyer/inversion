@@ -26,9 +26,7 @@ public class ImageFilters {
   private ArrayList<GPUImageFilter> filters;
   private ArrayList<GPUImageFilter> correctionFilters;
   private GPUImageFilterGroup activeFilterGroup = new GPUImageFilterGroup();
-  private List<String> filterNames;
   private Context context;
-  private List<Integer> gradient_backgrounds;
   private GPUImageBrightnessFilter brightnessFilter;
   private GPUImageContrastFilter contrastFilter;
   private GPUImageSaturationFilter saturationFilter;
@@ -42,11 +40,6 @@ public class ImageFilters {
   public ImageFilters(Context context) {
     this.context = context;
     filters = new ArrayList<>();
-    gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
-            R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars);
-
-    filterNames = Arrays.asList("neonPink", "rubrik", "eight");
-
 
     addEffectFilters();
     initCorrectionFilters();
@@ -68,7 +61,7 @@ public class ImageFilters {
     activeFilterGroup.addFilter(saturationFilter);
   }
 
-  private static GPUImageFilter createTwoBlendFilter(Context context, Class<? extends GPUImageTwoInputFilter> twoInputFilterClass,
+  public static GPUImageFilter createTwoBlendFilter(Context context, Class<? extends GPUImageTwoInputFilter> twoInputFilterClass,
                                                      int resource) {
     try {
       // create a two input filter
@@ -104,7 +97,6 @@ public class ImageFilters {
           filters.add((GPUImageFilter) filter.get(1));
       }
 
-
   }
 
   private void createBlendFilters() {
@@ -116,28 +108,6 @@ public class ImageFilters {
       GPUImageFilter filter = createTwoBlendFilter(context, GPUImageAddBlendFilter.class, background);
       effectFilters.add(Arrays.asList("Blend " + k, filter));
       filters.add(filter);
-    }
-  }
-
-  public void createGradientFilters() {
-    for (int k = 0; k < gradient_backgrounds.size(); k++) {
-      int background = gradient_backgrounds.get(k);
-      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
-      effectFilters.add(Arrays.asList("Gradient " + k, filter));
-      filters.add(filter);
-    }
-  }
-
-  public void createGradientGrayscaleFilters() {
-    for (int k = 0; k < gradient_backgrounds.size(); k++) {
-      GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
-      filterGroup.addFilter(getObsidianFilter());
-      int background = gradient_backgrounds.get(k);
-      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, background);
-      filterGroup.addFilter(filter);
-      effectFilters.add(Arrays.asList("Gradient BW " + k, filter));
-      filters.add(filterGroup);
-      
     }
   }
 
@@ -299,7 +269,6 @@ public class ImageFilters {
     return filterGroup;
   }
 
-
   private GPUImageFilterGroup getRetroFilter3() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     float amt = (float) 0.8;
@@ -387,7 +356,7 @@ public class ImageFilters {
     return correctionFilters;
   }
 
-  public ArrayList<Bitmap> generateThumbnails(final Image image, ImageFilters.FilterType filterType) {
+  public ArrayList<Bitmap> generateThumbnails(final Image image, ArrayList<GPUImageFilter> filters) {
     final ArrayList<Bitmap> thumbnails = new ArrayList<Bitmap>();
 
 //    switch(filterType) {
@@ -412,18 +381,22 @@ public class ImageFilters {
   }
 
   public void appendImageThumbnails(LinearLayout filteredImagesLinLayout, final Image image,
-                                    ArrayList<Bitmap> filteredImages) {
+                                    ArrayList<Bitmap> filteredImages, List<List<Object>> allFilters) {
 
     for (int index = 0; index < filteredImages.size(); index++) {
       final ImageView imageView = new ImageView(image.getContext());
       imageView.setImageBitmap(filteredImages.get(index));
-      String filterName = (String) effectFilters.get(index).get(0);
-      GPUImageFilter filter = (GPUImageFilter) effectFilters.get(index).get(1);
+      String filterName = (String) allFilters.get(index).get(0);
+      GPUImageFilter filter = (GPUImageFilter) allFilters.get(index).get(1);
+
+      Log.d("DEBUG", "FILTERS LENGTH: " + filteredImages.size());
+      Log.d("DEBUG", "FILTERED THUMBNAILS LENGTH: " + filteredImages.size());
 
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           filterImage(filter, image);
+          Log.d("DEBUG", "APPLYING FILTER NAME: " + filterName);
           image.getMetaData().setAppliedFilter(filterName);
         }
       });

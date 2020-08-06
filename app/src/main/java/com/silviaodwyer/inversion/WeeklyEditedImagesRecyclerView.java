@@ -51,8 +51,6 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         this.mainApplication = mainApplication;
         this.imageUtils = new ImageUtils(context);
         this.imageFilters = new ImageFilters(context);
-        imageFilters.createGradientFilters();
-        imageFilters.createGradientGrayscaleFilters();
         this.filters = imageFilters.getFilters();
     }
 

@@ -5,12 +5,16 @@ import android.os.Environment;
 import java.io.File;
 
 public class VideoMetadata extends FileMetadata {
-    public VideoMetadata(String name, String timestamp) {
+    private String originalVideoPath;
+
+    public VideoMetadata(String name, String timestamp, String videoUrl) {
         super(name, timestamp, FileType.VIDEO);
+        this.originalVideoPath = videoUrl;
     }
 
-    public VideoMetadata() {
+    public VideoMetadata(String videoUrl) {
         super(FileType.VIDEO);
+        this.originalVideoPath = videoUrl;
     }
 
     public String getThumbnailPath() {
@@ -18,4 +22,9 @@ public class VideoMetadata extends FileMetadata {
         File file = new File(videoThumbnailsDirectory, getName() + ".png");
         return file.getAbsolutePath();
     }
+
+    public String getOriginalVideoPath() {
+        return originalVideoPath;
+    }
+
 }

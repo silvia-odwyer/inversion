@@ -45,7 +45,6 @@ public class VideoEditor extends AppCompatActivity {
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
   private Context context;
-  private String videoPath;
   private String videoUrl;
   private Video video;
   private ImageView imageView;
@@ -62,15 +61,7 @@ public class VideoEditor extends AppCompatActivity {
     mainApplication = ((MainApplication)getApplication());
 
     video = mainApplication.getVideo();
-
     Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
-
-      File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
-
-      String name = video.getMetadata().getName() + ".mp4";
-
-      File file = new File(directory, name);
-
 
     if (player != null) {
         player = null;
@@ -78,7 +69,7 @@ public class VideoEditor extends AppCompatActivity {
         dataSourceFactory = null;
     }
 
-    videoUrl = getIntent().getExtras().getString("videoUrl");
+    videoUrl = video.getMetadata().getOriginalVideoPath();
     Log.d("DEBUG", "Video Path is: " + videoUrl);
 
     this.setupPlayer();
@@ -123,7 +114,6 @@ public class VideoEditor extends AppCompatActivity {
     videoContainer.addView(ePlayerView);
 
     ePlayerView.onResume();
-
   }
 
   public void end() {

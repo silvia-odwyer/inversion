@@ -9,10 +9,9 @@ import java.io.File;
 public class Video {
   private VideoMetadata metadata;
   private Bitmap thumbnail;
-  private String originalVideoPath;
 
-  public Video(Bitmap thumbnail) {
-    this.metadata = new VideoMetadata();
+  public Video(Bitmap thumbnail, String videoUrl) {
+    this.metadata = new VideoMetadata(videoUrl);
     this.thumbnail = thumbnail;
   }
 

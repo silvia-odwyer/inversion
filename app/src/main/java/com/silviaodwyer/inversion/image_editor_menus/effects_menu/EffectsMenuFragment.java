@@ -24,9 +24,6 @@ public class EffectsMenuFragment extends Fragment {
 
     imageFilters = activity.getImageFilters();
 
-    // init new effects filters
-    imageFilters.createGradientGrayscaleFilters();
-    imageFilters.createGradientFilters();
     return root;
   }
 }

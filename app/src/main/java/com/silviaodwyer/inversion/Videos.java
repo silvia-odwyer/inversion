@@ -166,10 +166,10 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       Intent intent = new Intent(getBaseContext(), VideoEditor.class);
 
       if (videoUrl != null) {
-        video = new Video(resizedBitmap);
+        video = new Video(resizedBitmap, videoUrl);
 
         mainApplication.setVideo(video);
-        intent.putExtra("videoUrl", videoUrl);
+
       }
 
       // Now that we have the bitmap thumbnail of the video, we can start the video editor activity.
@@ -178,7 +178,6 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
       super.onPostExecute(result);
     }
   }
-
 
   public void deleteAllVideos() {
     File directory = new File(Environment.getExternalStorageDirectory() + "/Inversion/videos");

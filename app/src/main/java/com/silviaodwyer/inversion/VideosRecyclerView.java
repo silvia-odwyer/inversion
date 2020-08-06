@@ -59,7 +59,8 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
         VideoMetadata metadata = data.get(position);
         Video video = new Video(metadata);
 
-        String videoUrl = String.valueOf(Uri.fromFile(file));
+//        String videoUrl = String.valueOf(Uri.fromFile(file));
+        String videoUrl = video.getMetadata().getOriginalVideoPath();
         intent.putExtra("videoUrl", videoUrl);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

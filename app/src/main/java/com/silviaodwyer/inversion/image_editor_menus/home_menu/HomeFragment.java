@@ -20,6 +20,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter;
 
+import com.silviaodwyer.inversion.GradientFilters;
 import com.silviaodwyer.inversion.HomeActivity;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
@@ -45,9 +46,13 @@ public class HomeFragment extends Fragment {
 
     ImageFilters imageFilters = activity.getImageFilters();
 
+//    LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
+//    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);
+//    imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
+    GradientFilters gradientFilters = new GradientFilters(root.getContext());
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
-    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);
-    imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
+    ArrayList<Bitmap> thumbnails = gradientFilters.getFilteredThumbnails(image);
+    gradientFilters.appendFilteredThumbnails(filteredImagesLinLayout, image, thumbnails);
 
     return root;
   }

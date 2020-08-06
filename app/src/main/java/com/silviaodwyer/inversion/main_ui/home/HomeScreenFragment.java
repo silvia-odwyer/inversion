@@ -459,7 +459,7 @@ public class HomeScreenFragment extends Fragment {
             Intent intent = new Intent(activity.getBaseContext(), VideoEditor.class);
 
             if (videoUrl != null) {
-                video = new Video(resizedBitmap);
+                video = new Video(resizedBitmap, videoUrl);
 
                 mainApplication.setVideo(video);
                 intent.putExtra("videoUrl", videoUrl);

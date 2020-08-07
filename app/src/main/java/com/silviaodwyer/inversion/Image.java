@@ -124,17 +124,6 @@ public class Image {
   }
 
   /**
-   * Get the image thumbnail as a bitmap.
-   *
-   * @return      image thumbnail
-   */
-  public Bitmap getThumbnail(int maxWidth, int maxHeight) {
-    ImageUtils imageUtils = new ImageUtils(context);
-    final Bitmap resultBitmap = imageUtils.resizeBitmap(originalImageBitmap, maxWidth, maxHeight);
-    return resultBitmap;
-  }
-
-  /**
    * Returns the bitmap for this image.
    *
    * @return      the image's bitmap

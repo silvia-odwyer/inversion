@@ -71,8 +71,8 @@ public class GradientFilters extends ImageFilters {
         return filters;
     }
 
-    public ArrayList<Bitmap> getFilteredThumbnails(Image image) {
-        return super.generateThumbnails(image, filters);
+    public ArrayList<Bitmap> getFilteredThumbnails(Bitmap bitmap) {
+        return super.generateThumbnails(bitmap, filters);
     }
 
     public void appendFilteredThumbnails(LinearLayout filteredImagesLinLayout, Image image,

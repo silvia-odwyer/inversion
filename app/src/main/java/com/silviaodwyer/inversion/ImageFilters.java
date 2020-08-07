@@ -111,6 +111,11 @@ public class ImageFilters {
     }
   }
 
+  public List<List<Object>> getEffectFilters() {
+    return effectFilters;
+  }
+
+
   private GPUImageFilterGroup getOribitonFilter() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
     filterGroup.addFilter(getObsidianFilter());
@@ -356,7 +361,7 @@ public class ImageFilters {
     return correctionFilters;
   }
 
-  public ArrayList<Bitmap> generateThumbnails(final Image image, ArrayList<GPUImageFilter> filters) {
+  public ArrayList<Bitmap> generateThumbnails(final Bitmap bitmap, ArrayList<GPUImageFilter> filters) {
     final ArrayList<Bitmap> thumbnails = new ArrayList<Bitmap>();
 
 //    switch(filterType) {
@@ -367,7 +372,9 @@ public class ImageFilters {
 //        filters = getCorrectionFilters();
 //        break;
 //    }
-    Bitmap thumbnail = image.getThumbnail(150, 150);
+    ImageUtils imageUtils = new ImageUtils(context);
+
+    Bitmap thumbnail = imageUtils.resizeBitmap(bitmap, 150, 150);
 
     GPUImage.getBitmapForMultipleFilters(thumbnail, filters, new GPUImage.ResponseListener<Bitmap>() {
 

@@ -117,6 +117,8 @@ public class ImageUtils {
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
   }
 
+
+
   /**
    * Get the locale of the user's device. This is required
    * for date formatting according to the locale when generating

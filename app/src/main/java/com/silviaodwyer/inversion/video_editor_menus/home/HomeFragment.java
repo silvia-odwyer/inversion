@@ -10,17 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.daasuu.gpuv.egl.filter.GlFilter;
+import com.silviaodwyer.inversion.ImageFilters;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.utils.VideoFilters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 public class HomeFragment extends Fragment {
-  private ArrayList<GlFilter> filters;
+  private List<List<Object>> filters;
   private VideoFilters videoFilters;
   private Bitmap originalVideoThumbnail;
   private View root;
@@ -32,7 +35,7 @@ public class HomeFragment extends Fragment {
     root = inflater.inflate(R.layout.fragment_video_editor_home, container, false);
 
     videoFilters = new VideoFilters(getActivity().getApplicationContext());
-    filters = videoFilters.getVideoFilters();
+    filters = videoFilters.getEffectFilters();
     mainApplication = (MainApplication) getActivity().getApplication();
 
     originalVideoThumbnail = mainApplication.getVideo().getThumbnail();
@@ -56,16 +59,20 @@ public class HomeFragment extends Fragment {
   private void appendThumbnails() {
 
     LinearLayout filteredThumbnailsLinLayout = root.findViewById(R.id.filteredVideoThumbnails);
-    for (int i = 0; i < filters.size(); i++) {
+    ImageFilters imageFilters = new ImageFilters(getContext());
+    ArrayList<GPUImageFilter> correspondingImageFilters = videoFilters.getRequiredImageFilters();
+
+    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(originalVideoThumbnail, correspondingImageFilters);
+    for (int i = 0; i < thumbnails.size(); i++) {
       final int index = i;
       ImageView imageView = new ImageView(getActivity().getApplicationContext());
-      imageView.setImageBitmap(originalVideoThumbnail);
+      imageView.setImageBitmap(thumbnails.get(i));
       filteredThumbnailsLinLayout.addView(imageView);
 
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          videoFilters.filterVideo(filters.get(index), mainApplication.getPlayerView());
+          videoFilters.filterVideo((GlFilter) filters.get(index).get(1), mainApplication.getPlayerView());
         }
       });
     }

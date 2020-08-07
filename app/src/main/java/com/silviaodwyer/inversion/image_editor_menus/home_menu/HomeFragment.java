@@ -44,14 +44,12 @@ public class HomeFragment extends Fragment {
 
     image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
-    ImageFilters imageFilters = activity.getImageFilters();
-
 //    LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
 //    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);
 //    imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
     GradientFilters gradientFilters = new GradientFilters(root.getContext());
     LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
-    ArrayList<Bitmap> thumbnails = gradientFilters.getFilteredThumbnails(image);
+    ArrayList<Bitmap> thumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap());
     gradientFilters.appendFilteredThumbnails(filteredImagesLinLayout, image, thumbnails);
 
     return root;

@@ -48,7 +48,7 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_images);
-    mainApplication = ((MainApplication)getApplication());
+    mainApplication = ((MainApplication) getApplication());
     savedFileMetaData = mainApplication.getSavedImageMetadata(this);
 
     // setup the Recycler View

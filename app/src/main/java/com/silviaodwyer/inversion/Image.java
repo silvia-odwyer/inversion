@@ -93,14 +93,6 @@ public class Image {
     return context;
   }
 
-  /**
-   * Set the context for this application.
-   *
-   */
-  public void setContext(Context context) {
-    this.context = context;
-  }
-
   public void setFilteredThumbnails(ArrayList<Bitmap> filteredThumbnails) {
     this.filteredThumbnails = filteredThumbnails;
   }

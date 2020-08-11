@@ -100,12 +100,13 @@ public class VideoFilters {
 
   public ArrayList<GPUImageFilter> getRequiredImageFilters() {
     ImageFilters imageFilters = new ImageFilters(context);
-    List<List<Object>> allImageFilters = imageFilters.getEffectFilters();
+
     ArrayList<GPUImageFilter> requiredImageFilters = new ArrayList<>();
 
-    for (List<Object> filter: allImageFilters) {
-      if (imageFilters.getFilterFromName( (String) filter.get(0)) != null) {
-          requiredImageFilters.add((GPUImageFilter) filter.get(1));
+    for (List<Object> filter: effectFilters) {
+      GPUImageFilter correspondingImageFilter = imageFilters.getFilterFromName((String) filter.get(0));
+      if (correspondingImageFilter != null) {
+          requiredImageFilters.add(correspondingImageFilter);
       }
     }
 

@@ -25,6 +25,7 @@ import com.silviaodwyer.inversion.HomeActivity;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageEditor;
 import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.ImageThumbnail;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 
@@ -44,13 +45,10 @@ public class HomeFragment extends Fragment {
 
     image = new Image(mainApplication.getImage().getBitmap(), root.getContext(), activity, mainApplication.getImage().getMetaData());
 
+//    GradientFilters gradientFilters = new GradientFilters(root.getContext());
 //    LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
-//    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(image, ImageFilters.FilterType.EFFECT);
-//    imageFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
-    GradientFilters gradientFilters = new GradientFilters(root.getContext());
-    LinearLayout filteredImagesLinLayout = root.findViewById(R.id.filteredImages);
-    ArrayList<Bitmap> thumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap());
-    gradientFilters.appendFilteredThumbnails(filteredImagesLinLayout, image, thumbnails);
+//    ArrayList<ImageThumbnail> thumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap());
+//    gradientFilters.appendFilteredThumbnails(filteredImagesLinLayout, image, thumbnails);
 
     return root;
   }

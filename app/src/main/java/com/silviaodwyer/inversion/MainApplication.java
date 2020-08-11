@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import androidx.core.app.ActivityCompat;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 public class MainApplication extends Application {
   private String videoUrl;
@@ -30,6 +31,7 @@ public class MainApplication extends Application {
   private static String savedVideoMetadataFilename = "saved_video_paths.json";
   private static String IMAGE_EFFECTS_LIST = "image_effects_list.json";
   private static String FILTERS_LIST = "effects.json";
+  private GPUImageView gpuImageView;
 
   private long startTime;
 
@@ -40,7 +42,6 @@ public class MainApplication extends Application {
   public void setVideo(Video video) {
     this.video = video;
   }
-
 
   public GPUImage getGpuImage() {
     return gpuImage;
@@ -246,6 +247,14 @@ public class MainApplication extends Application {
 
     public static String getFilterListFilename() {
       return FILTERS_LIST;
+    }
+
+    public void setGpuImageView(GPUImageView gpuImageView) {
+      this.gpuImageView = gpuImageView;
+    }
+
+    public GPUImageView getGpuImageView() {
+      return gpuImageView;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.silviaodwyer.inversion;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,10 +30,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
@@ -45,9 +53,15 @@ public class ImageEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private SharedPreferences sharedPreferences;
   private GPUImageView gpuImageView;
+  private RecyclerView thumbnailsRecyclerView;
+  private ImageThumbnailsRecyclerView adapter;
+  private GradientFilters gradientFilters;
   private Image image;
   private ImageView imageView;
   private ImageFilters imageFilters;
+  private String[] navBtnNames;
+  private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> gradientThumbnails = new ArrayList<>();
 
   @SuppressLint("WrongThread")
   @Override
@@ -56,14 +70,12 @@ public class ImageEditor extends AppCompatActivity {
     setContentView(R.layout.activity_image_editor);
     sharedPreferences = getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
 
-    BottomNavigationView navView = findViewById(R.id.nav_view);
-    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-    NavigationUI.setupWithNavController(navView, navController);
-
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
     imageFilters = new ImageFilters(getApplicationContext());
+
+    navBtnNames = new String[]{"filters", "text", "effects", "correct"};
 
     gpuImageView = findViewById(R.id.gpuimageview);
 
@@ -73,6 +85,7 @@ public class ImageEditor extends AppCompatActivity {
 
     //    gpuImageView.setRatio((float) 0.99);
     gpuImageView.setImage(bitmap);
+    mainApplication.setGpuImageView(gpuImageView);
 
     ImageButton saveBtn = findViewById(R.id.save_btn);
     saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +104,71 @@ public class ImageEditor extends AppCompatActivity {
     Log.d("DEBUG", "Time to open activity: " + duration);
 
     initTutorial();
+    initNavBar();
+    initThumbnailsRecyclerView();
   }
 
-  public void initTutorial() {
+  public void initNavBar() {
+
+      for (int index = 0; index < navBtnNames.length; index++) {
+          int id = getResources().getIdentifier("ie_btn_" + navBtnNames[index], "id",
+                  getPackageName());
+          LinearLayout ie_btn =  findViewById(id);
+          ie_btn.setOnClickListener(onClickListener);
+      }
+  }
+
+  ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            for (int index = 0; index < navBtnNames.length; index++) {
+                int id = getResources().getIdentifier("ie_btn_" + navBtnNames[index], "id", getPackageName());
+                LinearLayout btn_layout = findViewById(id);
+                Log.d("DEBUG", "LINEAR LAYOUT CLICKED: " + btn_layout);
+                btn_layout.setBackgroundColor(Color.TRANSPARENT);
+
+            }
+            view.setBackgroundColor(Color.BLACK);
+//            view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            String nav_btn_tag = view.getTag().toString();
+            ArrayList<ImageThumbnail> updatedThumbnails = new ArrayList<>();
+
+            switch (nav_btn_tag) {
+          case "filters": {
+              if (gradientGrayscaleThumbnails.isEmpty()) {
+                  updatedThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                          gradientFilters.createGradientGrayscaleFilters());
+              }
+              else {
+                  updatedThumbnails = gradientGrayscaleThumbnails;
+              }
+              adapter.update(updatedThumbnails);
+              return;
+          }
+          case "effects": {
+              if (gradientThumbnails.isEmpty()) {
+                  updatedThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                          gradientFilters.createGradientFilters());
+              }
+              else {
+                  updatedThumbnails = gradientThumbnails;
+              }
+              adapter.update(updatedThumbnails);
+              return;
+          }
+      };
+  }
+    };
+
+
+    public void filterImage(ImageThumbnail thumbnail) {
+        gpuImageView.setImage(image.getOriginalImageBitmap());
+        gpuImageView.setFilter(thumbnail.getFilter());
+
+    }
+
+
+    public void initTutorial() {
     if (! sharedPreferences.contains("imageEditorTutorialCompleted")) {
       TapTargetView.showFor(this,
               TapTarget.forView( findViewById(R.id.save_btn), "Save your image", "This allows you to save your image.")
@@ -156,6 +231,23 @@ public class ImageEditor extends AppCompatActivity {
     }
   }
 
+  private void initThumbnailsRecyclerView() {
+    thumbnailsRecyclerView = findViewById(R.id.filtered_image_thumbnails);
+    LinearLayoutManager layoutManager
+            = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+
+    thumbnailsRecyclerView.setLayoutManager(layoutManager);
+    gradientFilters = new GradientFilters(getApplicationContext());
+
+    List<List<Object>> filters = gradientFilters.createGradientFilters();
+
+    ArrayList<ImageThumbnail> thumbnails = imageFilters.getFilteredThumbnails(image.getOriginalImageBitmap(), filters);
+    adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, thumbnails, mainApplication, image);
+
+    thumbnailsRecyclerView.setAdapter(adapter);
+
+  }
+
   public ImageFilters getImageFilters() {
     return imageFilters;
   }
@@ -165,9 +257,8 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void updateGPUImage(GPUImageFilter filter) {
-     gpuImageView.setImage(bitmap);
+    gpuImageView.setImage(bitmap);
     gpuImageView.setFilter(filter);
-//    gpuImageView.forceSize = new GPUImageView.Size(300, 200);
   }
 
   public void saveImage() {

@@ -36,11 +36,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
+  private RecyclerView recyclerView;
+  private ImageThumbnailsRecyclerView adapter;
   private GPUPlayerView ePlayerView;
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;

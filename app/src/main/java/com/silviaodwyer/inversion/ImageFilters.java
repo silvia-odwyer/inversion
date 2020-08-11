@@ -3,20 +3,14 @@ package com.silviaodwyer.inversion;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.signature.ObjectKey;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
@@ -361,8 +355,8 @@ public class ImageFilters {
     return correctionFilters;
   }
 
-  public ArrayList<Bitmap> generateThumbnails(final Bitmap bitmap, ArrayList<GPUImageFilter> filters) {
-    final ArrayList<Bitmap> thumbnails = new ArrayList<Bitmap>();
+  public ArrayList<Bitmap> generateThumbnailBitmaps(final Bitmap bitmap, ArrayList<GPUImageFilter> filters) {
+    final ArrayList<Bitmap> thumbnails = new ArrayList<>();
 
 //    switch(filterType) {
 //      case EFFECT:
@@ -402,7 +396,7 @@ public class ImageFilters {
       imageView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          filterImage(filter, image);
+//          filterImage(filter, image);
           Log.d("DEBUG", "APPLYING FILTER NAME: " + filterName);
           image.getMetaData().setAppliedFilter(filterName);
         }
@@ -412,7 +406,27 @@ public class ImageFilters {
     }
   }
 
-  public void filterImageFromName(String filterName, Image image) {
+  public ArrayList<ImageThumbnail> getFilteredThumbnails(Bitmap bitmap, List<List<Object>> filtersWithNames) {
+        ArrayList<GPUImageFilter> filters = convertToFilters(filtersWithNames);
+        ArrayList<ImageThumbnail> imageThumbnails = new ArrayList<>();
+        ArrayList<Bitmap> thumbnailBitmaps = generateThumbnailBitmaps(bitmap, filters);
+        for (int index = 0; index < thumbnailBitmaps.size(); index++) {
+            Bitmap thumbnailBitmap = thumbnailBitmaps.get(index);
+            ImageThumbnail imageThumbnail = new ImageThumbnail(thumbnailBitmap, (String) filtersWithNames.get(index).get(0), filters.get(index));
+            imageThumbnails.add(imageThumbnail);
+        }
+        return imageThumbnails;
+    }
+
+    public ArrayList<GPUImageFilter> convertToFilters(List<List<Object>> filtersWithNames) {
+      ArrayList<GPUImageFilter> filters = new ArrayList<>();
+      for (List<Object> filterList: filtersWithNames) {
+          filters.add((GPUImageFilter) filterList.get(1));
+      }
+      return filters;
+    }
+
+    public void filterImageFromName(String filterName, Image image) {
     GPUImageFilter filter = getFilterFromName(filterName);
     image.getMetaData().setAppliedFilter(filterName);
 
@@ -476,11 +490,6 @@ public class ImageFilters {
         break;
     }
     return filter;
-  }
-
-  public void filterImage(GPUImageFilter filter, Image image) {
-    ImageEditor activity = image.getActivity();
-    activity.updateGPUImage(filter);
   }
 
   public void addEffect(GPUImageFilter filter, Image image) {

@@ -31,8 +31,6 @@ public class GradientFilters extends ImageFilters {
         filters = new ArrayList<>();
         gradient_twoblend_filters = new ArrayList<>();
         this.initGradientTwoBlendFilters();
-        this.createGradientFilters();
-        this.createGradientGrayscaleFilters();
     }
 
     public void initGradientTwoBlendFilters() {
@@ -43,23 +41,26 @@ public class GradientFilters extends ImageFilters {
         }
     }
 
-    public void createGradientFilters() {
+    public List<List<Object>> createGradientFilters() {
+        List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
         for (int k = 0; k < gradient_backgrounds.size(); k++) {
             GPUImageFilter filter = gradient_twoblend_filters.get(k);
-            filtersWithNames.add(Arrays.asList("Gradient " + k, filter));
-            filters.add(filter);
+            gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
         }
+        return gradientFiltersWithNames;
     }
 
-    public void createGradientGrayscaleFilters() {
+    public List<List<Object>> createGradientGrayscaleFilters() {
+        List<List<Object>> gradientGrayscaleFiltersWithNames = new ArrayList<>();
+
         for (int j = 0; j < gradient_backgrounds.size(); j++) {
             GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
             filterGroup.addFilter(getObsidianFilter());
             GPUImageFilter filter = gradient_twoblend_filters.get(j);
             filterGroup.addFilter(filter);
-            filtersWithNames.add(Arrays.asList("Gradient BW " + j, filterGroup));
-            filters.add(filterGroup);
+            gradientGrayscaleFiltersWithNames.add(Arrays.asList("Gradient BW " + j, filterGroup));
         }
+        return gradientGrayscaleFiltersWithNames;
     }
 
     public List<List<Object>> getFiltersWithNames() {
@@ -71,12 +72,4 @@ public class GradientFilters extends ImageFilters {
         return filters;
     }
 
-    public ArrayList<Bitmap> getFilteredThumbnails(Bitmap bitmap) {
-        return super.generateThumbnails(bitmap, filters);
-    }
-
-    public void appendFilteredThumbnails(LinearLayout filteredImagesLinLayout, Image image,
-                                         ArrayList<Bitmap> filteredThumbnails) {
-        super.appendImageThumbnails(filteredImagesLinLayout, image, filteredThumbnails, filtersWithNames);
-    }
 }

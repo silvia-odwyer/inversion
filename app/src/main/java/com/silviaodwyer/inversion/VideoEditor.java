@@ -76,7 +76,7 @@ public class VideoEditor extends AppCompatActivity {
     Log.d("DEBUG", "Video Path is: " + videoUrl);
 
     this.setupPlayer();
-    this.setUpNavController();
+//    this.setUpNavController();
 
     ImageButton btn = findViewById(R.id.saveVideoBtn);
     btn.setOnClickListener(new View.OnClickListener() {

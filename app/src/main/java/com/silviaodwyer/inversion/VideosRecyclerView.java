@@ -53,7 +53,6 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
         File directory = new File(Environment.getExternalStorageDirectory().toString() + "/Inversion/videos");
 
         String name = data.get(position).getName() + ".mp4";
-        File file = new File(directory, name);
 
         Intent intent = new Intent(context, VideoEditor.class);
         VideoMetadata metadata = data.get(position);

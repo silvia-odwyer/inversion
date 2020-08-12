@@ -19,15 +19,6 @@
       app:layout_constraintTop_toTopOf="@+id/guideline3"
       app:layout_constraintVertical_bias="0.08">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Video Editor"
-        android:textColor="@color/headingColor"
-        android:textSize="40sp"
-        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/saveVideoBtn"
@@ -38,6 +29,7 @@
   </LinearLayout>
 
   <LinearLayout
+      android:id="@+id/linearLayout7"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
@@ -47,10 +39,10 @@
       app:layout_constraintTop_toTopOf="@+id/guideline8">
 
     <LinearLayout
+        android:id="@+id/video_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/video_container">
+        android:orientation="vertical">
 
     </LinearLayout>
 
@@ -62,28 +54,131 @@
 
   </LinearLayout>
 
-  <fragment
-      android:id="@+id/nav_host_fragment"
-      android:name="androidx.navigation.fragment.NavHostFragment"
-      android:layout_width="wrap_content"
+  <HorizontalScrollView
+      android:id="@+id/video_editor_bottom_menu"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:defaultNavHost="true"
-      app:layout_constraintBottom_toTopOf="@id/nav_view"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:navGraph="@navigation/video_editor_navigation" />
-
-  <com.google.android.material.bottomnavigation.BottomNavigationView
-      android:id="@+id/nav_view"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="0dp"
-      android:layout_marginEnd="0dp"
-      android:background="@color/backgroundColor"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:menu="@menu/video_editor_menu" />
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/menuBackgroundColor"
+        android:orientation="horizontal">
+
+      <LinearLayout
+          android:id="@+id/ve_btn_filters"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="15dp"
+          android:gravity="center_horizontal"
+          android:orientation="vertical"
+          android:tag="filters">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_color_lens_black_36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filters"
+            android:textColor="@color/textColor" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/ve_btn_effects"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="15dp"
+          android:orientation="vertical"
+          android:tag="effects">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_color_lens_black_36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Effects"
+            android:textColor="@color/textColor" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/ve_btn_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginStart="15dp"
+          android:orientation="vertical"
+          android:tag="text">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_collections_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Text"
+            android:textColor="@color/textColor" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/ve_btn_correct"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginStart="15dp"
+          android:orientation="vertical"
+          android:tag="correct">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_collections_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Correct"
+            android:textColor="@color/textColor" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="15dp"
+          android:orientation="vertical"
+          android:tag="bonus">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_collections_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Bonus"
+            android:textColor="@color/textColor" />
+      </LinearLayout>
+
+    </LinearLayout>
+  </HorizontalScrollView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

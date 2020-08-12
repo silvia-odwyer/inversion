@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.ImageThumbnail;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.utils.VideoFilters;
@@ -50,19 +51,15 @@ public class HomeFragment extends Fragment {
 
     appendThumbnails();
 
-//    ArrayList<Bitmap> thumbnails = videoFilters.generateThumbnails();
-//    videoFilters.appendImageThumbnails(filteredImagesLinLayout, image, thumbnails);
-
     return root;
   }
 
   private void appendThumbnails() {
-
     LinearLayout filteredThumbnailsLinLayout = root.findViewById(R.id.filteredVideoThumbnails);
     ImageFilters imageFilters = new ImageFilters(getContext());
     ArrayList<GPUImageFilter> correspondingImageFilters = videoFilters.getRequiredImageFilters();
 
-    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnails(originalVideoThumbnail, correspondingImageFilters);
+    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnailBitmaps(originalVideoThumbnail, correspondingImageFilters);
     for (int i = 0; i < thumbnails.size(); i++) {
       final int index = i;
       ImageView imageView = new ImageView(getActivity().getApplicationContext());

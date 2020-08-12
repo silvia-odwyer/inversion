@@ -54,7 +54,7 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     @Override
     @NonNull
     public ImageThumbnailsRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recyclerview_image, parent, false);
+        View view = inflater.inflate(R.layout.recyclerview_imagethumbnail, parent, false);
         return new ViewHolder(view);
     }
 
@@ -72,7 +72,7 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
             @Override
             public void onClick(View view) {
                 ImageThumbnail imageThumbnail = data.get(position);
-                filterImage(imageThumbnail);
+                image.getActivity().filterImage(imageThumbnail);
                 image.getMetaData().setAppliedFilter(imageThumbnail.getFilterName());
             }
 

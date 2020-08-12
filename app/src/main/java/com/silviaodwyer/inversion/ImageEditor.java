@@ -54,8 +54,7 @@ import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class ImageEditor extends AppCompatActivity {
-    private Bitmap bitmap;
-  private ArrayList<Bitmap> filteredImages = new ArrayList<>();
+  private Bitmap bitmap;
   private MainApplication mainApplication;
   private SharedPreferences sharedPreferences;
   private GPUImageView gpuImageView;
@@ -63,7 +62,7 @@ public class ImageEditor extends AppCompatActivity {
   private ImageThumbnailsRecyclerView adapter;
   private GradientFilters gradientFilters;
   private Image image;
-  private ImageView imageView;
+
   private ImageFilters imageFilters;
   private String[] navBtnNames;
   private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
@@ -138,35 +137,37 @@ public class ImageEditor extends AppCompatActivity {
             view.setBackgroundColor(Color.BLACK);
 //            view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             String nav_btn_tag = view.getTag().toString();
-            ArrayList<ImageThumbnail> updatedThumbnails = new ArrayList<>();
+            ArrayList<ImageThumbnail> updatedThumbnails;
 
             switch (nav_btn_tag) {
           case "filters": {
+              Log.d("DEBUG", "GRADIENT GRAYSCALE THUMBNAILS SIZE: " + gradientGrayscaleThumbnails.size());
               if (gradientGrayscaleThumbnails.isEmpty()) {
-                  updatedThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                  Log.d("DEBUG", "USING NEW THUMBNAILS");
+
+                  gradientGrayscaleThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
                           gradientFilters.createGradientGrayscaleFilters());
               }
               else {
-                  updatedThumbnails = gradientGrayscaleThumbnails;
+                  Log.d("DEBUG", "USING CACHED THUMBNAILS");
               }
-              adapter.update(updatedThumbnails);
-
+              adapter.update(gradientGrayscaleThumbnails);
               break;
           }
           case "effects": {
               if (gradientThumbnails.isEmpty()) {
-                  updatedThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                  Log.d("DEBUG", "USING NEW THUMBNAILS");
+                  gradientThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
                           gradientFilters.createGradientFilters());
               }
               else {
-                  updatedThumbnails = gradientThumbnails;
+                  Log.d("DEBUG", "USING CACHED THUMBNAILS");
               }
-              adapter.update(updatedThumbnails);
+              adapter.update(gradientThumbnails);
               break;
           }
       }
       thumbnailsRecyclerView.scheduleLayoutAnimation();
-            gpuImageView.setImage(image.getOriginalImageBitmap());
 
         }
     };

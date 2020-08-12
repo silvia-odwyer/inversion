@@ -84,7 +84,7 @@ public class ImageFilters {
       effectFilters.add(Arrays.asList("Aesthetica", getAestheticaFilter()));
       effectFilters.add(Arrays.asList("Dramatic", getDramaticFilter()));
       effectFilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
-      effectFilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
+    effectFilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
 
       for (List filter: effectFilters) {
           Log.d("DEBUG", "FILTER: " + filter.get(0));
@@ -126,7 +126,7 @@ public class ImageFilters {
     return filterGroup;
   }
 
-  private GPUImageFilterGroup getDramaticFilter() {
+  public GPUImageFilterGroup getDramaticFilter() {
     float amount = (float) 1.4;
     float amount2 = (float) -0.3;
 
@@ -137,7 +137,7 @@ public class ImageFilters {
     return dramaticFilter;
   }
 
-  private GPUImageFilterGroup getRubrikFilter() {
+  public GPUImageFilterGroup getRubrikFilter() {
     float amount = (float) 0.8;
     float amount2 = (float) 0.2;
 

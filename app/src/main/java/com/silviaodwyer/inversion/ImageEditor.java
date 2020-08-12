@@ -30,7 +30,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -43,12 +45,16 @@ import androidx.recyclerview.widget.SnapHelper;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class ImageEditor extends AppCompatActivity {
-  private Bitmap bitmap;
+    private Bitmap bitmap;
   private ArrayList<Bitmap> filteredImages = new ArrayList<>();
   private MainApplication mainApplication;
   private SharedPreferences sharedPreferences;
@@ -73,6 +79,7 @@ public class ImageEditor extends AppCompatActivity {
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
+    image.setActivity(this);
     imageFilters = new ImageFilters(getApplicationContext());
 
     navBtnNames = new String[]{"filters", "text", "effects", "correct"};
@@ -143,7 +150,8 @@ public class ImageEditor extends AppCompatActivity {
                   updatedThumbnails = gradientGrayscaleThumbnails;
               }
               adapter.update(updatedThumbnails);
-              return;
+
+              break;
           }
           case "effects": {
               if (gradientThumbnails.isEmpty()) {
@@ -154,19 +162,19 @@ public class ImageEditor extends AppCompatActivity {
                   updatedThumbnails = gradientThumbnails;
               }
               adapter.update(updatedThumbnails);
-              return;
+              break;
           }
-      };
-  }
-    };
+      }
+      thumbnailsRecyclerView.scheduleLayoutAnimation();
+            gpuImageView.setImage(image.getOriginalImageBitmap());
 
+        }
+    };
 
     public void filterImage(ImageThumbnail thumbnail) {
         gpuImageView.setImage(image.getOriginalImageBitmap());
-        gpuImageView.setFilter(thumbnail.getFilter());
-
+        gpuImageView.setFilter((GPUImageFilter) thumbnail.getFilter());
     }
-
 
     public void initTutorial() {
     if (! sharedPreferences.contains("imageEditorTutorialCompleted")) {

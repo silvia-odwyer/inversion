@@ -9,9 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorBlendFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageDissolveBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueBlendFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageLuminosityBlendFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSoftLightBlendFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 
 public class GradientFilters extends ImageFilters {
     private List<Integer> gradient_backgrounds;
@@ -23,14 +30,13 @@ public class GradientFilters extends ImageFilters {
     public GradientFilters(Context context) {
         super(context);
         this.context = context;
-        gradient_backgrounds = Arrays.asList(R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
+        gradient_backgrounds = Arrays.asList(R.mipmap.gradient2, R.mipmap.gradient3, R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
                 R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars,
                 R.mipmap.overlay1, R.mipmap.overlay2, R.mipmap.vintage1,
                 R.mipmap.vintage2, R.mipmap.vintage3, R.mipmap.vintage4);
         filtersWithNames = new ArrayList<>();
         filters = new ArrayList<>();
         gradient_twoblend_filters = new ArrayList<>();
-        this.initGradientTwoBlendFilters();
     }
 
     public void initGradientTwoBlendFilters() {
@@ -42,11 +48,15 @@ public class GradientFilters extends ImageFilters {
     }
 
     public List<List<Object>> createGradientFilters() {
+        ArrayList<GPUImageFilter> gradient_twoblend_filters1 = new ArrayList<>();
         List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
+
         for (int k = 0; k < gradient_backgrounds.size(); k++) {
-            GPUImageFilter filter = gradient_twoblend_filters.get(k);
+            int background = gradient_backgrounds.get(k);
+            GPUImageFilter filter = createTwoBlendFilter(context, GPUImageColorBlendFilter.class, background);
             gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
         }
+
         return gradientFiltersWithNames;
     }
 
@@ -55,12 +65,47 @@ public class GradientFilters extends ImageFilters {
 
         for (int j = 0; j < gradient_backgrounds.size(); j++) {
             GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+            GPUImageFilter filter =  createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, gradient_backgrounds.get(j));
+
             filterGroup.addFilter(getObsidianFilter());
-            GPUImageFilter filter = gradient_twoblend_filters.get(j);
             filterGroup.addFilter(filter);
             gradientGrayscaleFiltersWithNames.add(Arrays.asList("Gradient BW " + j, filterGroup));
         }
         return gradientGrayscaleFiltersWithNames;
+    }
+
+    public List<List<Object>> createGradientDissolveFilters() {
+        List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
+        for (int k = 0; k < gradient_backgrounds.size(); k++) {
+            int background = gradient_backgrounds.get(k);
+            GPUImageFilter filter = createTwoBlendFilter(context, GPUImageDissolveBlendFilter.class, background);
+
+            gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
+        }
+
+        return gradientFiltersWithNames;
+    }
+
+    public List<List<Object>> createGradientColorBlendFilters() {
+        List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
+
+        for (int k = 0; k < gradient_backgrounds.size(); k++) {
+            int background = gradient_backgrounds.get(k);
+            GPUImageFilter filter = createTwoBlendFilter(context, GPUImageColorBlendFilter.class, background);
+            gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
+        }
+        return gradientFiltersWithNames;
+    }
+
+    public List<List<Object>> createEffectsFilters() {
+        ImageFilters imageFilters = new ImageFilters(context);
+        List<List<Object>> allfilters = new ArrayList<>();
+        allfilters.add(Arrays.asList("Sharpen", new GPUImageSharpenFilter()));
+        allfilters.add(Arrays.asList("Rubrik", imageFilters.getRubrikFilter()));
+        allfilters.add(Arrays.asList("Dramatic", imageFilters.getDramaticFilter()));
+        allfilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
+        allfilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
+        return allfilters;
     }
 
     public List<List<Object>> getFiltersWithNames() {

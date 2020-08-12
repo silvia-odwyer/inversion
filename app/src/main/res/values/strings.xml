@@ -12,4 +12,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_video_editor">VideoEditor</string>
+    <string name="title_activity_shop">Shop</string>
+    <string name="popular">Popular</string>
+    <string name="free">Free</string>
 </resources>

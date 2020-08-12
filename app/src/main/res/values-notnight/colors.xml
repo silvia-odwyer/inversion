@@ -3,4 +3,6 @@
   <color name="backgroundColor">#FFFFFF</color>
   <color name="textColor">#000000</color>
   <color name="headingColor">#000000</color>
+  <color name="menuBackgroundColor">#EFEFEF</color>
+
 </resources>

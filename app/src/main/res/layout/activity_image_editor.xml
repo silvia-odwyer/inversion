@@ -56,17 +56,6 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/filtered_image_thumbnails"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layoutAnimation="@anim/layout_animation"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="@id/guideline4"
-        app:layout_constraintBottom_toTopOf="@id/nav_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -274,6 +263,31 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/nav_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/menuBackgroundColor"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gpuimageview">
+
+        <HorizontalScrollView
+            android:id="@+id/overlay_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filtered_image_thumbnails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layoutAnimation="@anim/layout_animation"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

@@ -9,12 +9,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +37,8 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -53,6 +57,8 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
+import static android.view.View.GONE;
+
 public class ImageEditor extends AppCompatActivity {
   private Bitmap bitmap;
   private MainApplication mainApplication;
@@ -62,6 +68,7 @@ public class ImageEditor extends AppCompatActivity {
   private ImageThumbnailsRecyclerView adapter;
   private GradientFilters gradientFilters;
   private Image image;
+  private HorizontalScrollView bottomNavBar;
 
   private ImageFilters imageFilters;
   private String[] navBtnNames;
@@ -115,7 +122,7 @@ public class ImageEditor extends AppCompatActivity {
   }
 
   public void initNavBar() {
-
+      bottomNavBar = findViewById(R.id.bottom_menu);
       for (int index = 0; index < navBtnNames.length; index++) {
           int id = getResources().getIdentifier("ie_btn_" + navBtnNames[index], "id",
                   getPackageName());
@@ -130,45 +137,35 @@ public class ImageEditor extends AppCompatActivity {
             for (int index = 0; index < navBtnNames.length; index++) {
                 int id = getResources().getIdentifier("ie_btn_" + navBtnNames[index], "id", getPackageName());
                 LinearLayout btn_layout = findViewById(id);
-                Log.d("DEBUG", "LINEAR LAYOUT CLICKED: " + btn_layout);
                 btn_layout.setBackgroundColor(Color.TRANSPARENT);
-
             }
             view.setBackgroundColor(Color.BLACK);
+
 //            view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             String nav_btn_tag = view.getTag().toString();
-            ArrayList<ImageThumbnail> updatedThumbnails;
 
-            switch (nav_btn_tag) {
+        switch (nav_btn_tag) {
           case "filters": {
-              Log.d("DEBUG", "GRADIENT GRAYSCALE THUMBNAILS SIZE: " + gradientGrayscaleThumbnails.size());
+              bottomNavBar.setVisibility(GONE);
+              LinearLayout overlay = findViewById(R.id.nav_overlay);
+              overlay.setVisibility(View.VISIBLE);
               if (gradientGrayscaleThumbnails.isEmpty()) {
-                  Log.d("DEBUG", "USING NEW THUMBNAILS");
-
-                  gradientGrayscaleThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                          gradientFilters.createGradientGrayscaleFilters());
-              }
-              else {
-                  Log.d("DEBUG", "USING CACHED THUMBNAILS");
+                  gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                          gradientFilters.createGradientGrayscaleFilters()));
               }
               adapter.update(gradientGrayscaleThumbnails);
               break;
-          }
+        }
           case "effects": {
-              if (gradientThumbnails.isEmpty()) {
-                  Log.d("DEBUG", "USING NEW THUMBNAILS");
-                  gradientThumbnails = gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                          gradientFilters.createGradientFilters());
-              }
-              else {
-                  Log.d("DEBUG", "USING CACHED THUMBNAILS");
+              if (gradientThumbnails.size() == 0) {
+                  gradientThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                          gradientFilters.createGradientFilters()));
               }
               adapter.update(gradientThumbnails);
               break;
           }
       }
       thumbnailsRecyclerView.scheduleLayoutAnimation();
-
         }
     };
 
@@ -244,14 +241,13 @@ public class ImageEditor extends AppCompatActivity {
     thumbnailsRecyclerView = findViewById(R.id.filtered_image_thumbnails);
     LinearLayoutManager layoutManager
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
     gradientFilters = new GradientFilters(getApplicationContext());
 
     List<List<Object>> filters = gradientFilters.createGradientFilters();
 
-    ArrayList<ImageThumbnail> thumbnails = imageFilters.getFilteredThumbnails(image.getOriginalImageBitmap(), filters);
-    adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, thumbnails, mainApplication, image);
+    gradientThumbnails = imageFilters.getFilteredThumbnails(image.getOriginalImageBitmap(), filters);
+    adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, gradientThumbnails, mainApplication, image);
 
     thumbnailsRecyclerView.setAdapter(adapter);
 

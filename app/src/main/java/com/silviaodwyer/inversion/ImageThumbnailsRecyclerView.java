@@ -28,7 +28,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 
 public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumbnailsRecyclerView.ViewHolder> {
 
-    private ArrayList<ImageThumbnail> data;
+    private ArrayList<ImageThumbnail> data = new ArrayList<>();
     private ItemClickListener clickListener;
     private LayoutInflater inflater;
     private ArrayList<ImageMetadata> metaDataArray;
@@ -43,7 +43,7 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     public ImageThumbnailsRecyclerView(Activity context, ArrayList<ImageThumbnail> data, MainApplication mainApplication, Image image) {
         this.mainApplication = mainApplication;
         this.inflater = LayoutInflater.from(context);
-        this.data = data;
+        this.data.addAll(data);
         this.context = context;
         this.imageUtils = new ImageUtils(context);
         this.imageFilters = new ImageFilters(context);
@@ -123,7 +123,7 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
 
     public void update(ArrayList<ImageThumbnail> updatedThumbnails) {
         this.data.clear();
-        this.data = updatedThumbnails;
+        this.data.addAll(updatedThumbnails);
         notifyDataSetChanged();
     }
 }

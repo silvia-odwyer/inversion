@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -72,8 +74,10 @@ public class ImageEditor extends AppCompatActivity {
 
   private ImageFilters imageFilters;
   private String[] navBtnNames;
+  private String[] filterOverlayBtnNames;
   private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> gradientThumbnails = new ArrayList<>();
+  private Activity activity;
 
   @SuppressLint("WrongThread")
   @Override
@@ -81,14 +85,17 @@ public class ImageEditor extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_editor);
     sharedPreferences = getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
-
+    activity = this;
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
     image.setActivity(this);
     imageFilters = new ImageFilters(getApplicationContext());
 
+
+
     navBtnNames = new String[]{"filters", "text", "effects", "correct"};
+    filterOverlayBtnNames = new String[]{"gradients", "vintage", "glitch"};
 
     gpuImageView = findViewById(R.id.gpuimageview);
 
@@ -117,8 +124,16 @@ public class ImageEditor extends AppCompatActivity {
     Log.d("DEBUG", "Time to open activity: " + duration);
 
     initTutorial();
-    initNavBar();
+
     initThumbnailsRecyclerView();
+
+
+      for (int index = 0; index < filterOverlayBtnNames.length; index++) {
+          int id = getResources().getIdentifier("ie_overlay_btn_" + filterOverlayBtnNames[index], "id",
+                  getPackageName());
+          TextView ie_btn =  findViewById(id);
+          ie_btn.setOnClickListener(filterBtnOlickListener);
+      }
   }
 
   public void initNavBar() {
@@ -129,9 +144,66 @@ public class ImageEditor extends AppCompatActivity {
           LinearLayout ie_btn =  findViewById(id);
           ie_btn.setOnClickListener(onClickListener);
       }
+
   }
 
-  ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
+    TextView.OnClickListener filterBtnOlickListener = new TextView.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            for (int index = 0; index < filterOverlayBtnNames.length; index++) {
+                int id = getResources().getIdentifier("ie_overlay_btn_" + filterOverlayBtnNames[index], "id", getPackageName());
+                TextView btn = findViewById(id);
+                btn.setTextColor(Color.GRAY);
+            }
+
+            TextView btn = findViewById(view.getId());
+            btn.setTextColor(Color.WHITE);
+
+            String nav_btn_tag = view.getTag().toString();
+
+            switch (nav_btn_tag) {
+                case "gradients": {
+                    Log.d("DEBUG", "GRADIENTS BTN SELECTED");
+                    if (gradientGrayscaleThumbnails.size() == 0) {
+                        gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                                gradientFilters.createGradientGrayscaleFilters()));
+                    }
+                    activity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            adapter.update(gradientGrayscaleThumbnails);
+
+                        }
+                    });
+
+                    break;
+                }
+                case "vintage": {
+                    Log.d("DEBUG", "VINTAGE BTN SELECTED");
+
+                    if (gradientThumbnails.size() == 0) {
+                        gradientThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                                gradientFilters.createGradientFilters()));
+                    }
+                    adapter.update(gradientThumbnails);
+                    break;
+                }
+                case "glitch": {
+                    Log.d("DEBUG", "GLITCH BTN SELECTED");
+
+                    if (gradientGrayscaleThumbnails.size() == 0) {
+                        gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                                gradientFilters.createGradientGrayscaleFilters()));
+                    }
+                    adapter.update(gradientGrayscaleThumbnails);
+
+                    break;
+                }
+            }
+            thumbnailsRecyclerView.scheduleLayoutAnimation();
+        }
+    };
+
+    ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
         @Override
         public void onClick(View view) {
             for (int index = 0; index < navBtnNames.length; index++) {
@@ -140,23 +212,25 @@ public class ImageEditor extends AppCompatActivity {
                 btn_layout.setBackgroundColor(Color.TRANSPARENT);
             }
             view.setBackgroundColor(Color.BLACK);
-
-//            view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             String nav_btn_tag = view.getTag().toString();
 
         switch (nav_btn_tag) {
           case "filters": {
               bottomNavBar.setVisibility(GONE);
-              LinearLayout overlay = findViewById(R.id.nav_overlay);
-              overlay.setVisibility(View.VISIBLE);
-              if (gradientGrayscaleThumbnails.isEmpty()) {
-                  gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                          gradientFilters.createGradientGrayscaleFilters()));
+//              LinearLayout overlay = findViewById(R.id.nav_overlay);
+//              overlay.setVisibility(View.VISIBLE);
+
+              if (gradientThumbnails.size() == 0) {
+                  gradientThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                          gradientFilters.createGradientFilters()));
               }
-              adapter.update(gradientGrayscaleThumbnails);
+              adapter.update(gradientThumbnails);
               break;
         }
           case "effects": {
+            bottomNavBar.setVisibility(GONE);
+//            LinearLayout overlay = findViewById(R.id.nav_overlay);
+//            overlay.setVisibility(View.VISIBLE);
               if (gradientThumbnails.size() == 0) {
                   gradientThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
                           gradientFilters.createGradientFilters()));
@@ -164,6 +238,7 @@ public class ImageEditor extends AppCompatActivity {
               adapter.update(gradientThumbnails);
               break;
           }
+
       }
       thumbnailsRecyclerView.scheduleLayoutAnimation();
         }
@@ -242,6 +317,7 @@ public class ImageEditor extends AppCompatActivity {
     LinearLayoutManager layoutManager
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
+
     gradientFilters = new GradientFilters(getApplicationContext());
 
     List<List<Object>> filters = gradientFilters.createGradientFilters();

@@ -56,19 +56,15 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/nav_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="vertical">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottom_menu">
+            android:id="@+id/bottom_menu"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -261,33 +257,67 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/nav_overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/menuBackgroundColor"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/guideline12"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
+                    android:layout_marginStart="13dp"
+                    android:id="@+id/ie_overlay_btn_gradients"
+                    android:tag="gradients"
+                    android:padding="5dp"
+                    android:text="GRADIENTS"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
+                    android:id="@+id/ie_overlay_btn_vintage"
+                    android:tag="vintage"
+                    android:padding="5dp"
+                    android:layout_marginStart="13dp"
+                    android:text="VINTAGE"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
+                    android:layout_marginStart="13dp"
+                    android:padding="5dp"
+                    android:id="@+id/ie_overlay_btn_glitch"
+                    android:tag="glitch"
+                    android:layout_gravity="center_horizontal"
+                    android:text="GLITCH"/>
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filtered_image_thumbnails"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layoutAnimation="@anim/layout_animation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gpuimageview">
-
-        <HorizontalScrollView
-            android:id="@+id/overlay_scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/filtered_image_thumbnails"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layoutAnimation="@anim/layout_animation"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/guideline12"
+        android:orientation="horizontal" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -302,6 +332,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.80" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"

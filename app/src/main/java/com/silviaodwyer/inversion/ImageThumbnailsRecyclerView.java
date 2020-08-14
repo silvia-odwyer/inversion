@@ -36,8 +36,6 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     private Activity activity;
     private Activity context;
     private MainApplication mainApplication;
-    private ImageFilters imageFilters;
-    private ArrayList filters;
     private Image image;
 
     public ImageThumbnailsRecyclerView(Activity context, ArrayList<ImageThumbnail> data, MainApplication mainApplication, Image image) {
@@ -46,8 +44,6 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
         this.data.addAll(data);
         this.context = context;
         this.imageUtils = new ImageUtils(context);
-        this.imageFilters = new ImageFilters(context);
-        this.filters = imageFilters.getFilters();
         this.image = image;
     }
 
@@ -56,13 +52,6 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     public ImageThumbnailsRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_imagethumbnail, parent, false);
         return new ViewHolder(view);
-    }
-
-    public void filterImage(ImageThumbnail thumbnail) {
-        GPUImageView gpuImageView = mainApplication.getGpuImageView();
-        gpuImageView.setImage(image.getOriginalImageBitmap());
-        gpuImageView.setFilter(thumbnail.getFilter());
-
     }
 
     // binds the bitmap to the ImageView

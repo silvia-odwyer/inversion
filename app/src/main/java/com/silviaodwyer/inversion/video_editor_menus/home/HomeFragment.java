@@ -35,43 +35,7 @@ public class HomeFragment extends Fragment {
 
     root = inflater.inflate(R.layout.fragment_video_editor_home, container, false);
 
-    videoFilters = new VideoFilters(getActivity().getApplicationContext());
-    filters = videoFilters.getEffectFilters();
-    mainApplication = (MainApplication) getActivity().getApplication();
-
-    originalVideoThumbnail = mainApplication.getVideo().getThumbnail();
-
-    if (mainApplication.getVideo() == null) {
-        Log.d("DEBUG", "VIDEO IS NULL");
-    }
-
-    if (originalVideoThumbnail == null) {
-        Log.d("DEBUG", "THUMBNAIL IS NULL");
-    }
-
-    appendThumbnails();
-
     return root;
   }
 
-  private void appendThumbnails() {
-    LinearLayout filteredThumbnailsLinLayout = root.findViewById(R.id.filteredVideoThumbnails);
-    ImageFilters imageFilters = new ImageFilters(getContext());
-    ArrayList<GPUImageFilter> correspondingImageFilters = videoFilters.getRequiredImageFilters();
-
-    ArrayList<Bitmap> thumbnails = imageFilters.generateThumbnailBitmaps(originalVideoThumbnail, correspondingImageFilters);
-    for (int i = 0; i < thumbnails.size(); i++) {
-      final int index = i;
-      ImageView imageView = new ImageView(getActivity().getApplicationContext());
-      imageView.setImageBitmap(thumbnails.get(i));
-      filteredThumbnailsLinLayout.addView(imageView);
-
-      imageView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          videoFilters.filterVideo((GlFilter) filters.get(index).get(1), mainApplication.getPlayerView());
-        }
-      });
-    }
-  }
 }

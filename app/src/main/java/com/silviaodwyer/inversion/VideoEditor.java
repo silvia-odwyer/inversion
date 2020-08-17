@@ -3,16 +3,21 @@ package com.silviaodwyer.inversion;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
@@ -29,31 +34,48 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.silviaodwyer.inversion.utils.VideoFilters;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.view.View.GONE;
+import static android.view.View.generateViewId;
 
 public class VideoEditor extends AppCompatActivity {
   private MainApplication mainApplication;
   private boolean playVideoWhenForegrounded;
   private long lastPosition;
-  private RecyclerView recyclerView;
-  private ImageThumbnailsRecyclerView adapter;
+  private VideoThumbnailsRecyclerView adapter;
   private GPUPlayerView ePlayerView;
   private SimpleExoPlayer player;
   private DataSource.Factory dataSourceFactory;
   private Context context;
   private String videoUrl;
   private Video video;
-  private ImageView imageView;
+  private String[] navBtnNames;
+  private LinearLayout navEffectCategories;
+  private RecyclerView thumbnailsRecyclerView;
+  private ArrayList<VideoThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
+  private ArrayList<VideoThumbnail> gradientThumbnails = new ArrayList<>();
+  private ArrayList<VideoThumbnail> vintageThumbnails = new ArrayList<>();
+  private ArrayList<VideoThumbnail> dissolveThumbnails = new ArrayList<>();
+  private ArrayList<VideoThumbnail> colorBlendThumbnails = new ArrayList<>();
   private GlFilter activeFilter = new GlSepiaFilter();
   private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
   private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
+  private LinearLayout navOverlay;
+  private HorizontalScrollView bottomNavBar;
+  private Bitmap originalVideoThumbnail;
+  private VideoFilters videoFilters;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +84,7 @@ public class VideoEditor extends AppCompatActivity {
 
     context = getApplicationContext();
     mainApplication = ((MainApplication)getApplication());
+    videoFilters = new VideoFilters(context);
 
     video = mainApplication.getVideo();
     Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
@@ -71,12 +94,17 @@ public class VideoEditor extends AppCompatActivity {
         ePlayerView = null;
         dataSourceFactory = null;
     }
+    navBtnNames = new String[]{"filters", "gradient_effects"};
+    navOverlay = findViewById(R.id.nav_overlay_ve);
+    bottomNavBar = findViewById(R.id.video_editor_bottom_menu);
+    navEffectCategories = findViewById(R.id.video_editor_fx_categories);
+    originalVideoThumbnail = video.getThumbnail();
 
     videoUrl = video.getMetadata().getOriginalVideoPath();
     Log.d("DEBUG", "Video Path is: " + videoUrl);
 
     this.setupPlayer();
-//    this.setUpNavController();
+    this.initThumbnailsRecyclerView();
 
     ImageButton btn = findViewById(R.id.saveVideoBtn);
     btn.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +113,157 @@ public class VideoEditor extends AppCompatActivity {
         openDownloadActivity();
       }
     });
+
+    initNavBar();
   }
 
+  public void initNavBar() {
+
+    for (int index = 0; index < navBtnNames.length; index++) {
+      int id = getResources().getIdentifier("ve_btn_" + navBtnNames[index], "id",
+              getPackageName());
+      LinearLayout ie_btn =  findViewById(id);
+      ie_btn.setOnClickListener(onClickListener);
+    }
+
+  }
+
+  private void initThumbnailsRecyclerView() {
+    thumbnailsRecyclerView = findViewById(R.id.filtered_video_thumbnails);
+    LinearLayoutManager layoutManager
+            = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+    thumbnailsRecyclerView.setLayoutManager(layoutManager);
+
+    List<List<Object>> filters = videoFilters.createEffectFilters();
+
+    vintageThumbnails = videoFilters.getFilteredThumbnails(originalVideoThumbnail, filters);
+    adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, vintageThumbnails, mainApplication);
+
+    thumbnailsRecyclerView.setAdapter(adapter);
+
+  }
+
+  ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      thumbnailsRecyclerView.setVisibility(View.VISIBLE);
+      navOverlay.setVisibility(View.VISIBLE);
+
+      for (int index = 0; index < navBtnNames.length; index++) {
+        int id = getResources().getIdentifier("ve_btn_" + navBtnNames[index], "id", getPackageName());
+        LinearLayout btn_layout = findViewById(id);
+        btn_layout.setBackgroundColor(Color.TRANSPARENT);
+      }
+      view.setBackgroundColor(Color.BLACK);
+      String nav_btn_tag = view.getTag().toString();
+      bottomNavBar.setVisibility(GONE);
+      navEffectCategories.removeAllViews();
+
+      switch (nav_btn_tag) {
+        case "filters": {
+          String[] gradientEffectNavNames = {"Gradients", "Vintage"};
+          createCategoryMenu(gradientEffectNavNames);
+
+//              LinearLayout overlay = findViewById(R.id.nav_overlay);
+//              overlay.setVisibility(View.VISIBLE);
+
+          break;
+        }
+        case "gradient_effects": {
+          Log.d("DEBUG", "GRADIENT EFFECTS CLICKED");
+
+          String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend"};
+          createCategoryMenu(gradientEffectNavNames);
+
+          break;
+        }
+
+      }
+      thumbnailsRecyclerView.scheduleLayoutAnimation();
+    }
+  };
+
+  public void createCategoryMenu(String[] categoryNames) {
+
+    for (String navName: categoryNames) {
+      TextView textView = new TextView(getApplicationContext());
+      navName = navName.toUpperCase();
+      textView.setText(navName);
+      textView.setId(generateViewId());
+      textView.setOnClickListener(filterBtnOlickListener);
+      textView.setTag(navName.toLowerCase());
+      LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+              LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+      );
+      lp.setMargins(14, 12, 14, 14);
+      textView.setLayoutParams(lp);
+      navEffectCategories.addView(textView);
+    }
+  }
+
+  TextView.OnClickListener filterBtnOlickListener = new TextView.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            bottomNavBar.setVisibility(GONE);
+            for (int index = 0; index < navEffectCategories.getChildCount(); index++) {
+                TextView btn = (TextView) navEffectCategories.getChildAt(index);
+                btn.setTextColor(Color.GRAY);
+            }
+
+            TextView btn = findViewById(view.getId());
+            btn.setTextColor(Color.WHITE);
+
+            String nav_btn_tag = view.getTag().toString();
+
+            switch (nav_btn_tag) {
+                case "gradients": {
+                    if (gradientThumbnails.size() == 0) {
+                        gradientThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
+                                videoFilters.createVintageFilters()));
+                    }
+                    adapter.update(gradientThumbnails);
+
+                    break;
+                }
+                case "vintage": {
+                    if (vintageThumbnails.size() == 0) {
+                        vintageThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
+                                videoFilters.createVintageFilters()));
+                    }
+                    adapter.update(vintageThumbnails);
+                    break;
+                }
+                case "dissolve": {
+                    break;
+                }
+                case "color blend": {
+
+                    break;
+                }
+                case "neon": {
+                    adapter.clear();
+
+//                    new Thread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            if (gradientGrayscaleThumbnails.size() == 0) {
+//                                gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+//                                        gradientFilters.createGradientGrayscaleFilters()));
+//                            }
+//
+//                            Message msg = new Message();
+//                            msg.obj = gradientGrayscaleThumbnails;
+//                            handler.sendMessage(msg);
+//                        }
+//                    }).start();
+
+                    break;
+                }
+            }
+            thumbnailsRecyclerView.scheduleLayoutAnimation();
+        }
+    };
   public void setupPlayer() {
     player = ExoPlayerFactory.newSimpleInstance(context);
     player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);

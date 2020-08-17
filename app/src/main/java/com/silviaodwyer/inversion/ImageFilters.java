@@ -35,7 +35,6 @@ public class ImageFilters {
     this.context = context;
     filters = new ArrayList<>();
 
-    addEffectFilters();
     initCorrectionFilters();
   }
 
@@ -93,22 +92,24 @@ public class ImageFilters {
 
   }
 
-  private void createBlendFilters() {
-    List<Integer> blend_backgrounds = Arrays.asList(R.mipmap.lensflare, R.mipmap.scrapbook,
-            R.mipmap.galaxy, R.mipmap.background2);
+  public List<List<Object>> createVintageFilters() {
+    ImageFilters imageFilters = new ImageFilters(context);
+    List<List<Object>> allfilters = new ArrayList<>();
+    allfilters.add(Arrays.asList("Dramatic", imageFilters.getDramaticFilter()));
+    allfilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
+    allfilters.add(Arrays.asList("Obsidian", getObsidianFilter()));
+    allfilters.add(Arrays.asList("Grayscale", new GPUImageGrayscaleFilter()));
+    allfilters.add(Arrays.asList("Retro 1", getRetroFilter()));
+    allfilters.add(Arrays.asList("Retro 2", getRetroFilter2()));
+    allfilters.add(Arrays.asList("Retro Vignette", getRetroVignette()));
+    allfilters.add(Arrays.asList("Retro Vignette 2", getRetroVignette2()));
 
-    for (int k = 0; k < blend_backgrounds.size(); k++) {
-      int background = blend_backgrounds.get(k);
-      GPUImageFilter filter = createTwoBlendFilter(context, GPUImageAddBlendFilter.class, background);
-      effectFilters.add(Arrays.asList("Blend " + k, filter));
-      filters.add(filter);
-    }
+    return allfilters;
   }
 
   public List<List<Object>> getEffectFilters() {
     return effectFilters;
   }
-
 
   private GPUImageFilterGroup getOribitonFilter() {
     GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
@@ -355,61 +356,10 @@ public class ImageFilters {
     return correctionFilters;
   }
 
-  public ArrayList<Bitmap> generateThumbnailBitmaps(final Bitmap bitmap, ArrayList<GPUImageFilter> filters) {
-    final ArrayList<Bitmap> thumbnails = new ArrayList<>();
-
-//    switch(filterType) {
-//      case EFFECT:
-//        filters = getImageFilters();
-//        break;
-//      case CORRECTION:
-//        filters = getCorrectionFilters();
-//        break;
-//    }
-    ImageUtils imageUtils = new ImageUtils(context);
-
-    Bitmap thumbnail = imageUtils.resizeBitmap(bitmap, 150, 150);
-
-    GPUImage.getBitmapForMultipleFilters(thumbnail, filters, new GPUImage.ResponseListener<Bitmap>() {
-
-      @Override
-      public void response(Bitmap resultBitmap) {
-        thumbnails.add(resultBitmap);
-      }
-    });
-
-    return thumbnails;
-  }
-
-  public void appendImageThumbnails(LinearLayout filteredImagesLinLayout, final Image image,
-                                    ArrayList<Bitmap> filteredImages, List<List<Object>> allFilters) {
-
-    for (int index = 0; index < filteredImages.size(); index++) {
-      final ImageView imageView = new ImageView(image.getContext());
-      imageView.setImageBitmap(filteredImages.get(index));
-      String filterName = (String) allFilters.get(index).get(0);
-      GPUImageFilter filter = (GPUImageFilter) allFilters.get(index).get(1);
-
-      Log.d("DEBUG", "FILTERS LENGTH: " + filteredImages.size());
-      Log.d("DEBUG", "FILTERED THUMBNAILS LENGTH: " + filteredImages.size());
-
-      imageView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-//          filterImage(filter, image);
-          Log.d("DEBUG", "APPLYING FILTER NAME: " + filterName);
-          image.getMetaData().setAppliedFilter(filterName);
-        }
-      });
-
-      filteredImagesLinLayout.addView(imageView);
-    }
-  }
-
   public ArrayList<ImageThumbnail> getFilteredThumbnails(Bitmap bitmap, List<List<Object>> filtersWithNames) {
         ArrayList<GPUImageFilter> filters = convertToFilters(filtersWithNames);
         ArrayList<ImageThumbnail> imageThumbnails = new ArrayList<>();
-        ArrayList<Bitmap> thumbnailBitmaps = generateThumbnailBitmaps(bitmap, filters);
+        ArrayList<Bitmap> thumbnailBitmaps = ImageUtils.generateThumbnailBitmaps(bitmap, filters);
         for (int index = 0; index < thumbnailBitmaps.size(); index++) {
             Bitmap thumbnailBitmap = thumbnailBitmaps.get(index);
             ImageThumbnail imageThumbnail = new ImageThumbnail(thumbnailBitmap, (String) filtersWithNames.get(index).get(0), filters.get(index));

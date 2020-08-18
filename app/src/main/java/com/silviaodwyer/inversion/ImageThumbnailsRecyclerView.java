@@ -36,15 +36,13 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     private Activity activity;
     private Activity context;
     private MainApplication mainApplication;
-    private Image image;
 
-    public ImageThumbnailsRecyclerView(Activity context, ArrayList<ImageThumbnail> data, MainApplication mainApplication, Image image) {
+    public ImageThumbnailsRecyclerView(Activity context, ArrayList<ImageThumbnail> data, MainApplication mainApplication) {
         this.mainApplication = mainApplication;
         this.inflater = LayoutInflater.from(context);
         this.data.addAll(data);
         this.context = context;
         this.imageUtils = new ImageUtils(context);
-        this.image = image;
     }
 
     @Override
@@ -61,8 +59,8 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
             @Override
             public void onClick(View view) {
                 ImageThumbnail imageThumbnail = data.get(position);
-                image.getActivity().filterImage(imageThumbnail);
-                image.getMetaData().setAppliedFilter(imageThumbnail.getFilterName());
+                mainApplication.filterImage(imageThumbnail);
+                mainApplication.getImage().getMetaData().setAppliedFilter(imageThumbnail.getFilterName());
             }
 
         });
@@ -72,7 +70,7 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
         Glide
                 .with(context)
                 .load(bitmap)
-                .apply(new RequestOptions().override(150, 150))
+                .apply(new RequestOptions().override(250, 250))
                 .into(holder.imageView);
     }
 
@@ -113,6 +111,11 @@ public class ImageThumbnailsRecyclerView extends RecyclerView.Adapter<ImageThumb
     public void update(ArrayList<ImageThumbnail> updatedThumbnails) {
         this.data.clear();
         this.data.addAll(updatedThumbnails);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        this.data.clear();
         notifyDataSetChanged();
     }
 }

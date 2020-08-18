@@ -109,15 +109,13 @@ public class ImageUtils {
   /**
    * Resize a bitmap.
    */
-  public Bitmap resizeBitmap(Bitmap bitmap, float maxWidth, float maxHeight) {
+  public static Bitmap resizeBitmap(Bitmap bitmap, float maxWidth, float maxHeight) {
     float scale = Math.min(((float) maxHeight / bitmap.getWidth()), ((float) maxWidth / bitmap.getHeight()));
     // resize bitmap to thumbnail size
     Matrix matrix = new Matrix();
     matrix.postScale(scale, scale);
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
   }
-
-
 
   /**
    * Get the locale of the user's device. This is required
@@ -134,6 +132,22 @@ public class ImageUtils {
       Log.d("DEBUG", "API Level less than 24");
       return context.getResources().getConfiguration().locale;
     }
+  }
+
+  public static ArrayList<Bitmap> generateThumbnailBitmaps(final Bitmap bitmap, ArrayList<GPUImageFilter> filters) {
+    final ArrayList<Bitmap> thumbnails = new ArrayList<>();
+
+    Bitmap thumbnail =  resizeBitmap(bitmap, 250, 250);
+
+    GPUImage.getBitmapForMultipleFilters(thumbnail, filters, new GPUImage.ResponseListener<Bitmap>() {
+
+      @Override
+      public void response(Bitmap resultBitmap) {
+        thumbnails.add(resultBitmap);
+      }
+    });
+
+    return thumbnails;
   }
 
   /**

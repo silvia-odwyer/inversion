@@ -76,14 +76,16 @@ public class ImageEditor extends AppCompatActivity {
   private LinearLayout navEffectCategories;
 
   private ImageFilters imageFilters;
+  private BlendEffectFilters blendEffectFilters;
   private String[] navBtnNames;
   private String[] filterOverlayBtnNames;
   private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> glitchThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> gradientThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> vintageThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> dissolveThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> colorBlendThumbnails = new ArrayList<>();
-    private Activity activity;
+  private Activity activity;
   private LinearLayout navOverlay;
   private Handler handler;
 
@@ -107,6 +109,8 @@ public class ImageEditor extends AppCompatActivity {
     gpuImageView = findViewById(R.id.gpuimageview);
 
     bitmap = image.getOriginalImageBitmap();
+    blendEffectFilters = new BlendEffectFilters(getApplicationContext(), bitmap);
+
     gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
     gpuImageView.setRatio((float)bitmap.getWidth() / bitmap.getHeight());
 
@@ -170,7 +174,7 @@ public class ImageEditor extends AppCompatActivity {
             switch (nav_btn_tag) {
                 case "gradients": {
                     if (gradientThumbnails.size() == 0) {
-                        gradientThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                        gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
                                 gradientFilters.createGradientFilters()));
                     }
                     activity.runOnUiThread(new Runnable() {
@@ -181,11 +185,24 @@ public class ImageEditor extends AppCompatActivity {
 
                     break;
                 }
+                case "glitch": {
+                    if (glitchThumbnails.size() == 0) {
+                        glitchThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                                blendEffectFilters.createGlitchEffectFilters()));
+                    }
+                    activity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            adapter.update(glitchThumbnails);
+                        }
+                    });
+
+                    break;
+                }
                 case "vintage": {
                     Log.d("DEBUG", "VINTAGE BTN SELECTED");
 
                     if (vintageThumbnails.size() == 0) {
-                        vintageThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                        vintageThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
                                 imageFilters.createVintageFilters()));
                     }
                     adapter.update(vintageThumbnails);
@@ -193,7 +210,7 @@ public class ImageEditor extends AppCompatActivity {
                 }
                 case "dissolve": {
                     if (dissolveThumbnails.size() == 0) {
-                        dissolveThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
+                        dissolveThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
                                 gradientFilters.createGradientDissolveFilters()));
                     }
                     adapter.update(dissolveThumbnails);
@@ -258,10 +275,7 @@ public class ImageEditor extends AppCompatActivity {
               break;
         }
           case "gradient_effects": {
-              Log.d("DEBUG", "GRADIENT EFFECTS CLICKED");
-
-
-              String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend", "Gradients"};
+              String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend", "Glitch"};
               createCategoryMenu(gradientEffectNavNames);
 
               break;

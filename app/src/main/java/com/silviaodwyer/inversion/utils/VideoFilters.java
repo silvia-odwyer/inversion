@@ -9,39 +9,46 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.daasuu.gpuv.egl.filter.*;
 import com.daasuu.gpuv.player.GPUPlayerView;
 import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.ImageThumbnail;
+import com.silviaodwyer.inversion.ImageUtils;
 import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.VideoThumbnail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
   private Context context;
-  private List<List<Object>> effectFilters;
 
   public VideoFilters(Context context) {
     this.context = context;
-    effectFilters = new ArrayList<>();
 
-    this.addEffectFilters();
+
   }
 
-  public void addEffectFilters() {
-    effectFilters.add(Arrays.asList("Sepia", new GlSepiaFilter()));
+  public List<List<Object>> createEffectFilters() {
+    List<List<Object>> effectFilters = new ArrayList<>();
     effectFilters.add(Arrays.asList("Grayscale", new GlGrayScaleFilter()));
     effectFilters.add(Arrays.asList("Vignette", new GlVignetteFilter()));
     effectFilters.add(Arrays.asList("Sepia Vignette", sepiaVignetteFilter()));
     effectFilters.add(Arrays.asList("Rubrik", rubrikFilter()));
     effectFilters.add(Arrays.asList("Neue", neueFilter()));
-    effectFilters.add(Arrays.asList("Vignette Grayscale", vignetteGrayscaleFilter()));
 
-    for (List filter: effectFilters) {
-      videoFilters.add((GlFilter) filter.get(1));
-    }
+    return effectFilters;
+  }
+
+  public List<List<Object>> createVintageFilters() {
+    List<List<Object>> vintageFilters = new ArrayList<>();
+    vintageFilters.add(Arrays.asList("Sepia", new GlSepiaFilter()));
+    vintageFilters.add(Arrays.asList("Vignette Grayscale", vignetteGrayscaleFilter()));
+
+    return vintageFilters;
   }
 
   public void addBlendFilters() {
@@ -94,16 +101,12 @@ public class VideoFilters {
 
   }
 
-  public List<List<Object>> getEffectFilters() {
-    return effectFilters;
-  }
-
-  public ArrayList<GPUImageFilter> getRequiredImageFilters() {
+  public ArrayList<GPUImageFilter> getRequiredImageFilters( List<List<Object>> videoFilters) {
     ImageFilters imageFilters = new ImageFilters(context);
 
     ArrayList<GPUImageFilter> requiredImageFilters = new ArrayList<>();
 
-    for (List<Object> filter: effectFilters) {
+    for (List<Object> filter: videoFilters) {
       GPUImageFilter correspondingImageFilter = imageFilters.getFilterFromName((String) filter.get(0));
       if (correspondingImageFilter != null) {
           requiredImageFilters.add(correspondingImageFilter);
@@ -113,5 +116,27 @@ public class VideoFilters {
     return requiredImageFilters;
 
   }
+
+  public ArrayList<VideoThumbnail> getFilteredThumbnails(Bitmap bitmap, List<List<Object>> filtersWithNames) {
+    ArrayList<GlFilter> filters = convertToFilters(filtersWithNames);
+    ArrayList<VideoThumbnail> imageThumbnails = new ArrayList<>();
+    ArrayList<GPUImageFilter> correspondingImageFilters = getRequiredImageFilters(filtersWithNames);
+    ArrayList<Bitmap> thumbnailBitmaps = ImageUtils.generateThumbnailBitmaps(bitmap, correspondingImageFilters);
+    for (int index = 0; index < thumbnailBitmaps.size(); index++) {
+      Bitmap thumbnailBitmap = thumbnailBitmaps.get(index);
+      VideoThumbnail imageThumbnail = new VideoThumbnail(thumbnailBitmap, (String) filtersWithNames.get(index).get(0), filters.get(index));
+      imageThumbnails.add(imageThumbnail);
+    }
+    return imageThumbnails;
+  }
+
+  public ArrayList<GlFilter> convertToFilters(List<List<Object>> filtersWithNames) {
+    ArrayList<GlFilter> filters = new ArrayList<>();
+    for (List<Object> filterList: filtersWithNames) {
+      filters.add((GlFilter) filterList.get(1));
+    }
+    return filters;
+  }
+
 
 }

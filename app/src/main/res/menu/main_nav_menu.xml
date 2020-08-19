@@ -9,7 +9,7 @@
   <item
     android:id="@+id/navigation_effects"
     android:icon="@drawable/ic_dashboard_black_24dp"
-    android:title="@string/effects" />
+    android:title="Remix" />
 
   <item
     android:id="@+id/navigation_useraccount"

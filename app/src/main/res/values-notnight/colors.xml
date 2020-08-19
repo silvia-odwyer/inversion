@@ -4,5 +4,7 @@
   <color name="textColor">#000000</color>
   <color name="headingColor">#000000</color>
   <color name="menuBackgroundColor">#EFEFEF</color>
+  <color name="filterNavTabColor">#111111</color>
+  <color name="filterNavTabColorClicked">#000000</color>
 
 </resources>

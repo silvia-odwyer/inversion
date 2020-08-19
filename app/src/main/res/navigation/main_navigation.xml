@@ -13,9 +13,9 @@
 
   <fragment
     android:id="@+id/navigation_effects"
-    android:name="com.silviaodwyer.inversion.main_ui.effects.EffectsFragment"
+    android:name="com.silviaodwyer.inversion.main_ui.remix.RemixFragment"
     android:label="Effects"
-    tools:layout="@layout/fragment_effects" />
+    tools:layout="@layout/fragment_remix" />
 
   <fragment
     android:id="@+id/navigation_useraccount"

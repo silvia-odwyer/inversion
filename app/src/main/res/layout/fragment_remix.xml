@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".main_ui.effects.EffectsFragment">
+    tools:context=".main_ui.remix.RemixFragment">
 
   <LinearLayout
       android:id="@+id/linearLayout3"
@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/effects"
+        android:text="Remix"
         android:textColor="@color/headingColor"
         android:textSize="40sp"
         android:textStyle="bold" />

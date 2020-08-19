@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.main_ui.effects;
+package com.silviaodwyer.inversion.main_ui.remix;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,16 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.silviaodwyer.inversion.FileMetadata;
 import com.silviaodwyer.inversion.ImageMetadata;
-import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.WeeklyEditedImagesRecyclerView;
 
 import java.util.ArrayList;
 
-public class EffectsFragment extends Fragment {
+public class RemixFragment extends Fragment {
   private RecyclerView recyclerView;
   private View root;
   private WeeklyEditedImagesRecyclerView adapter;
@@ -30,7 +28,7 @@ public class EffectsFragment extends Fragment {
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-    root = inflater.inflate(R.layout.fragment_effects, container, false);
+    root = inflater.inflate(R.layout.fragment_remix, container, false);
     Activity activity = getActivity();
     mainApplication = ((MainApplication) activity.getApplication());
     context = activity.getApplicationContext();

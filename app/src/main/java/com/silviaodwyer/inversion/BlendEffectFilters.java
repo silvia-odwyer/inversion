@@ -34,6 +34,7 @@ public class BlendEffectFilters extends ImageFilters {
         allfilters.add(Arrays.asList("Infra", getInfraFilter()));
         allfilters.add(Arrays.asList("Lithic", getLithicFilter()));
         allfilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
+        allfilters.add(Arrays.asList("Solarize Two", getSolarizeTwoFilter()));
 
         return allfilters;
     }
@@ -57,12 +58,12 @@ public class BlendEffectFilters extends ImageFilters {
         // invert image
         GPUImage gpuImage = new GPUImage(getContext());
         gpuImage.setImage(originalBitmap);
-        GPUImageFilterGroup fg = new GPUImageFilterGroup();
-        fg.addFilter(new GPUImageColorInvertFilter());
-        fg.addFilter(new GPUImageHueFilter(60));
-        fg.addFilter(new GPUImageSaturationFilter((float) 0.45));
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageColorInvertFilter());
+        filterGroup.addFilter(new GPUImageHueFilter(60));
+        filterGroup.addFilter(new GPUImageSaturationFilter((float) 0.45));
 
-        gpuImage.setFilter(fg);
+        gpuImage.setFilter(filterGroup);
         Bitmap invertedImage = gpuImage.getBitmapWithFilterApplied();
 
         // blend (color mode) inverted image with original bitmap
@@ -72,6 +73,12 @@ public class BlendEffectFilters extends ImageFilters {
         return filter;
     }
 
+    public GPUImageFilter getSolarizeTwoFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageSolarizeFilter(2));
+        filterGroup.addFilter(new GPUImageHueFilter(60));
 
-
+        return filterGroup;
+    }
+    
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import androidx.core.app.ActivityCompat;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 public class MainApplication extends Application {
   private String videoUrl;
@@ -236,6 +237,12 @@ public class MainApplication extends Application {
     ArrayList<ImageMetadata> imageMetadata = ImageUtils.createImageMetadataFromURLs(urls);
     return imageMetadata;
   }
+
+    public void filterImage(ImageThumbnail thumbnail) {
+      gpuImageView.setImage(image.getOriginalImageBitmap());
+      gpuImageView.setFilter((GPUImageFilter) thumbnail.getFilter());
+    }
+
 
     public void setStartTime(long startTime) {
     this.startTime = startTime;

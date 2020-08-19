@@ -23,6 +23,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     private Activity context;
     private MainApplication mainApplication;
     private ImageFilters imageFilters;
-    private ArrayList filters;
+    private List<List<Object>> filters;
 
     public WeeklyEditedImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
         this.inflater = LayoutInflater.from(context);
@@ -50,8 +51,9 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         this.context = context;
         this.mainApplication = mainApplication;
         this.imageUtils = new ImageUtils(context);
+
         this.imageFilters = new ImageFilters(context);
-        this.filters = imageFilters.getFilters();
+        this.filters = imageFilters.createVintageFilters();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
                         gpuImage.setImage(resource);
                         Random r = new Random();
                         int index = r.nextInt(filters.size());
-                        gpuImage.setFilter((GPUImageFilter) filters.get(index));
+                        gpuImage.setFilter((GPUImageFilter) filters.get(index).get(1));
 
                         holder.imageView.setImageBitmap(gpuImage.getBitmapWithFilterApplied());
                     }

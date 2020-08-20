@@ -1,33 +1,20 @@
+/* Navigation logo */
+.logo {
+    align-items: flex-start;
+    grid-area: navleft;
+    padding: 0.85em;
+    color: gainsboro;
+    font-size: 1.2em;
+}
+    
 nav ul {
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 
 nav ul li {
-    list-style: none;
-    margin-right: 3em;
-}
-
-.logo {
-    flex-grow: 1;
-}
-
-nav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-width: 100%;
-    font-size: 1em;
-}
-  
-.logo {
-    flex-grow: 1;
-    margin-left: 3em;
     text-decoration: none;
-    color: rgb(228, 228, 228);
-}
-
-.logo:hover {
-    color: silver;
+    display: inline;
+    padding: 1em;
+    cursor: pointer;
 }

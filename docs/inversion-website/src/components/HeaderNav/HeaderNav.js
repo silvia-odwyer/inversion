@@ -12,15 +12,23 @@ class HeaderNav extends React.Component {
 
   render() {
     return(
-      <nav>
-          <h3>Inversion</h3>
+      <header>
+        <div id="navbar">
+          <div class="nav_container">
+          <h4 class="logo">Inversion</h4>
+          <nav class="contright">
+                <ul>
+                  <li>Features</li>
+                  <li>Download</li>
+                  <li>Contact</li>
+                  <li>Switch Theme</li>
+                </ul>
+              </nav>
+            </div>
+            
+        </div>
 
-        <ul>
-          <li>Features</li>
-          <li>Download</li>
-          <li>Contact</li>
-        </ul>
-    </nav>
+      </header>
     )
   }
 }

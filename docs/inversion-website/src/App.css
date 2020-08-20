@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 
-.App-header {
-  display: flex;
-  flex-direction: column;
-}
-
 .content {
   margin-left: 15vw;
 }

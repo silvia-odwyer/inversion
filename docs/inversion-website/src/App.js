@@ -10,9 +10,8 @@ function App() {
     <div className="content">
 
       <section className="landing">
-        <header className="App-header">
-          <HeaderNav></HeaderNav>
-        </header>
+
+        <HeaderNav></HeaderNav>
         <LandingHero></LandingHero>
         <Features></Features>
         <Filters></Filters>

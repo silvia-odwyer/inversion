@@ -20,7 +20,7 @@
         <activity
             android:name=".Shop"
             android:label="@string/title_activity_shop"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DownloadProgress" />
         <activity
             android:name=".VideoEditor"

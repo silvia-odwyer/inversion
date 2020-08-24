@@ -56,6 +56,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -85,11 +86,12 @@ public class ImageEditor extends AppCompatActivity {
   private ArrayList<ImageThumbnail> vintageThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> dissolveThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> colorBlendThumbnails = new ArrayList<>();
+  private List<List<Object>> gradientGPUFilters;
   private Activity activity;
   private LinearLayout navOverlay;
   private Handler handler;
 
-    @SuppressLint("WrongThread")
+  @SuppressLint("WrongThread")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -101,7 +103,7 @@ public class ImageEditor extends AppCompatActivity {
     image = mainApplication.getImage();
     image.setActivity(this);
     imageFilters = new ImageFilters(getApplicationContext());
-
+    gradientFilters = new GradientFilters(getApplicationContext());
 
     navBtnNames = new String[]{"filters", "text", "gradient_effects", "effects", "correct"};
     filterOverlayBtnNames = new String[]{"gradients", "vintage", "neon"};
@@ -156,7 +158,7 @@ public class ImageEditor extends AppCompatActivity {
 
   }
 
-    TextView.OnClickListener filterBtnOlickListener = new TextView.OnClickListener() {
+    TextView.OnClickListener filterBtnOnClickListener = new TextView.OnClickListener() {
         @Override
         public void onClick(View view) {
             bottomNavBar.setVisibility(GONE);
@@ -173,9 +175,10 @@ public class ImageEditor extends AppCompatActivity {
 
             switch (nav_btn_tag) {
                 case "gradients": {
+                    gradientGPUFilters = gradientFilters.createGradientFilters();
                     if (gradientThumbnails.size() == 0) {
                         gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                                gradientFilters.createGradientFilters()));
+                                gradientGPUFilters));
                     }
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
@@ -254,8 +257,8 @@ public class ImageEditor extends AppCompatActivity {
             thumbnailsRecyclerView.setVisibility(View.VISIBLE);
             navOverlay.setVisibility(View.VISIBLE);
 
-            for (int index = 0; index < navBtnNames.length; index++) {
-                int id = getResources().getIdentifier("ie_btn_" + navBtnNames[index], "id", getPackageName());
+            for (String navBtnName : navBtnNames ) {
+                int id = getResources().getIdentifier("ie_btn_" + navBtnName, "id", getPackageName());
                 LinearLayout btn_layout = findViewById(id);
                 btn_layout.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -293,7 +296,7 @@ public class ImageEditor extends AppCompatActivity {
             navName = navName.toUpperCase();
             textView.setText(navName);
             textView.setId(generateViewId());
-            textView.setOnClickListener(filterBtnOlickListener);
+            textView.setOnClickListener(filterBtnOnClickListener);
             textView.setTag(navName.toLowerCase());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -302,6 +305,30 @@ public class ImageEditor extends AppCompatActivity {
             textView.setLayoutParams(lp);
             navEffectCategories.addView(textView);
         }
+    }
+
+
+    public GPUImageFilter retrieveFilter(String filterName) {
+        GPUImageFilter filter = null;
+        String category = imageFilters.filterInCategory(filterName);
+
+        if (category != null) {
+            String index_str = filterName.replace(category, "").trim();
+            int index = Integer.parseInt(index_str);
+            Log.d("DEBUG", "INDEX INT: " + index);
+            Log.d("DEBUG", "CATEGORY: " + category);
+
+            List<List<Object>> filters = null;
+            switch (category) {
+                case "Gradient":
+                    filters = gradientFilters.getGradientFilters();
+            }
+            filter = (GPUImageFilter) filters.get(index).get(1);
+        }
+        else {
+            imageFilters.getFilterFromName(filterName);
+        }
+        return filter;
     }
 
     public void filterImage(ImageThumbnail thumbnail) {
@@ -345,7 +372,7 @@ public class ImageEditor extends AppCompatActivity {
 
     // if an applied filter exists, then filter; note an empty string signifies no filter
     if (!appliedFilter.equals("")) {
-      GPUImageFilter filter = this.imageFilters.getFilterFromName(appliedFilter);
+      GPUImageFilter filter = retrieveFilter(appliedFilter);
 
       if (filter != null) {
         updateGPUImage(filter);
@@ -377,8 +404,6 @@ public class ImageEditor extends AppCompatActivity {
     LinearLayoutManager layoutManager
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
-
-    gradientFilters = new GradientFilters(getApplicationContext());
 
     List<List<Object>> filters = imageFilters.createVintageFilters();
 

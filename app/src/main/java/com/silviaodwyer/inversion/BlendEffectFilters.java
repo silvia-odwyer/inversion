@@ -80,5 +80,5 @@ public class BlendEffectFilters extends ImageFilters {
 
         return filterGroup;
     }
-    
+
 }

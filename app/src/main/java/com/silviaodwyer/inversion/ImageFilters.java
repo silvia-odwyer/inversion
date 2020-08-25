@@ -339,6 +339,39 @@ public class ImageFilters {
         return filterGroup;
     }
 
+    private GPUImageFilterGroup getLomoFuschiaFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(getVividFilter());
+        filterGroup.addFilter(createVignette());
+        Bitmap bmp = decodeBitmapFromResource(R.mipmap.pink);
+
+        GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, bmp);
+        filterGroup.addFilter(filter);
+        return filterGroup;
+    }
+
+    private GPUImageFilterGroup getLomoBlueFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(getVividFilter());
+        filterGroup.addFilter(createVignette());
+        Bitmap bmp = decodeBitmapFromResource(R.mipmap.atlantic);
+
+        GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, bmp);
+        filterGroup.addFilter(filter);
+        return filterGroup;
+    }
+
+    private GPUImageFilterGroup getLomoVioletFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(getVividFilter());
+        filterGroup.addFilter(createVignette());
+        Bitmap bmp = decodeBitmapFromResource(R.mipmap.purple);
+
+        GPUImageFilter filter = createTwoBlendFilter(context, GPUImageSoftLightBlendFilter.class, bmp);
+        filterGroup.addFilter(filter);
+        return filterGroup;
+    }
+
     private GPUImageVignetteFilter createVignette() {
         float vignetteStart = 0.3f;
         float vignetteEnd = 0.78f;

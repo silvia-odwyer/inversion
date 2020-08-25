@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -14,12 +15,14 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageDissolveBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageLuminosityBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSoftLightBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class GradientFilters extends ImageFilters {
@@ -27,6 +30,7 @@ public class GradientFilters extends ImageFilters {
     private List<List<Object>> filtersWithNames;
     private ArrayList<GPUImageFilter> filters;
     private ArrayList<GPUImageFilter> gradient_twoblend_filters;
+    private List<List<Object>> gradientFiltersWithNames;
 
     public GradientFilters(Context context) {
         super(context);
@@ -40,7 +44,7 @@ public class GradientFilters extends ImageFilters {
     }
 
     public List<List<Object>> createGradientFilters() {
-        List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
+        gradientFiltersWithNames = new ArrayList<>();
 
         for (int k = 0; k < gradient_backgrounds.size(); k++) {
             int background = gradient_backgrounds.get(k);
@@ -104,6 +108,13 @@ public class GradientFilters extends ImageFilters {
 
             GPUImageFilter filter = createTwoBlendFilter(super.getContext(), GPUImageColorBlendFilter.class, bmp);
             gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
+        }
+        return gradientFiltersWithNames;
+    }
+
+    List<List<Object>> getGradientFilters() {
+        if (filters.isEmpty()) {
+            createGradientFilters();
         }
         return gradientFiltersWithNames;
     }

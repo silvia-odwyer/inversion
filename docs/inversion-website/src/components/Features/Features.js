@@ -36,6 +36,7 @@ class Features extends React.Component {
             <h1>Add Video Filters</h1>
             <h2>
                 Add filters to your videos, to reflect the mood and ambience of the moment.
+                These video filters range from glitch effects to vintage tints and a whole lot more.
             </h2>
 
             </section>
@@ -49,7 +50,8 @@ class Features extends React.Component {
             <section className="hero_text">
             <h1>Get Daily Inspiration</h1>
             <h2>
-                Check back daily to view edits of your uploaded photos, and get inspiration!
+                Check back daily to view edits of your uploaded photos, or Remixes, 
+                and unlock new limited edition filters too!
             </h2>
 
             </section>

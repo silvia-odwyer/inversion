@@ -27,7 +27,7 @@ class LandingHero extends React.Component {
           </section>
 
           <section className="hero_image">
-            <img src={homescreen} className="App-logo" alt="logo" />
+            <img src="https://i.imgur.com/wPW9auh.gif" className="App-logo" alt="logo" />
           </section>
 
       </section>

@@ -8,6 +8,8 @@ import android.util.Log;
 import com.bumptech.glide.signature.ObjectKey;
 import com.daasuu.gpuv.egl.filter.*;
 import com.daasuu.gpuv.player.GPUPlayerView;
+import com.silviaodwyer.inversion.GradientFilters;
+import com.silviaodwyer.inversion.ImageFilterPacks;
 import com.silviaodwyer.inversion.ImageFilters;
 import com.silviaodwyer.inversion.ImageThumbnail;
 import com.silviaodwyer.inversion.ImageUtils;
@@ -25,10 +27,13 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
   private Context context;
+  private ImageFilterPacks imageFilterPacks;
+  private List<Integer> bitmaps;
 
   public VideoFilters(Context context) {
     this.context = context;
-
+    imageFilterPacks = new ImageFilterPacks(context);
+    bitmaps = GradientFilters.getBlendBackgrounds();
 
   }
 
@@ -51,19 +56,27 @@ public class VideoFilters {
     return vintageFilters;
   }
 
-  public void addBlendFilters() {
-    List<Integer> bitmaps = Arrays.asList(R.mipmap.galaxy, R.mipmap.rainbow,
-            R.mipmap.cosmic, R.mipmap.pink);
+    public List<List<Object>> createBlendFilters() {
+        List<List<Object>> blendFilters = new ArrayList<>();
+        for (int k = 0; k < bitmaps.size(); k++) {
+            Integer bitmapResource = bitmaps.get(k);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
+            blendFilters.add(Arrays.asList("Gradient " + k, new GLSoftLightBlendFilter(bitmap)));
 
-    for (Integer bitmapResource: bitmaps) {
-      Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
-
-      this.videoFilters.add(new GLSoftLightBlendFilter(bitmap));
-      this.videoFilters.add(new GLDarkenBlendFilter(bitmap));
-      this.videoFilters.add(new GLMultiplyBlendFilter(bitmap));
+        }
+        return blendFilters;
     }
 
-  }
+    public List<List<Object>> createColorBlendFilters() {
+        List<List<Object>> blendFilters = new ArrayList<>();
+        for (int k = 0; k < bitmaps.size(); k++) {
+            Integer bitmapResource = bitmaps.get(k);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
+            blendFilters.add(Arrays.asList("Color Blend " + k, new GLMultiplyBlendFilter(bitmap)));
+
+        }
+        return blendFilters;
+    }
 
   public ArrayList<GlFilter> getVideoFilters() {
     return videoFilters;
@@ -102,12 +115,10 @@ public class VideoFilters {
   }
 
   public ArrayList<GPUImageFilter> getRequiredImageFilters( List<List<Object>> videoFilters) {
-    ImageFilters imageFilters = new ImageFilters(context);
-
     ArrayList<GPUImageFilter> requiredImageFilters = new ArrayList<>();
 
     for (List<Object> filter: videoFilters) {
-      GPUImageFilter correspondingImageFilter = imageFilters.getFilterFromName((String) filter.get(0));
+      GPUImageFilter correspondingImageFilter = imageFilterPacks.retrieveFilter(((String) filter.get(0)));
       if (correspondingImageFilter != null) {
           requiredImageFilters.add(correspondingImageFilter);
       }

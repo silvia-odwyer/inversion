@@ -136,7 +136,7 @@ public class VideoEditor extends AppCompatActivity {
 
     List<List<Object>> filters = videoFilters.createEffectFilters();
 
-    vintageThumbnails = videoFilters.getFilteredThumbnails(originalVideoThumbnail, filters);
+    vintageThumbnails = videoFilters.getFilteredThumbnails(originalVideoThumbnail, videoFilters.createVintageFilters());
     adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, vintageThumbnails, mainApplication);
 
     thumbnailsRecyclerView.setAdapter(adapter);
@@ -226,9 +226,10 @@ public class VideoEditor extends AppCompatActivity {
                     break;
                 }
                 case "vintage": {
+                  Log.d("DEBUG", "VINTAGE CLICKED ON");
                     if (vintageThumbnails.size() == 0) {
                         vintageThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
-                                videoFilters.createVintageFilters()));
+                                videoFilters.createBlendFilters()));
                     }
                     adapter.update(vintageThumbnails);
                     break;
@@ -237,7 +238,11 @@ public class VideoEditor extends AppCompatActivity {
                     break;
                 }
                 case "color blend": {
-
+                  if (colorBlendThumbnails.size() == 0) {
+                    colorBlendThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
+                            videoFilters.createColorBlendFilters()));
+                  }
+                  adapter.update(colorBlendThumbnails);
                     break;
                 }
                 case "neon": {

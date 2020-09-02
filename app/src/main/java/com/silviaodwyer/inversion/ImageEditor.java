@@ -90,6 +90,7 @@ public class ImageEditor extends AppCompatActivity {
   private Activity activity;
   private LinearLayout navOverlay;
   private Handler handler;
+  private ImageFilterPacks imageFilterPacks;
 
   @SuppressLint("WrongThread")
   @Override
@@ -104,6 +105,7 @@ public class ImageEditor extends AppCompatActivity {
     image.setActivity(this);
     imageFilters = new ImageFilters(getApplicationContext());
     gradientFilters = new GradientFilters(getApplicationContext());
+    imageFilterPacks = new ImageFilterPacks(getApplicationContext());
 
     navBtnNames = new String[]{"filters", "text", "gradient_effects", "effects", "correct"};
     filterOverlayBtnNames = new String[]{"gradients", "vintage", "neon"};
@@ -178,7 +180,7 @@ public class ImageEditor extends AppCompatActivity {
                     gradientGPUFilters = gradientFilters.createGradientFilters();
                     if (gradientThumbnails.size() == 0) {
                         gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                                gradientGPUFilters));
+                                gradientFilters.getGradientFilters()));
                     }
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
@@ -202,8 +204,6 @@ public class ImageEditor extends AppCompatActivity {
                     break;
                 }
                 case "vintage": {
-                    Log.d("DEBUG", "VINTAGE BTN SELECTED");
-
                     if (vintageThumbnails.size() == 0) {
                         vintageThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
                                 imageFilters.createVintageFilters()));
@@ -222,7 +222,7 @@ public class ImageEditor extends AppCompatActivity {
                 case "color blend": {
                     if (colorBlendThumbnails.size() == 0) {
                         colorBlendThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                                gradientFilters.createGradientColorBlendFilters()));
+                                gradientFilters.getColorBlendFilters()));
                     }
                     adapter.update(colorBlendThumbnails);
                     break;
@@ -308,28 +308,6 @@ public class ImageEditor extends AppCompatActivity {
     }
 
 
-    public GPUImageFilter retrieveFilter(String filterName) {
-        GPUImageFilter filter = null;
-        String category = imageFilters.filterInCategory(filterName);
-
-        if (category != null) {
-            String index_str = filterName.replace(category, "").trim();
-            int index = Integer.parseInt(index_str);
-            Log.d("DEBUG", "INDEX INT: " + index);
-            Log.d("DEBUG", "CATEGORY: " + category);
-
-            List<List<Object>> filters = null;
-            switch (category) {
-                case "Gradient":
-                    filters = gradientFilters.getGradientFilters();
-            }
-            filter = (GPUImageFilter) filters.get(index).get(1);
-        }
-        else {
-            imageFilters.getFilterFromName(filterName);
-        }
-        return filter;
-    }
 
     public void filterImage(ImageThumbnail thumbnail) {
         gpuImageView.setImage(image.getOriginalImageBitmap());
@@ -372,9 +350,11 @@ public class ImageEditor extends AppCompatActivity {
 
     // if an applied filter exists, then filter; note an empty string signifies no filter
     if (!appliedFilter.equals("")) {
-      GPUImageFilter filter = retrieveFilter(appliedFilter);
+      GPUImageFilter filter = imageFilterPacks.retrieveFilter(appliedFilter);
+      Log.d("DEBUG", "APPLIED FILTER: " + filter);
 
       if (filter != null) {
+          Log.d("DEBUG", "FOUND FILTER, APPLYING ");
         updateGPUImage(filter);
       }
       else {

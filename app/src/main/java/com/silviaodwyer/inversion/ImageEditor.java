@@ -180,7 +180,7 @@ public class ImageEditor extends AppCompatActivity {
                     gradientGPUFilters = gradientFilters.createGradientFilters();
                     if (gradientThumbnails.size() == 0) {
                         gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                                gradientFilters.getGradientFilters()));
+                                gradientFilters.createEffectFilters()));
                     }
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
@@ -219,6 +219,7 @@ public class ImageEditor extends AppCompatActivity {
                     adapter.update(dissolveThumbnails);
                     break;
                 }
+
                 case "color blend": {
                     if (colorBlendThumbnails.size() == 0) {
                         colorBlendThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),

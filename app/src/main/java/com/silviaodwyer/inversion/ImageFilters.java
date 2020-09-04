@@ -74,29 +74,6 @@ public class ImageFilters {
         return BitmapFactory.decodeResource(context.getResources(), resource_id);
     }
 
-    public void addEffectFilters() {
-
-        // create blend filters
-        effectFilters = new ArrayList<>();
-
-        effectFilters.add(Arrays.asList("Neon Pink", getNeonPinkFilter()));
-        effectFilters.add(Arrays.asList("Orbiton", getOribitonFilter()));
-        effectFilters.add(Arrays.asList("Obsidian", getObsidianFilter()));
-        effectFilters.add(Arrays.asList("Grayscale", new GPUImageGrayscaleFilter()));
-        effectFilters.add(Arrays.asList("Monochrome", new GPUImageMonochromeFilter()));
-        effectFilters.add(Arrays.asList("Sharpen", new GPUImageSharpenFilter()));
-        effectFilters.add(Arrays.asList("Aesthetica", getAestheticaFilter()));
-        effectFilters.add(Arrays.asList("Dramatic", getDramaticFilter()));
-        effectFilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
-        effectFilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
-
-        for (List filter : effectFilters) {
-            Log.d("DEBUG", "FILTER: " + filter.get(0));
-            filters.add((GPUImageFilter) filter.get(1));
-        }
-
-    }
-
     public List<List<Object>> createVintageFilters() {
 
         List<List<Object>> allfilters = new ArrayList<>();
@@ -110,6 +87,31 @@ public class ImageFilters {
         allfilters.add(Arrays.asList("Retro Vignette", getRetroVignette()));
         allfilters.add(Arrays.asList("Retro Vignette 2", getRetroVignette2()));
         allfilters.add(Arrays.asList("Lomo", getLomoFilter()));
+        allfilters.add(Arrays.asList("Lomo Fuschia", getLomoFuschiaFilter()));
+        allfilters.add(Arrays.asList("Lomo Violet", getLomoVioletFilter()));
+        allfilters.add(Arrays.asList("Lomo Blue", getLomoBlueFilter()));
+
+        return allfilters;
+    }
+
+    public List<List<Object>> createEffectFilters() {
+
+        List<List<Object>> allfilters = new ArrayList<>();
+        allfilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
+        allfilters.add(Arrays.asList("Solarize 2", getSolarizeVariantFilter()));
+        allfilters.add(Arrays.asList("Solarus", getSolarusFilter()));
+        allfilters.add(Arrays.asList("False Color", new GPUImageFalseColorFilter()));
+        allfilters.add(Arrays.asList("Posterize", new GPUImagePosterizeFilter()));
+        allfilters.add(Arrays.asList("Half Tone", new GPUImageHalftoneFilter()));
+        allfilters.add(Arrays.asList("RGB Dilation", new GPUImageRGBDilationFilter()));
+        allfilters.add(Arrays.asList("Vibrance", new GPUImageVibranceFilter()));
+        allfilters.add(Arrays.asList("Toon", new GPUImageToonFilter()));
+        allfilters.add(Arrays.asList("Smooth Toon", new GPUImageSmoothToonFilter()));
+        allfilters.add(Arrays.asList("Duotone", getDuotoneFilter()));
+        allfilters.add(Arrays.asList("Duotone2", getDuotone2Filter()));
+        allfilters.add(Arrays.asList("Pop Art", getPopartFilter()));
+        allfilters.add(Arrays.asList("Pop Art 2", getPopart2Filter()));
+
         return allfilters;
     }
 
@@ -118,6 +120,55 @@ public class ImageFilters {
         filterGroup.addFilter(new GPUImageSaturationFilter((float) 1.5));
         filterGroup.addFilter(new GPUImageContrastFilter((float) 1.5));
         filterGroup.addFilter(new GPUImageHueFilter(-15));
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getSolarizeVariantFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageHueFilter(180));
+        filterGroup.addFilter(new GPUImageSolarizeFilter());
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getSolarusFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageFalseColorFilter());
+        filterGroup.addFilter(new GPUImageHueFilter(180));
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getDuotoneFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageFalseColorFilter());
+        filterGroup.addFilter(new GPUImageHueFilter(270));
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getDuotone2Filter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageFalseColorFilter());
+        filterGroup.addFilter(new GPUImageHueFilter(120));
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getPopartFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageFalseColorFilter());
+        filterGroup.addFilter(new GPUImageToonFilter());
+
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getPopart2Filter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageHalftoneFilter());
+        filterGroup.addFilter(new GPUImageFalseColorFilter());
+        filterGroup.addFilter(new GPUImageToonFilter());
 
         return filterGroup;
     }

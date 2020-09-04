@@ -26,26 +26,31 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class GradientFilters extends ImageFilters {
-    private List<Integer> gradient_backgrounds;
+    private static List<Integer> gradient_backgrounds = Arrays.asList(R.mipmap.gradient2, R.mipmap.gradient3, R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
+            R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars,
+            R.mipmap.overlay1, R.mipmap.overlay2, R.mipmap.vintage1,
+            R.mipmap.vintage2, R.mipmap.vintage3, R.mipmap.vintage4);
     private List<List<Object>> filtersWithNames;
     private ArrayList<GPUImageFilter> filters;
     private ArrayList<GPUImageFilter> gradient_twoblend_filters;
     private List<List<Object>> gradientFiltersWithNames;
+    private List<List<Object>> colorBlendFilters;
 
     public GradientFilters(Context context) {
         super(context);
-        gradient_backgrounds = Arrays.asList(R.mipmap.gradient2, R.mipmap.gradient3, R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
-                R.mipmap.lavender, R.mipmap.pink, R.mipmap.purple, R.mipmap.rainbow, R.mipmap.stars,
-                R.mipmap.overlay1, R.mipmap.overlay2, R.mipmap.vintage1,
-                R.mipmap.vintage2, R.mipmap.vintage3, R.mipmap.vintage4);
         filtersWithNames = new ArrayList<>();
         filters = new ArrayList<>();
+        colorBlendFilters = new ArrayList<>();
         gradient_twoblend_filters = new ArrayList<>();
+        gradientFiltersWithNames = new ArrayList<>();
+
+    }
+
+    public static List<Integer> getBlendBackgrounds() {
+        return gradient_backgrounds;
     }
 
     public List<List<Object>> createGradientFilters() {
-        gradientFiltersWithNames = new ArrayList<>();
-
         for (int k = 0; k < gradient_backgrounds.size(); k++) {
             int background = gradient_backgrounds.get(k);
             Bitmap bmp = decodeBitmapFromResource(background);
@@ -100,23 +105,29 @@ public class GradientFilters extends ImageFilters {
     }
 
     public List<List<Object>> createGradientColorBlendFilters() {
-        List<List<Object>> gradientFiltersWithNames = new ArrayList<>();
 
         for (int k = 0; k < gradient_backgrounds.size(); k++) {
             int background = gradient_backgrounds.get(k);
             Bitmap bmp = decodeBitmapFromResource(background);
 
             GPUImageFilter filter = createTwoBlendFilter(super.getContext(), GPUImageColorBlendFilter.class, bmp);
-            gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
+            colorBlendFilters.add(Arrays.asList("Color Blend " + k, filter));
+        }
+        return colorBlendFilters;
+    }
+
+    List<List<Object>> getGradientFilters() {
+        if (gradientFiltersWithNames.isEmpty()) {
+            createGradientFilters();
         }
         return gradientFiltersWithNames;
     }
 
-    List<List<Object>> getGradientFilters() {
-        if (filters.isEmpty()) {
-            createGradientFilters();
+    List<List<Object>> getColorBlendFilters() {
+        if (colorBlendFilters.isEmpty()) {
+            colorBlendFilters = createGradientColorBlendFilters();
         }
-        return gradientFiltersWithNames;
+        return colorBlendFilters;
     }
 
     public List<List<Object>> getFiltersWithNames() {

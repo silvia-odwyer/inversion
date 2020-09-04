@@ -1,7 +1,7 @@
 # Inversion 
 
-Inversion aims to be a video and image processing app for Android, currently in development. It aims to perform real-time video processing on the GPU, 
-allowing users to add special effects to their videos and images quickly and save them for sharing. 
+Inversion is a video and image processing app for Android, which performs real-time video processing on the GPU,
+allowing users to add special effects to their videos/images quickly and save them for sharing.
 
 ## Visual Prototypes
 
@@ -36,9 +36,14 @@ This list is not complete as of yet, for example if new screens or activities ar
 
 ## Filters 
 - **Image correction**: Sharpen, blur, adjustments to saturation, contrast, brightness, etc.,
-- **Filters**: Hue transforms, monochrome, sepia, blending with a variety of gradients, RGB shifts, tints, 
+- **Vintage**: Monochrome, sepia, and vignettes add a vintage effect to images
+- **Retro**: Pop art, lomo, and dust overlays add a retro atmosphere to images
+- **Gradients**: Blends including gradients are also available
+- **Glitch**: These filters add a futuristic flair to images, and include RGB shifts, chromatic
+aberration, monitor scanlines, and other glitch effects.
+- **Filters**: Hue transforms, blending with a variety of gradients, RGB shifts, tints,
 - **Special effects**: Other effects such as applying vignettes, halftone, pixelization, noise, vintage effects, solarization etc.,
-- **Blending**: Blending with other images will also be available, such as using Multiply blend, Add blend, and so forth. 
+- **Blending**: Blending with other images will also be available, such as using Multiply blend, Add blend, and so forth.
 
 ## Other Features
 - Image collage creation
@@ -46,5 +51,4 @@ This list is not complete as of yet, for example if new screens or activities ar
 - Watermarking videos
 - Exporting edited images/videos
 
-It is hoped that at least 50 filters/effects will be available for use in both the image editor and video editor.
-Some visual examples of the filters will be added here or in the repository Wiki. 
+Some visual examples of the filters will be added here or in the repository Wiki.

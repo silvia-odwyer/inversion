@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.silviaodwyer.inversion.ImageEditor;
-import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.image_filters.ImageFilters;
 import com.silviaodwyer.inversion.R;
 
 public class EffectsMenuFragment extends Fragment {

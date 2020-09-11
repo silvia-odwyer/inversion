@@ -7,14 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +22,6 @@ import com.daasuu.gpuv.player.GPUPlayerView;
 import com.daasuu.gpuv.player.PlayerScaleType;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -34,9 +30,8 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.silviaodwyer.inversion.utils.VideoFilters;
+import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,8 +65,6 @@ public class VideoEditor extends AppCompatActivity {
   private ArrayList<VideoThumbnail> dissolveThumbnails = new ArrayList<>();
   private ArrayList<VideoThumbnail> colorBlendThumbnails = new ArrayList<>();
   private GlFilter activeFilter = new GlSepiaFilter();
-  private String videoURL = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
-  private String imageURL = "https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDkwNH0&fm=png&w=100";
   private LinearLayout navOverlay;
   private HorizontalScrollView bottomNavBar;
   private Bitmap originalVideoThumbnail;
@@ -171,10 +164,8 @@ public class VideoEditor extends AppCompatActivity {
         }
         case "gradient_effects": {
           Log.d("DEBUG", "GRADIENT EFFECTS CLICKED");
-
           String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend"};
           createCategoryMenu(gradientEffectNavNames);
-
           break;
         }
 
@@ -403,5 +394,16 @@ public class VideoEditor extends AppCompatActivity {
     Intent intent = new Intent(VideoEditor.this, DownloadProgress.class);
     intent.putExtra("videoPath", videoUrl);
     startActivity(intent);
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (bottomNavBar.getVisibility() == View.VISIBLE) {
+      super.onBackPressed();
+    } else {
+      navOverlay.setVisibility(GONE);
+      thumbnailsRecyclerView.setVisibility(GONE);
+      bottomNavBar.setVisibility(View.VISIBLE);
+    }
   }
 }

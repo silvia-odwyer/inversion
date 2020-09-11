@@ -3,26 +3,19 @@ package com.silviaodwyer.inversion.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import com.bumptech.glide.signature.ObjectKey;
 import com.daasuu.gpuv.egl.filter.*;
 import com.daasuu.gpuv.player.GPUPlayerView;
-import com.silviaodwyer.inversion.GradientFilters;
-import com.silviaodwyer.inversion.ImageFilterPacks;
-import com.silviaodwyer.inversion.ImageFilters;
-import com.silviaodwyer.inversion.ImageThumbnail;
+import com.silviaodwyer.inversion.image_filters.GradientFilters;
+import com.silviaodwyer.inversion.image_filters.ImageFilterPacks;
 import com.silviaodwyer.inversion.ImageUtils;
-import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.VideoThumbnail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();

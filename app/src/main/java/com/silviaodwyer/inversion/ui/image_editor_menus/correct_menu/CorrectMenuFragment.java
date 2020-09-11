@@ -1,28 +1,22 @@
 package com.silviaodwyer.inversion.image_editor_menus.correct_menu;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.ImageEditor;
-import com.silviaodwyer.inversion.ImageFile;
-import com.silviaodwyer.inversion.ImageFilters;
+import com.silviaodwyer.inversion.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.image_filters.ImageFilters;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-
-import java.util.ArrayList;
 
 public class CorrectMenuFragment extends Fragment {
 

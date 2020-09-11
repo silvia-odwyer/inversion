@@ -4,16 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+import com.silviaodwyer.inversion.image_editor.ImageEditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.filter.*;
 
 public class ImageFilters {

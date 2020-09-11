@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,10 +30,15 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.Video;
+import com.silviaodwyer.inversion.VideoFilterMetadata;
+import com.silviaodwyer.inversion.VideoFiltersMetadata;
+import com.silviaodwyer.inversion.VideoThumbnailsRecyclerView;
 import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -59,16 +64,13 @@ public class VideoEditor extends AppCompatActivity {
   private String[] navBtnNames;
   private LinearLayout navEffectCategories;
   private RecyclerView thumbnailsRecyclerView;
-  private ArrayList<VideoThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
-  private ArrayList<VideoThumbnail> gradientThumbnails = new ArrayList<>();
-  private ArrayList<VideoThumbnail> vintageThumbnails = new ArrayList<>();
-  private ArrayList<VideoThumbnail> dissolveThumbnails = new ArrayList<>();
-  private ArrayList<VideoThumbnail> colorBlendThumbnails = new ArrayList<>();
+
   private GlFilter activeFilter = new GlSepiaFilter();
   private LinearLayout navOverlay;
   private HorizontalScrollView bottomNavBar;
   private Bitmap originalVideoThumbnail;
   private VideoFilters videoFilters;
+  private VideoFiltersMetadata videoFiltersMetadata;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class VideoEditor extends AppCompatActivity {
     context = getApplicationContext();
     mainApplication = ((MainApplication)getApplication());
     videoFilters = new VideoFilters(context);
+    videoFiltersMetadata = new VideoFiltersMetadata(getApplicationContext());
 
     video = mainApplication.getVideo();
     Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
@@ -127,10 +130,7 @@ public class VideoEditor extends AppCompatActivity {
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
 
-    List<List<Object>> filters = videoFilters.createEffectFilters();
-
-    vintageThumbnails = videoFilters.getFilteredThumbnails(originalVideoThumbnail, videoFilters.createVintageFilters());
-    adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, vintageThumbnails, mainApplication);
+    adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, videoFiltersMetadata.getVintageFiltersMetadata(), mainApplication, ePlayerView);
 
     thumbnailsRecyclerView.setAdapter(adapter);
 
@@ -208,52 +208,23 @@ public class VideoEditor extends AppCompatActivity {
 
             switch (nav_btn_tag) {
                 case "gradients": {
-                    if (gradientThumbnails.size() == 0) {
-                        gradientThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
-                                videoFilters.createVintageFilters()));
-                    }
-                    adapter.update(gradientThumbnails);
-
+                    adapter.update(videoFiltersMetadata.getGradientFiltersMetadata());
                     break;
                 }
                 case "vintage": {
-                  Log.d("DEBUG", "VINTAGE CLICKED ON");
-                    if (vintageThumbnails.size() == 0) {
-                        vintageThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
-                                videoFilters.createBlendFilters()));
-                    }
-                    adapter.update(vintageThumbnails);
+                    adapter.update(videoFiltersMetadata.getVintageFiltersMetadata());
                     break;
                 }
                 case "dissolve": {
+                  adapter.update(videoFiltersMetadata.getDissolveFiltersMetadata());
                     break;
                 }
                 case "color blend": {
-                  if (colorBlendThumbnails.size() == 0) {
-                    colorBlendThumbnails.addAll(videoFilters.getFilteredThumbnails(originalVideoThumbnail,
-                            videoFilters.createColorBlendFilters()));
-                  }
-                  adapter.update(colorBlendThumbnails);
+                  adapter.update(videoFiltersMetadata.getColorBlendFiltersMetadata());
                     break;
                 }
                 case "neon": {
                     adapter.clear();
-
-//                    new Thread(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            if (gradientGrayscaleThumbnails.size() == 0) {
-//                                gradientGrayscaleThumbnails.addAll(gradientFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-//                                        gradientFilters.createGradientGrayscaleFilters()));
-//                            }
-//
-//                            Message msg = new Message();
-//                            msg.obj = gradientGrayscaleThumbnails;
-//                            handler.sendMessage(msg);
-//                        }
-//                    }).start();
-
                     break;
                 }
             }

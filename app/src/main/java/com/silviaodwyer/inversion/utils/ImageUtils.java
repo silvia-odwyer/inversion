@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.ImageMetadata;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.Video;
 
 import java.io.File;
 import java.io.FileInputStream;

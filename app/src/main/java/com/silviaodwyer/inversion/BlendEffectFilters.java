@@ -2,7 +2,8 @@ package com.silviaodwyer.inversion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
+
+import com.silviaodwyer.inversion.image_filters.ImageFilters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,12 +14,9 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class BlendEffectFilters extends ImageFilters {
     private Bitmap originalBitmap;

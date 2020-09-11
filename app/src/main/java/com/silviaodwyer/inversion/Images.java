@@ -10,24 +10,19 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.takusemba.spotlight.OnTargetListener;
-import com.takusemba.spotlight.Spotlight;
-import com.takusemba.spotlight.Target;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import com.takusemba.spotlight.effet.RippleEffect;
-import com.takusemba.spotlight.shape.Circle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 import static android.graphics.Color.argb;
 

@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.image_filters;
 
 public class ImageFilterMetadata {
     private String name;

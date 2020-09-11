@@ -12,13 +12,14 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.silviaodwyer.inversion.ui.VideoEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import jp.co.cyberagent.android.gpuimage.GPUImage;
 
 public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.ViewHolder> {
 
@@ -131,7 +132,7 @@ public class VideosRecyclerView extends RecyclerView.Adapter<VideosRecyclerView.
     return data.get(id);
   }
 
-  void setClickListener(ItemClickListener itemClickListener) {
+  public void setClickListener(ItemClickListener itemClickListener) {
     this.clickListener = itemClickListener;
   }
 

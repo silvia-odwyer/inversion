@@ -1,11 +1,9 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.image_filters;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
-import android.util.Log;
-import android.widget.LinearLayout;
+
+import com.silviaodwyer.inversion.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,15 +13,8 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageDissolveBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueBlendFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageLuminosityBlendFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSoftLightBlendFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageVignetteFilter;
 
 public class GradientFilters extends ImageFilters {
     private static List<Integer> gradient_backgrounds = Arrays.asList(R.mipmap.gradient2, R.mipmap.gradient3, R.mipmap.summer, R.mipmap.atlantic, R.mipmap.cosmic,
@@ -123,7 +114,7 @@ public class GradientFilters extends ImageFilters {
         return gradientFiltersWithNames;
     }
 
-    List<List<Object>> getColorBlendFilters() {
+    public List<List<Object>> getColorBlendFilters() {
         if (colorBlendFilters.isEmpty()) {
             colorBlendFilters = createGradientColorBlendFilters();
         }

@@ -6,7 +6,7 @@ import android.util.Log;
 import java.io.File;
 
 public class FileMetadata {
-  enum FileType {
+  public enum FileType {
     IMAGE,
     VIDEO,
   }

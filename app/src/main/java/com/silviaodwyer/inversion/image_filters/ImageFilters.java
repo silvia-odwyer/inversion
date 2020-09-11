@@ -1,11 +1,15 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.image_filters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
-import com.silviaodwyer.inversion.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.ImageThumbnail;
+import com.silviaodwyer.inversion.utils.ImageUtils;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -489,7 +493,7 @@ public class ImageFilters {
         activity.updateGPUImage(filter);
     }
 
-    public String filterInCategory(String filterName) {
+    public static String filterInCategory(String filterName) {
         String[] categories = {"Gradient", "Color Blend"};
         for (String category : categories) {
             if (filterName.startsWith(category)) {
@@ -580,6 +584,4 @@ public class ImageFilters {
   public Context getContext() {
     return context;
   }
-
-
 }

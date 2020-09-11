@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.image_editor;
+package com.silviaodwyer.inversion.ui.image_editor;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -375,7 +375,7 @@ public class ImageEditor extends AppCompatActivity {
     List<List<Object>> filters = imageFilters.createVintageFilters();
 
     vintageThumbnails = imageFilters.getFilteredThumbnails(image.getOriginalImageBitmap(), filters);
-    adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, vintageThumbnails, mainApplication);
+    adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, vintageThumbnails, mainApplication, gpuImageView);
 
     thumbnailsRecyclerView.setAdapter(adapter);
 

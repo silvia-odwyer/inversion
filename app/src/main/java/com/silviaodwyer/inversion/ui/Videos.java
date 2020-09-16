@@ -1,13 +1,11 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -16,6 +14,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.FileUtils;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.Video;
+import com.silviaodwyer.inversion.VideoMetadata;
+import com.silviaodwyer.inversion.VideosRecyclerView;
+import com.silviaodwyer.inversion.ui.VideoEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +84,7 @@ public class Videos extends AppCompatActivity implements VideosRecyclerView.Item
     // set up the RecyclerView
     RecyclerView recyclerView = findViewById(R.id.videos_recycler_view);
 
-    int noOfColumns = 3;
+    int noOfColumns = 2;
     recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), noOfColumns));
     recyclerViewAdapter = new VideosRecyclerView(getApplicationContext(), savedVideoMetadata, mainApplication);
     recyclerViewAdapter.setClickListener(this);

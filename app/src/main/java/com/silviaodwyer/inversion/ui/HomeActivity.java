@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;

@@ -11,27 +11,27 @@
   },
   {
     "name": "Grayscale",
-    "description": "Add a pop of neon color",
+    "description": "Grayscale effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Vivid",
-    "description": "Add a pop of neon color",
+    "description": "Add a pop of color, plus enhanced saturation and contrast",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Vignette",
-    "description": "Add a pop of neon color",
+    "description": "Adds a vignette",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Sepia Vignette",
-    "description": "Purple tinted nostalgia",
+    "description": "A sepia tint, with a vignette, for a retro effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Grayscale Vignette",
-    "description": "Purple tinted nostalgia",
+    "description": "A grayscale effect, with an added vignette for a vintage effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
@@ -46,7 +46,7 @@
   },
   {
     "name": "Vibrant",
-    "description": "Purple tinted nostalgia",
+    "description": "A vivid effect which enhances saturation and contrast",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
@@ -71,7 +71,7 @@
   },
   {
     "name": "Dramatic",
-    "description": "Purple tinted nostalgia",
+    "description": "Grayscale effect with enhanced contrast and saturation",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
@@ -81,17 +81,17 @@
   },
   {
     "name": "Lomo Fuschia",
-    "description": "Purple tinted nostalgia",
+    "description": "Enhanced saturation with a vignette and a dash of fuschia!",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Monochrome",
-    "description": "Purple tinted nostalgia",
+    "description": "Monochrome effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Posterize",
-    "description": "Purple tinted nostalgia",
+    "description": "Posterization effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
@@ -131,22 +131,42 @@
   },
   {
     "name": "Red Shift",
-    "description": "Purple tinted nostalgia",
+    "description": "Adds red chromatic abberation",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Green Shift",
-    "description": "Purple tinted nostalgia",
+    "description": "Adds green chromatic abberation",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Blue Shift",
-    "description": "Purple tinted nostalgia",
+    "description": "Adds blue chromatic abberation",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   },
   {
     "name": "Switcher",
-    "description": "Purple tinted nostalgia",
+    "description": "Switches all 3 channels for a unique effect",
+    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+  },
+  {
+    "name": "Switcher 2",
+    "description": "Switches all 3 channels for a unique effect",
+    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+  },
+  {
+    "name": "Switcher 3",
+    "description": "Switches all 3 channels for a unique effect",
+    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+  },
+  {
+    "name": "Switcher 4",
+    "description": "Switches all 3 channels for a unique effect",
+    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+  },
+  {
+    "name": "Switcher 5",
+    "description": "Switches all 3 channels for a unique effect",
     "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
   }
 

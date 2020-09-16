@@ -7,19 +7,19 @@
 
   <fragment
     android:id="@+id/navigation_image_editor_home"
-    android:name="com.silviaodwyer.inversion.image_editor_menus.home_menu.HomeFragment"
+    android:name="com.silviaodwyer.inversion.ui.image_editor_menus.home_menu.HomeFragment"
     android:label="Home"
     tools:layout="@layout/fragment_image_editor_home" />
 
   <fragment
     android:id="@+id/navigation_effects_menu"
-    android:name="com.silviaodwyer.inversion.image_editor_menus.effects_menu.EffectsMenuFragment"
+    android:name="com.silviaodwyer.inversion.ui.image_editor_menus.effects_menu.EffectsMenuFragment"
     android:label="Effects"
     tools:layout="@layout/effects_menu_fragment" />
 
   <fragment
     android:id="@+id/navigation_imagecorrect_menu"
-    android:name="com.silviaodwyer.inversion.image_editor_menus.correct_menu.CorrectMenuFragment"
+    android:name="com.silviaodwyer.inversion.ui.image_editor_menus.correct_menu.CorrectMenuFragment"
     android:label="@string/title_notifications"
     tools:layout="@layout/imagecorrect_menu_fragment" />
 </navigation>

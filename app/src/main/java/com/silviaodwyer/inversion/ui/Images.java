@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +13,13 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.FileUtils;
+import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.ImageMetadata;
+import com.silviaodwyer.inversion.ImagesRecyclerView;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 
@@ -94,9 +101,9 @@ public class Images extends AppCompatActivity implements ImagesRecyclerView.Item
 
   private void initializeRecyclerView(ArrayList<ImageMetadata> imageMetadata) {
     recyclerView = findViewById(R.id.recycler_view);
-    int numberOfColumns = 3;
+    int numberOfColumns = 2;
     recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-    adapter = new ImagesRecyclerView(this, imageMetadata, mainApplication);
+    adapter = new ImagesRecyclerView(this, imageMetadata, mainApplication, false);
     adapter.setClickListener(this);
     recyclerView.setAdapter(adapter);
   }

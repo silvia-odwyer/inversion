@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.main_ui.remix;
+package com.silviaodwyer.inversion.ui.main_ui.remix;
 
 import android.app.Activity;
 import android.content.Context;

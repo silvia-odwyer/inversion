@@ -21,18 +21,18 @@
             android:name=".Shop"
             android:label="@string/title_activity_shop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DownloadProgress" />
+        <activity android:name=".ui.DownloadProgress" />
         <activity
-            android:name=".VideoEditor"
+            android:name=".ui.VideoEditor"
             android:label="@string/title_activity_video_editor" />
         <activity
-            android:name=".ImageEditor"
+            android:name=".ui.image_editor.ImageEditor"
             android:label="@string/title_activity_image_editor" />
         <activity android:name=".EffectDetail" />
-        <activity android:name=".Videos" />
-        <activity android:name=".Images" />
+        <activity android:name=".ui.Videos" />
+        <activity android:name=".ui.Images" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.main_ui.home;
+package com.silviaodwyer.inversion.ui.main_ui.home;
 
 import android.app.Activity;
 import android.app.UiModeManager;
@@ -36,20 +36,20 @@ import com.google.gson.reflect.TypeToken;
 import com.silviaodwyer.inversion.EffectDetail;
 import com.silviaodwyer.inversion.FileUtils;
 import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
 import com.silviaodwyer.inversion.image_filters.ImageFilterMetadata;
 import com.silviaodwyer.inversion.ImageMetadata;
-import com.silviaodwyer.inversion.ImageUtils;
-import com.silviaodwyer.inversion.Images;
+import com.silviaodwyer.inversion.utils.ImageUtils;
+import com.silviaodwyer.inversion.ui.Images;
 import com.silviaodwyer.inversion.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.Shop;
 import com.silviaodwyer.inversion.Video;
-import com.silviaodwyer.inversion.VideoEditor;
+import com.silviaodwyer.inversion.ui.VideoEditor;
 import com.silviaodwyer.inversion.VideoMetadata;
-import com.silviaodwyer.inversion.Videos;
+import com.silviaodwyer.inversion.ui.Videos;
 import com.silviaodwyer.inversion.VideosRecyclerView;
 
 import java.io.File;
@@ -176,7 +176,7 @@ public class HomeScreenFragment extends Fragment {
             = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
     recyclerView.setLayoutManager(layoutManager);
-    adapter = new ImagesRecyclerView(activity, imageMetadata, mainApplication);
+    adapter = new ImagesRecyclerView(activity, imageMetadata, mainApplication, true);
 
     recyclerView.setAdapter(adapter);
 

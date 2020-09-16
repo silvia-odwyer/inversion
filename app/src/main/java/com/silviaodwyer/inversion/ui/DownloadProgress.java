@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +19,11 @@ import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.daasuu.gpuv.egl.filter.GlFilterGroup;
 import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.Video;
+import com.silviaodwyer.inversion.VideoMetadata;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.io.File;
 

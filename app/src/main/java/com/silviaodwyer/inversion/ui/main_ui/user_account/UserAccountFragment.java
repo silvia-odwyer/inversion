@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.main_ui.user_account;
+package com.silviaodwyer.inversion.ui.main_ui.user_account;
 
 import android.app.UiModeManager;
 import android.content.Context;

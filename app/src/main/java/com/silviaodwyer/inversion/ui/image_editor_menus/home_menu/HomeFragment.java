@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.image_editor_menus.home_menu;
+package com.silviaodwyer.inversion.ui.image_editor_menus.home_menu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 

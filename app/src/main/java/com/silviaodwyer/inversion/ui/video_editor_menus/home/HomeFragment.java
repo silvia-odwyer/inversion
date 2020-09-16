@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.video_editor_menus.home;
+package com.silviaodwyer.inversion.ui.video_editor_menus.home;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

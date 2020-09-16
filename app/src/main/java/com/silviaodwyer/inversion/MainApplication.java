@@ -10,6 +10,9 @@ import android.util.Log;
 import com.daasuu.gpuv.player.GPUPlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.silviaodwyer.inversion.ui.VideoEditor;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

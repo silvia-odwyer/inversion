@@ -7,19 +7,19 @@
 
   <fragment
     android:id="@+id/navigation_home"
-    android:name="com.silviaodwyer.inversion.main_ui.home.HomeScreenFragment"
+    android:name="com.silviaodwyer.inversion.ui.main_ui.home.HomeScreenFragment"
     android:label="@string/title_home"
     tools:layout="@layout/fragment_homescreen" />
 
   <fragment
     android:id="@+id/navigation_effects"
-    android:name="com.silviaodwyer.inversion.main_ui.remix.RemixFragment"
+    android:name="com.silviaodwyer.inversion.ui.main_ui.remix.RemixFragment"
     android:label="Effects"
     tools:layout="@layout/fragment_remix" />
 
   <fragment
     android:id="@+id/navigation_useraccount"
-    android:name="com.silviaodwyer.inversion.main_ui.user_account.UserAccountFragment"
+    android:name="com.silviaodwyer.inversion.ui.main_ui.user_account.UserAccountFragment"
     android:label="Account"
     tools:layout="@layout/fragment_useraccount" />
 </navigation>

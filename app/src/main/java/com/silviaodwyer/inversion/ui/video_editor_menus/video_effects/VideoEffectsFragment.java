@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.video_editor_menus.video_effects;
+package com.silviaodwyer.inversion.ui.video_editor_menus.video_effects;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

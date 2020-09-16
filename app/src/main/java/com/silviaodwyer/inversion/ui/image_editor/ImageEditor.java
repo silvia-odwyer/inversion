@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -112,15 +113,7 @@ public class ImageEditor extends AppCompatActivity {
     navEffectCategories = findViewById(R.id.navEffectCategories);
     handler = new Handler(new IncomingHandlerCallback());
 
-    ImageButton saveBtn = findViewById(R.id.save_btn);
-    saveBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        // get permission to write to external storage
-        mainApplication.requestPermissions(ImageEditor.this);
-      }
-    });
-
+    initClickListeners();
     initFilter();
     long startTime = mainApplication.getStartTime();
     long endTime = System.nanoTime();
@@ -133,6 +126,26 @@ public class ImageEditor extends AppCompatActivity {
     initThumbnailsRecyclerView();
     initNavBar();
 
+  }
+
+  public void initClickListeners() {
+      ImageButton saveBtn = findViewById(R.id.save_btn);
+      saveBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              // get permission to write to external storage
+              mainApplication.requestPermissions(ImageEditor.this);
+          }
+      });
+
+      ImageButton backBtn = findViewById(R.id.back_btn);
+      backBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              // finish activity
+              finish();
+          }
+      });
   }
 
   public void initNavBar() {
@@ -330,6 +343,7 @@ public class ImageEditor extends AppCompatActivity {
     }
 
   }
+
 
   public void initFilter() {
     Log.d("DEBUG", "IMAGE EDITOR FILTER NAME: " + image.getMetaData().getAppliedFilter());

@@ -101,8 +101,12 @@ public class VideoEditor extends AppCompatActivity {
 
     this.setupPlayer();
     this.initThumbnailsRecyclerView();
+    this.initClickListeners();
+    initNavBar();
+  }
 
-    ImageButton btn = findViewById(R.id.saveVideoBtn);
+  public void initClickListeners() {
+    ImageButton btn = findViewById(R.id.save_video_btn);
     btn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -110,7 +114,14 @@ public class VideoEditor extends AppCompatActivity {
       }
     });
 
-    initNavBar();
+    ImageButton backBtn = findViewById(R.id.back_btn_videeditor);
+    backBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        // finish activity
+        finish();
+      }
+    });
   }
 
   public void initNavBar() {

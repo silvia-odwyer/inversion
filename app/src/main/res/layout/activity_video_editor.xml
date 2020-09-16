@@ -19,12 +19,41 @@
       app:layout_constraintTop_toTopOf="@+id/guideline3"
       app:layout_constraintVertical_bias="0.08">
 
-
-    <ImageButton
-        android:id="@+id/saveVideoBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/save_icon" />
+        android:orientation="horizontal">
+
+      <ImageButton
+          android:id="@+id/back_btn_videeditor"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:gravity="end"
+          android:background="@android:color/transparent"
+          android:src="@drawable/back_arrow_dark_theme"
+          android:layout_marginEnd="32dp"/>
+
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:text="Edit Video"
+          android:textColor="@color/headingColor"
+          android:textSize="20sp"
+          android:layout_weight="1"
+          android:textStyle="bold" />
+
+      <ImageButton
+          android:id="@+id/save_video_btn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:background="@android:color/transparent"
+          android:gravity="end"
+          android:src="@drawable/save_btn_dark_theme"
+          android:layout_marginEnd="14dp"/>
+    </LinearLayout>
 
   </LinearLayout>
 

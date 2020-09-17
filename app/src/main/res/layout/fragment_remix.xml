@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".main_ui.remix.RemixFragment">
+    tools:context=".ui.main_ui.remix.RemixFragment">
 
   <LinearLayout
       android:id="@+id/linearLayout3"

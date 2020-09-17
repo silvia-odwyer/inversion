@@ -101,7 +101,7 @@
           android:id="@+id/ve_btn_filters"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="15dp"
+          android:layout_marginStart="18dp"
           android:gravity="center_horizontal"
           android:orientation="vertical"
           android:tag="filters">
@@ -123,7 +123,7 @@
           android:id="@+id/ve_btn_effects"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="15dp"
+          android:layout_marginStart="18dp"
           android:orientation="vertical"
           android:tag="effects">
 
@@ -142,13 +142,13 @@
       </LinearLayout>
 
       <LinearLayout
-          android:id="@+id/ve_btn_text"
+          android:id="@+id/ve_btn_glitch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal"
-          android:layout_marginStart="15dp"
+          android:layout_marginStart="18dp"
           android:orientation="vertical"
-          android:tag="text">
+          android:tag="glitch">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Text"
+            android:text="Glitch"
             android:textColor="@color/textColor" />
       </LinearLayout>
 
@@ -168,7 +168,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal"
-          android:layout_marginStart="15dp"
+          android:layout_marginStart="18dp"
           android:orientation="vertical"
           android:tag="correct">
 

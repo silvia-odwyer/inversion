@@ -65,7 +65,7 @@ public class GradientFilters extends ImageFilters {
 
             filterGroup.addFilter(getObsidianFilter());
             filterGroup.addFilter(filter);
-            gradientGrayscaleFiltersWithNames.add(Arrays.asList("Gradient BW " + j, filterGroup));
+            gradientGrayscaleFiltersWithNames.add(Arrays.asList("BWGradient " + j, filterGroup));
         }
         return gradientGrayscaleFiltersWithNames;
     }
@@ -89,7 +89,7 @@ public class GradientFilters extends ImageFilters {
 
             GPUImageFilter filter = createTwoBlendFilter(super.getContext(), GPUImageDissolveBlendFilter.class, bmp);
 
-            gradientFiltersWithNames.add(Arrays.asList("Gradient " + k, filter));
+            gradientFiltersWithNames.add(Arrays.asList("GradientDissolve " + k, filter));
         }
 
         return gradientFiltersWithNames;
@@ -107,7 +107,7 @@ public class GradientFilters extends ImageFilters {
         return colorBlendFilters;
     }
 
-    List<List<Object>> getGradientFilters() {
+    public List<List<Object>> getGradientFilters() {
         if (gradientFiltersWithNames.isEmpty()) {
             createGradientFilters();
         }

@@ -137,10 +137,6 @@ public class VideoFilters {
         return new GlFilterGroup(saturationFilter, contrastFilter, hueFilter,  new GlVignetteFilter());
     }
 
-    public GlFilter chromaticAberrationFilter() {
-      return new GlChromaticAberrationFilter();
-    }
-
   public GlFilterGroup rubrikFilter() {
     GlBrightnessFilter brightnessFilter = new GlBrightnessFilter();
     brightnessFilter.setBrightness((float) 0.5);
@@ -218,19 +214,17 @@ public class VideoFilters {
           case "Posterize":
               return posterizeFilter();
           case "Chromatic Abberation":
-              return chromaticAberrationFilter();
+              return new ChromaticAbberationFilter();
+          case "Chromatic Abberation 2":
+              return new GlChromaticAbberationTwoFilter();
+          case "Invert":
+              return new GlInvertFilter();
           case "Red Glitch":
-              return new RedGlitchFilter();
-          case "Red Blur Lights":
-              return new GlRedBlurLightsFilter();
-          case "Green Blur Lights":
-              return new GlGreenBlurLightsFilter();
-          case "Blue Blur Lights":
-              return new GlBlueBlurLightsFilter();
+              return new GlGlitchRedLines();
           case "Green Glitch":
-              return new GreenGlitchFilter();
+              return new GlRedShiftFilter();
           case "Blue Glitch":
-              return new BlueGlitchFilter();
+              return new GlBlueGlitchLines();
           case "Red Shift":
               return new GlRedShiftFilter();
           case "Green Shift":
@@ -239,6 +233,16 @@ public class VideoFilters {
           return new GlBlueShiftFilter();
           case "Switcher":
               return new GlSwitchFilter();
+          case "Switcher 2":
+              return new GlBGRSwitchFilter();
+          case "Switcher 3":
+              return new GlRBGSwitchFilter();
+          case "Switcher 4":
+              return new GlGRBSwitchFilter();
+          case "Switcher 5":
+              return new GlBRGSwitchFilter();
+          case "GBR Switch":
+              return new GlGBRSwitchFilter();
           default:
               Toast.makeText(context, "Video filter not found", Toast.LENGTH_SHORT).show();
               return new GlSepiaFilter();

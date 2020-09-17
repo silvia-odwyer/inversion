@@ -6,7 +6,7 @@
   <color name="colorAccent">#03DAC5</color>
   <color name="headingColor">#EEEEEE</color>
   <color name="backgroundColor">#000000</color>
-  <color name="menuBackgroundColor">#404040</color>
+  <color name="menuBackgroundColor">#000011</color>
   <color name="textColor">#EEEEEE</color>
   <color name="filterNavTabColor">#878787</color>
   <color name="filterNavTabColorClicked">#FFFFFF</color>

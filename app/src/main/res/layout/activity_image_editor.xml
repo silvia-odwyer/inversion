@@ -75,14 +75,13 @@
             android:id="@+id/bottom_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@color/menuBackgroundColor"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/menuBackgroundColor">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/menuBackgroundColor">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -91,7 +90,7 @@
                     android:orientation="vertical"
                     android:id="@+id/ie_btn_filters"
                     android:tag="filters"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="18dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -110,29 +109,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/ie_btn_gradient_effects"
-                    android:tag="gradient_effects"
-                    android:layout_marginStart="15dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_color_lens_black_36dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/textColor"
-                        android:text="Gradients"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:id="@+id/ie_btn_effects"
                     android:tag="effects"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="18dp">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -152,8 +131,8 @@
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
                     android:id="@+id/ie_btn_text"
-                    android:tag="text"
-                    android:layout_marginStart="15dp">
+                    android:tag="glitch"
+                    android:layout_marginStart="18dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -164,7 +143,27 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/textColor"
                         android:layout_gravity="center_horizontal"
-                        android:text="Text"/>
+                        android:text="Glitch"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ie_btn_gradient_effects"
+                    android:tag="gradient_effects"
+                    android:layout_marginStart="18dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_color_lens_black_36dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/textColor"
+                        android:text="Gradients"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -174,7 +173,7 @@
                     android:orientation="vertical"
                     android:id="@+id/ie_btn_correct"
                     android:tag="correct"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="18dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -194,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:tag="bonus"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="18dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -275,7 +274,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.09" />
+        app:layout_constraintGuide_percent="0.11" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"

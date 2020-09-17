@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion.utils;
+package com.silviaodwyer.inversion.video_filters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

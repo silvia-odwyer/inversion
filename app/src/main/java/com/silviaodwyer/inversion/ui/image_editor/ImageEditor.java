@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -25,10 +24,11 @@ import android.widget.Toast;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
-import com.silviaodwyer.inversion.BlendEffectFilters;
+import com.silviaodwyer.inversion.image_filters.BlendEffectFilters;
 import com.silviaodwyer.inversion.image_filters.GradientFilters;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.image_filters.ImageFilterPacks;
+import com.silviaodwyer.inversion.image_filters.ImageFilterRetriever;
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
 import com.silviaodwyer.inversion.ImageThumbnail;
 import com.silviaodwyer.inversion.ImageThumbnailsRecyclerView;
@@ -70,14 +70,18 @@ public class ImageEditor extends AppCompatActivity {
   private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> glitchThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> gradientThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> popularThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> vintageThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> dissolveThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> colorBlendThumbnails = new ArrayList<>();
-  private List<List<Object>> gradientGPUFilters;
+  private ArrayList<ImageThumbnail> colorEffectsThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> otherEffectsThumbnails = new ArrayList<>();
+
+    private List<List<Object>> gradientGPUFilters;
   private Activity activity;
   private LinearLayout navOverlay;
   private Handler handler;
-  private ImageFilterPacks imageFilterPacks;
+  private ImageFilterRetriever imageFilterRetriever;
 
   @SuppressLint("WrongThread")
   @Override
@@ -92,7 +96,7 @@ public class ImageEditor extends AppCompatActivity {
     image.setActivity(this);
     imageFilters = new ImageFilters(getApplicationContext());
     gradientFilters = new GradientFilters(getApplicationContext());
-    imageFilterPacks = new ImageFilterPacks(getApplicationContext());
+    imageFilterRetriever = new ImageFilterRetriever(getApplicationContext());
 
     navBtnNames = new String[]{"filters", "text", "gradient_effects", "effects", "correct"};
     filterOverlayBtnNames = new String[]{"gradients", "vintage", "neon"};
@@ -179,7 +183,7 @@ public class ImageEditor extends AppCompatActivity {
                     gradientGPUFilters = gradientFilters.createGradientFilters();
                     if (gradientThumbnails.size() == 0) {
                         gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
-                                gradientFilters.createEffectFilters()));
+                                gradientFilters.getGradientFilters()));
                     }
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
@@ -202,12 +206,36 @@ public class ImageEditor extends AppCompatActivity {
 
                     break;
                 }
+                case "color fx": {
+                    if (colorEffectsThumbnails.size() == 0) {
+                        colorEffectsThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
+                                imageFilters.createColorEffectFilters()));
+                    }
+                    adapter.update(colorEffectsThumbnails);
+                    break;
+                }
+                case "other fx": {
+                    if (otherEffectsThumbnails.size() == 0) {
+                        otherEffectsThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
+                                imageFilters.createOtherEffectsFilters()));
+                    }
+                    adapter.update(otherEffectsThumbnails);
+                    break;
+                }
                 case "vintage": {
                     if (vintageThumbnails.size() == 0) {
                         vintageThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
                                 imageFilters.createVintageFilters()));
                     }
                     adapter.update(vintageThumbnails);
+                    break;
+                }
+                case "popular": {
+                    if (popularThumbnails.size() == 0) {
+                        popularThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
+                                imageFilters.createPopularFilters()));
+                    }
+                    adapter.update(popularThumbnails);
                     break;
                 }
                 case "dissolve": {
@@ -269,16 +297,18 @@ public class ImageEditor extends AppCompatActivity {
 
         switch (nav_btn_tag) {
           case "filters": {
-              String[] gradientEffectNavNames = {"Gradients", "Vintage"};
+              String[] gradientEffectNavNames = {"Popular", "Vintage"};
               createCategoryMenu(gradientEffectNavNames);
-
-//              LinearLayout overlay = findViewById(R.id.nav_overlay);
-//              overlay.setVisibility(View.VISIBLE);
 
               break;
         }
+        case "glitch": {
+                String[] gradientEffectNavNames = {"Glitch", "Color FX", "Other FX"};
+                createCategoryMenu(gradientEffectNavNames);
+                break;
+            }
           case "gradient_effects": {
-              String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend", "Glitch"};
+              String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend"};
               createCategoryMenu(gradientEffectNavNames);
 
               break;
@@ -298,6 +328,7 @@ public class ImageEditor extends AppCompatActivity {
             textView.setId(generateViewId());
             textView.setOnClickListener(filterBtnOnClickListener);
             textView.setTag(navName.toLowerCase());
+            textView.setTextColor(Color.GRAY);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
             );
@@ -305,9 +336,11 @@ public class ImageEditor extends AppCompatActivity {
             textView.setLayoutParams(lp);
             navEffectCategories.addView(textView);
         }
+
+        // set first category text view to white
+        TextView firstCategoryTextView = (TextView) navEffectCategories.getChildAt(0);
+        firstCategoryTextView.setTextColor(Color.WHITE);
     }
-
-
 
     public void filterImage(ImageThumbnail thumbnail) {
         gpuImageView.setImage(image.getOriginalImageBitmap());
@@ -351,15 +384,14 @@ public class ImageEditor extends AppCompatActivity {
 
     // if an applied filter exists, then filter; note an empty string signifies no filter
     if (!appliedFilter.equals("")) {
-      GPUImageFilter filter = imageFilterPacks.retrieveFilter(appliedFilter);
-      Log.d("DEBUG", "APPLIED FILTER: " + filter);
+      GPUImageFilter filter = imageFilterRetriever.retrieveFilter(appliedFilter);
 
       if (filter != null) {
           Log.d("DEBUG", "FOUND FILTER, APPLYING ");
         updateGPUImage(filter);
       }
       else {
-        Toast.makeText(getApplicationContext(), "Filter not found", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Filter: " + appliedFilter + " not found", Toast.LENGTH_SHORT).show();
       }
     }
   }

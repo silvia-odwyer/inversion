@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.silviaodwyer.inversion.FileMetadata;
-import com.silviaodwyer.inversion.FileUtils;
+import com.silviaodwyer.inversion.utils.FileUtils;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ImageMetadata;
 import com.silviaodwyer.inversion.ImagesRecyclerView;

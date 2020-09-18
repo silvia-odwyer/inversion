@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,22 +68,25 @@ public class ImageEditor extends AppCompatActivity {
   private ImageFilters imageFilters;
   private BlendEffectFilters blendEffectFilters;
   private String[] navBtnNames;
-  private String[] filterOverlayBtnNames;
+  private boolean isDarkTheme;
   private ArrayList<ImageThumbnail> gradientGrayscaleThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> glitchThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> gradientThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> popularThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> vintageThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> retroThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> dissolveThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> colorBlendThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> colorEffectsThumbnails = new ArrayList<>();
   private ArrayList<ImageThumbnail> otherEffectsThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> warmTintThumbnails = new ArrayList<>();
+  private ArrayList<ImageThumbnail> coldTintThumbnails = new ArrayList<>();
 
-    private List<List<Object>> gradientGPUFilters;
   private Activity activity;
   private LinearLayout navOverlay;
   private Handler handler;
   private ImageFilterRetriever imageFilterRetriever;
+  private ImageFilterPacks imageFilterPacks;
 
   @SuppressLint("WrongThread")
   @Override
@@ -89,7 +94,9 @@ public class ImageEditor extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_editor);
     sharedPreferences = getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
+    isDarkTheme = sharedPreferences.getBoolean("nightThemeEnabled", isDarkTheme);
     activity = this;
+
     // set image
     mainApplication = ((MainApplication)getApplication());
     image = mainApplication.getImage();
@@ -98,8 +105,7 @@ public class ImageEditor extends AppCompatActivity {
     gradientFilters = new GradientFilters(getApplicationContext());
     imageFilterRetriever = new ImageFilterRetriever(getApplicationContext());
 
-    navBtnNames = new String[]{"filters", "text", "gradient_effects", "effects", "correct"};
-    filterOverlayBtnNames = new String[]{"gradients", "vintage", "neon"};
+    navBtnNames = new String[]{"filters", "glitch", "gradient_effects", "effects"};
 
     gpuImageView = findViewById(R.id.gpuimageview);
 
@@ -116,6 +122,7 @@ public class ImageEditor extends AppCompatActivity {
     bottomNavBar = findViewById(R.id.bottom_menu);
     navEffectCategories = findViewById(R.id.navEffectCategories);
     handler = new Handler(new IncomingHandlerCallback());
+    imageFilterPacks = new ImageFilterPacks(getApplicationContext(), bitmap);
 
     initClickListeners();
     initFilter();
@@ -129,11 +136,38 @@ public class ImageEditor extends AppCompatActivity {
 
     initThumbnailsRecyclerView();
     initNavBar();
+    initIcons();
+  }
+
+  // change color of icons depending on light/dark theme enabled
+  public void initIcons() {
+      HashMap<String, Integer> iconNamesToRes = new HashMap<>();
+      iconNamesToRes.put("filters", R.drawable.ic_compare_black_24dp);
+      iconNamesToRes.put("glitch", R.drawable.ic_texture_black_36dp);
+      iconNamesToRes.put("correct", R.drawable.ic_photo_filter_black_36dp);
+      iconNamesToRes.put("effects", R.drawable.ic_photo_filter_black_36dp);
+      iconNamesToRes.put("gradient_effects", R.drawable.ic_color_lens_black_36dp);
+
+      // icons are light theme by default given app's theme is dark theme is default
+      if (!isDarkTheme) {
+          ImageButton saveBtn = findViewById(R.id.save_btn);
+          saveBtn.setImageResource(R.drawable.save_btn_black_24dp);
+
+          ImageButton backBtn = findViewById(R.id.back_btn);
+          backBtn.setImageResource(R.drawable.arrow_back_black_24dp);
+
+          for (String navBtnName : navBtnNames ) {
+              int id = getResources().getIdentifier("ie_icon_" + navBtnName, "id", getPackageName());
+              ImageView imageView = findViewById(id);
+              imageView.setImageResource(iconNamesToRes.get(navBtnName));
+          }
+      }
 
   }
 
   public void initClickListeners() {
       ImageButton saveBtn = findViewById(R.id.save_btn);
+
       saveBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -173,14 +207,13 @@ public class ImageEditor extends AppCompatActivity {
             }
 
             TextView btn = findViewById(view.getId());
-            btn.setTextColor(Color.WHITE);
+            btn.setTextColor(getResources().getColor(R.color.textColor));
 
             String nav_btn_tag = view.getTag().toString();
             Log.d("DEBUG", "TAG PRESSED: " + nav_btn_tag);
 
             switch (nav_btn_tag) {
                 case "gradients": {
-                    gradientGPUFilters = gradientFilters.createGradientFilters();
                     if (gradientThumbnails.size() == 0) {
                         gradientThumbnails.addAll(blendEffectFilters.getFilteredThumbnails(image.getOriginalImageBitmap(),
                                 gradientFilters.getGradientFilters()));
@@ -209,7 +242,7 @@ public class ImageEditor extends AppCompatActivity {
                 case "color fx": {
                     if (colorEffectsThumbnails.size() == 0) {
                         colorEffectsThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
-                                imageFilters.createColorEffectFilters()));
+                                imageFilterPacks.createColorEffectFilters()));
                     }
                     adapter.update(colorEffectsThumbnails);
                     break;
@@ -217,7 +250,7 @@ public class ImageEditor extends AppCompatActivity {
                 case "other fx": {
                     if (otherEffectsThumbnails.size() == 0) {
                         otherEffectsThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
-                                imageFilters.createOtherEffectsFilters()));
+                                imageFilterPacks.createOtherEffectsFilters()));
                     }
                     adapter.update(otherEffectsThumbnails);
                     break;
@@ -225,15 +258,39 @@ public class ImageEditor extends AppCompatActivity {
                 case "vintage": {
                     if (vintageThumbnails.size() == 0) {
                         vintageThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
-                                imageFilters.createVintageFilters()));
+                                imageFilterPacks.createVintageFilters()));
                     }
                     adapter.update(vintageThumbnails);
+                    break;
+                }
+                case "retro": {
+                    if (retroThumbnails.size() == 0) {
+                        retroThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
+                                imageFilterPacks.createRetroFilters()));
+                    }
+                    adapter.update(retroThumbnails);
+                    break;
+                }
+                case "warm": {
+                    if (warmTintThumbnails.size() == 0) {
+                        warmTintThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
+                                imageFilterPacks.createWarmTintFilters()));
+                    }
+                    adapter.update(warmTintThumbnails);
+                    break;
+                }
+                case "cold": {
+                    if (coldTintThumbnails.size() == 0) {
+                        coldTintThumbnails.addAll(gradientFilters.getFilteredThumbnails(bitmap,
+                                imageFilterPacks.createColdTintFilters()));
+                    }
+                    adapter.update(coldTintThumbnails);
                     break;
                 }
                 case "popular": {
                     if (popularThumbnails.size() == 0) {
                         popularThumbnails.addAll(imageFilters.getFilteredThumbnails(bitmap,
-                                imageFilters.createPopularFilters()));
+                                imageFilterPacks.createPopularFilters()));
                     }
                     adapter.update(popularThumbnails);
                     break;
@@ -290,14 +347,14 @@ public class ImageEditor extends AppCompatActivity {
                 LinearLayout btn_layout = findViewById(id);
                 btn_layout.setBackgroundColor(Color.TRANSPARENT);
             }
-            view.setBackgroundColor(Color.BLACK);
+
             String nav_btn_tag = view.getTag().toString();
             bottomNavBar.setVisibility(GONE);
             navEffectCategories.removeAllViews();
 
         switch (nav_btn_tag) {
           case "filters": {
-              String[] gradientEffectNavNames = {"Popular", "Vintage"};
+              String[] gradientEffectNavNames = {"Popular", "Vintage", "Retro", "Warm", "Cold"};
               createCategoryMenu(gradientEffectNavNames);
 
               break;
@@ -339,7 +396,7 @@ public class ImageEditor extends AppCompatActivity {
 
         // set first category text view to white
         TextView firstCategoryTextView = (TextView) navEffectCategories.getChildAt(0);
-        firstCategoryTextView.setTextColor(Color.WHITE);
+        firstCategoryTextView.setTextColor(getResources().getColor(R.color.textColor));
     }
 
     public void filterImage(ImageThumbnail thumbnail) {
@@ -418,7 +475,7 @@ public class ImageEditor extends AppCompatActivity {
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
 
-    List<List<Object>> filters = imageFilters.createVintageFilters();
+    List<List<Object>> filters = imageFilterPacks.createVintageFilters();
 
     vintageThumbnails = imageFilters.getFilteredThumbnails(image.getOriginalImageBitmap(), filters);
     adapter = new ImageThumbnailsRecyclerView(ImageEditor.this, vintageThumbnails, mainApplication, gpuImageView);

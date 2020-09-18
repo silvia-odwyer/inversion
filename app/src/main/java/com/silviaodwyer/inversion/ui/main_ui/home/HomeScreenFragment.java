@@ -34,7 +34,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.silviaodwyer.inversion.EffectDetail;
-import com.silviaodwyer.inversion.FileUtils;
+import com.silviaodwyer.inversion.utils.FileUtils;
 import com.silviaodwyer.inversion.Image;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.FileMetadata;
@@ -90,9 +90,8 @@ public class HomeScreenFragment extends Fragment {
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-
-    root = inflater.inflate(R.layout.fragment_homescreen, container, false);
     activity = getActivity();
+    root = inflater.inflate(R.layout.fragment_homescreen, container, false);
     context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);

@@ -1,173 +1,235 @@
-[
-  {
-    "name": "Sepia",
-    "description": "Vintage, warm tones",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Lomo",
-    "description": "Add a pop of neon color",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Grayscale",
-    "description": "Grayscale effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Vivid",
-    "description": "Add a pop of color, plus enhanced saturation and contrast",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Vignette",
-    "description": "Adds a vignette",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Sepia Vignette",
-    "description": "A sepia tint, with a vignette, for a retro effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Grayscale Vignette",
-    "description": "A grayscale effect, with an added vignette for a vintage effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Rubrik",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Neue",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Vibrant",
-    "description": "A vivid effect which enhances saturation and contrast",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Hue Rotate",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Hue Rotate 2",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Hue Rotate 3",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Hue Rotate 4",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Dramatic",
-    "description": "Grayscale effect with enhanced contrast and saturation",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Obsidian",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Lomo Fuschia",
-    "description": "Enhanced saturation with a vignette and a dash of fuschia!",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Monochrome",
-    "description": "Monochrome effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Posterize",
-    "description": "Posterization effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Chromatic Abberation",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Red Glitch",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Green Glitch",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Blue Glitch",
-    "description": "Purple tinted nostalgia",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Red Blur Lights",
-    "description": "Red blur lights that appear in and out of view",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Green Blur Lights",
-    "description": "Blur lights that appear in and out of view",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-  "name": "Blue Blur Lights",
-  "description": "Blur lights that appear in and out of view",
-  "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Red Shift",
-    "description": "Adds red chromatic abberation",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Green Shift",
-    "description": "Adds green chromatic abberation",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Blue Shift",
-    "description": "Adds blue chromatic abberation",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Switcher",
-    "description": "Switches all 3 channels for a unique effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Switcher 2",
-    "description": "Switches all 3 channels for a unique effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Switcher 3",
-    "description": "Switches all 3 channels for a unique effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Switcher 4",
-    "description": "Switches all 3 channels for a unique effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  },
-  {
-    "name": "Switcher 5",
-    "description": "Switches all 3 channels for a unique effect",
-    "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
-  }
+{
+  "popular": [
+    {
+      "name": "Lomo",
+      "description": "Add a pop of neon color",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Infra",
+      "description": "Infra effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Blue Glitch",
+      "description": "Blue scanlines and glitch effects",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Red Shift",
+      "description": "Adds red chromatic abberation",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Chromatic Abberation",
+      "description": "Shifts all 3 colors to create a glitch-like effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Chromatic Abberation 2",
+      "description": "Shifts all 3 colors to create a glitch-like effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
+  "vintage":
+  [
+    {
+      "name": "Sepia",
+      "description": "Vintage, warm tones",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Lomo",
+      "description": "Add a pop of neon color",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Grayscale",
+      "description": "Grayscale effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Vivid",
+      "description": "Add a pop of color, plus enhanced saturation and contrast",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Vignette",
+      "description": "Adds a vignette",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Sepia Vignette",
+      "description": "A sepia tint, with a vignette, for a retro effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Grayscale Vignette",
+      "description": "A grayscale effect, with an added vignette for a vintage effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Rubrik",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Neue",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Vibrant",
+      "description": "A vivid effect which enhances saturation and contrast",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Dramatic",
+      "description": "Grayscale effect with enhanced contrast and saturation",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Obsidian",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Lomo Fuschia",
+      "description": "Enhanced saturation with a vignette and a dash of fuschia!",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Monochrome",
+      "description": "Monochrome effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Posterize",
+      "description": "Posterization effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
 
-]
+  "glitch": [
+    {
+      "name": "Chromatic Abberation",
+      "description": "Shifts all 3 colors to create a glitch-like effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Chromatic Abberation 2",
+      "description": "Shifts all 3 colors to create a glitch-like effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Red Glitch",
+      "description": "Red glitchy scanlines",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Green Glitch",
+      "description": "Green glitchy scanlines",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Blue Glitch",
+      "description": "Blue scanlines and glitch effects",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Red Shift",
+      "description": "Adds red chromatic abberation",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Green Shift",
+      "description": "Adds green chromatic abberation",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Blue Shift",
+      "description": "Adds blue chromatic abberation",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
+  "color glitch": [
+
+    {
+      "name": "Switcher",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Switcher 2",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Switcher 3",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Switcher 4",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Switcher 5",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "GBR Switch",
+      "description": "Switches all 3 channels for a unique effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Invert",
+      "description": "Invert/negative effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Infra",
+      "description": "Infra effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
+  "tints" : [
+    {
+      "name": "Hue Rotate",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Hue Rotate 2",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Hue Rotate 3",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    },
+    {
+      "name": "Hue Rotate 4",
+      "description": "Purple tinted nostalgia",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
+  "warm": [
+    {
+      "name": "Pink Tint",
+      "description": "Pink tinted dream-like effect",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ],
+  "cold": [
+    {
+      "name": "Blue Tint",
+      "description": "Blue tint",
+      "url": "https://images.unsplash.com/photo-1547304206-e2e68bae3729?ixlib=rb-1.2.1&q=80&fm=png&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjEyMDkwNH0.png"
+    }
+  ]
+
+}

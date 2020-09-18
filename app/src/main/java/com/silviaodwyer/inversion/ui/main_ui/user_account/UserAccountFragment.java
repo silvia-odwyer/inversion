@@ -56,6 +56,8 @@ public class UserAccountFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("nightThemeEnabled", nightThemeEnabled);
         editor.apply();
+        getActivity().setTheme(R.style.splash_screen_theme);
+
       }
     });
 

@@ -1,25 +1,16 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.video_filters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.silviaodwyer.inversion.image_filters.ImageFilterMetadata;
+import com.silviaodwyer.inversion.utils.FileUtils;
+import com.silviaodwyer.inversion.VideoFilterMetadata;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class VideoFilterPacks {
     private ArrayList<VideoFilterMetadata> gradientFiltersMetadata = new ArrayList<VideoFilterMetadata>();
@@ -32,6 +23,7 @@ public class VideoFilterPacks {
     private ArrayList<VideoFilterMetadata> colorGlitchFiltersMetadata = new ArrayList<>();
     private ArrayList<VideoFilterMetadata> warmTintFiltersMetadata = new ArrayList<>();
     private ArrayList<VideoFilterMetadata> coldTintFiltersMetadata = new ArrayList<>();
+    private ArrayList<VideoFilterMetadata> popularFiltersMetadata = new ArrayList<>();
 
     private JsonObject filtersObj;
     private Context context;
@@ -55,54 +47,47 @@ public class VideoFilterPacks {
         this.vintageFiltersMetadata.addAll(videoFilterMetadata);
     }
 
-    public void initGlitchFiltersMetadata() {
-        JsonArray glitch_filter_array = filtersObj.get("glitch").getAsJsonArray();
-        List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
-        this.glitchFiltersMetadata.addAll(videoFilterMetadata);
-
-    }
-
-    public void initColorGlitchFiltersMetadata() {
-        JsonArray glitch_filter_array = filtersObj.get("color glitch").getAsJsonArray();
-        List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
-        this.colorGlitchFiltersMetadata.addAll(videoFilterMetadata);
-    }
-
-    private void initWarmTintFiltersMetadata() {
-        JsonArray glitch_filter_array = filtersObj.get("warm").getAsJsonArray();
-        List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
-        this.warmTintFiltersMetadata.addAll(videoFilterMetadata);
-    }
-
-    private void initColdTintFiltersMetadata() {
-        JsonArray glitch_filter_array = filtersObj.get("cold").getAsJsonArray();
-        List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
-        this.coldTintFiltersMetadata.addAll(videoFilterMetadata);
-    }
-
-    public ArrayList<VideoFilterMetadata> getWarmTintFiltersMetadata() {
-        if (this.warmTintFiltersMetadata.size() == 0) {
-            this.initWarmTintFiltersMetadata();
-        }
-        return warmTintFiltersMetadata;
-    }
-    public ArrayList<VideoFilterMetadata> getColdTintFiltersMetadata() {
-        if (this.coldTintFiltersMetadata.size() == 0) {
-            this.initColdTintFiltersMetadata();
-        }
-        return coldTintFiltersMetadata;
-    }
-
     public ArrayList<VideoFilterMetadata> getGlitchFiltersMetadata() {
         if (this.glitchFiltersMetadata.size() == 0) {
-            this.initGlitchFiltersMetadata();
+            JsonArray glitch_filter_array = filtersObj.get("glitch").getAsJsonArray();
+            List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
+            this.glitchFiltersMetadata.addAll(videoFilterMetadata);
         }
         return glitchFiltersMetadata;
     }
 
+
+    public ArrayList<VideoFilterMetadata> getWarmTintFiltersMetadata() {
+        if (this.warmTintFiltersMetadata.size() == 0) {
+            JsonArray filter_array = filtersObj.get("warm").getAsJsonArray();
+            List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
+            this.warmTintFiltersMetadata.addAll(videoFilterMetadata);
+        }
+        return warmTintFiltersMetadata;
+    }
+
+    public ArrayList<VideoFilterMetadata> getPopularFiltersMetadata() {
+        if (this.popularFiltersMetadata.size() == 0) {
+            JsonArray filter_array = filtersObj.get("popular").getAsJsonArray();
+            List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
+            this.popularFiltersMetadata.addAll(videoFilterMetadata);
+        }
+        return popularFiltersMetadata;
+    }
+
+    public ArrayList<VideoFilterMetadata> getColdTintFiltersMetadata() {
+        if (this.coldTintFiltersMetadata.size() == 0) {
+            JsonArray filter_array = filtersObj.get("cold").getAsJsonArray();
+            List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
+            this.coldTintFiltersMetadata.addAll(videoFilterMetadata);        }
+        return coldTintFiltersMetadata;
+    }
+
     public ArrayList<VideoFilterMetadata> getColorGlitchFiltersMetadata() {
         if (this.colorGlitchFiltersMetadata.size() == 0) {
-            this.initColorGlitchFiltersMetadata();
+            JsonArray glitch_filter_array = filtersObj.get("color glitch").getAsJsonArray();
+            List<VideoFilterMetadata> videoFilterMetadata = gson.fromJson(glitch_filter_array, new TypeToken<List<VideoFilterMetadata>>(){}.getType());
+            this.colorGlitchFiltersMetadata.addAll(videoFilterMetadata);
         }
         return colorGlitchFiltersMetadata;
     }
@@ -115,10 +100,6 @@ public class VideoFilterPacks {
         return vintageFiltersMetadata;
     }
 
-    public ArrayList<VideoFilterMetadata> getGradientGrayscaleFiltersMetadata() {
-        return gradientGrayscaleFiltersMetadata;
-    }
-
     public ArrayList<VideoFilterMetadata> getDissolveFiltersMetadata() {
         return dissolveFiltersMetadata;
     }
@@ -127,7 +108,4 @@ public class VideoFilterPacks {
         return colorBlendFiltersMetadata;
     }
 
-    public ArrayList<VideoFilterMetadata> getFiltersMetadata() {
-        return filtersMetadata;
-    }
 }

@@ -28,12 +28,10 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
   private Context context;
-  private ImageFilterPacks imageFilterPacks;
   private List<Integer> bitmaps;
 
   public VideoFilters(Context context) {
     this.context = context;
-    imageFilterPacks = new ImageFilterPacks(context);
     bitmaps = GradientFilters.getBlendBackgrounds();
 
   }
@@ -107,6 +105,26 @@ public class VideoFilters {
         return posterizeFilter;
     }
 
+    public GlFilter tintFilter(float red, float blue, float green) {
+        GlRGBFilter tintFilter = new GlRGBFilter();
+        tintFilter.setBlue(blue);
+        tintFilter.setRed(red);
+        tintFilter.setGreen(green);
+        return tintFilter;
+    }
+
+    public GlFilterGroup pinkTintFilter() {
+      GlSaturationFilter glSaturationFilter = new GlSaturationFilter();
+      glSaturationFilter.setSaturation(1.2f);
+      return new GlFilterGroup(tintFilter(1.15f, 1.2f, 1.0f), glSaturationFilter);
+    }
+
+    public GlFilterGroup blueTintFilter() {
+        GlSaturationFilter glSaturationFilter = new GlSaturationFilter();
+        glSaturationFilter.setSaturation(1.2f);
+        return new GlFilterGroup(tintFilter(1.0f, 1.2f, 1.05f), glSaturationFilter);
+    }
+
 
     public GlFilterGroup sepiaVignetteFilter() {
     return new GlFilterGroup(new GlSepiaFilter(), new GlVignetteFilter());
@@ -157,9 +175,8 @@ public class VideoFilters {
    * Filter the video by applying the filter passed.
    **/
   public void filterVideo(String filterName, GPUPlayerView ePlayerView) {
-      GlFilter filter = getVideoFilterFromName(filterName);
+    GlFilter filter = getVideoFilterFromName(filterName);
     ePlayerView.setGlFilter(filter);
-
   }
 
   public GlFilter getVideoFilterFromName(String filterName) {
@@ -243,6 +260,10 @@ public class VideoFilters {
               return new GlBRGSwitchFilter();
           case "GBR Switch":
               return new GlGBRSwitchFilter();
+          case "Pink Tint":
+              return pinkTintFilter();
+          case "Blue Tint":
+              return blueTintFilter();
           default:
               Toast.makeText(context, "Video filter not found", Toast.LENGTH_SHORT).show();
               return new GlSepiaFilter();

@@ -12,7 +12,6 @@ public class GlBGRSwitchFilter extends GlFilter {
                     "uniform lowp sampler2D sTexture;" +
                     "void main() {" +
                     "   vec4 fragColor = texture2D(sTexture, vTextureCoord);\n" +
-                    "   vec4 green = texture2D(sTexture, vTextureCoord);\n" +
                     "   gl_FragColor = vec4(fragColor.b, fragColor.g, fragColor.r, 1.0);\n" +
                     "}";
 

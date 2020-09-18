@@ -1,7 +1,9 @@
 package com.silviaodwyer.inversion.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,12 +36,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.Video;
-import com.silviaodwyer.inversion.VideoFilterMetadata;
-import com.silviaodwyer.inversion.VideoFiltersMetadata;
+import com.silviaodwyer.inversion.video_filters.VideoFilterPacks;
 import com.silviaodwyer.inversion.VideoThumbnailsRecyclerView;
 import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -64,13 +66,15 @@ public class VideoEditor extends AppCompatActivity {
   private String[] navBtnNames;
   private LinearLayout navEffectCategories;
   private RecyclerView thumbnailsRecyclerView;
-
+  private SharedPreferences sharedPreferences;
   private GlFilter activeFilter = new GlSepiaFilter();
   private LinearLayout navOverlay;
   private HorizontalScrollView bottomNavBar;
   private Bitmap originalVideoThumbnail;
   private VideoFilters videoFilters;
-  private VideoFiltersMetadata videoFiltersMetadata;
+  private String activeFilterName;
+  private boolean isDarkTheme;
+  private VideoFilterPacks videoFilterPacks;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +84,10 @@ public class VideoEditor extends AppCompatActivity {
     context = getApplicationContext();
     mainApplication = ((MainApplication)getApplication());
     videoFilters = new VideoFilters(context);
-    videoFiltersMetadata = new VideoFiltersMetadata(getApplicationContext());
+    videoFilterPacks = new VideoFilterPacks(getApplicationContext());
+    sharedPreferences = getApplicationContext().getSharedPreferences("PREF", Context.MODE_PRIVATE);
+
+    isDarkTheme = sharedPreferences.getBoolean("nightThemeEnabled", isDarkTheme);
 
     video = mainApplication.getVideo();
     Log.d("DEBUG", "VIDEO NAME IS: " + video.getMetadata().getName());
@@ -90,7 +97,7 @@ public class VideoEditor extends AppCompatActivity {
         ePlayerView = null;
         dataSourceFactory = null;
     }
-    navBtnNames = new String[]{"filters", "gradient_effects"};
+    navBtnNames = new String[]{"filters", "gradient_effects", "glitch", "effects"};
     navOverlay = findViewById(R.id.nav_overlay_ve);
     bottomNavBar = findViewById(R.id.video_editor_bottom_menu);
     navEffectCategories = findViewById(R.id.video_editor_fx_categories);
@@ -103,6 +110,33 @@ public class VideoEditor extends AppCompatActivity {
     this.initThumbnailsRecyclerView();
     this.initClickListeners();
     initNavBar();
+    initIcons();
+  }
+
+  // change color of icons depending on light/dark theme enabled
+  public void initIcons() {
+    HashMap<String, Integer> iconNamesToRes = new HashMap<>();
+    iconNamesToRes.put("filters", R.drawable.ic_compare_black_24dp);
+    iconNamesToRes.put("glitch", R.drawable.ic_texture_black_36dp);
+    iconNamesToRes.put("correct", R.drawable.ic_photo_filter_black_36dp);
+    iconNamesToRes.put("effects", R.drawable.ic_photo_filter_black_36dp);
+    iconNamesToRes.put("gradient_effects", R.drawable.ic_color_lens_black_36dp);
+
+    // icons are light theme by default given app's theme is dark theme is default
+    if (!isDarkTheme) {
+      ImageButton saveBtn = findViewById(R.id.save_btn);
+      saveBtn.setImageResource(R.drawable.save_btn_black_24dp);
+
+      ImageButton backBtn = findViewById(R.id.back_btn);
+      backBtn.setImageResource(R.drawable.arrow_back_black_24dp);
+
+      for (String navBtnName : navBtnNames ) {
+        int id = getResources().getIdentifier("ie_icon_" + navBtnName, "id", getPackageName());
+        ImageView imageView = findViewById(id);
+        imageView.setImageResource(iconNamesToRes.get(navBtnName));
+      }
+    }
+
   }
 
   public void initClickListeners() {
@@ -126,12 +160,12 @@ public class VideoEditor extends AppCompatActivity {
 
   public void initNavBar() {
 
-    for (int index = 0; index < navBtnNames.length; index++) {
-      int id = getResources().getIdentifier("ve_btn_" + navBtnNames[index], "id",
-              getPackageName());
-      LinearLayout ie_btn =  findViewById(id);
-      ie_btn.setOnClickListener(onClickListener);
-    }
+      for (String navBtnName : navBtnNames) {
+          int id = getResources().getIdentifier("ve_btn_" + navBtnName, "id",
+                  getPackageName());
+          LinearLayout ie_btn = findViewById(id);
+          ie_btn.setOnClickListener(onClickListener);
+      }
 
   }
 
@@ -141,7 +175,7 @@ public class VideoEditor extends AppCompatActivity {
             = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
     thumbnailsRecyclerView.setLayoutManager(layoutManager);
 
-    adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, videoFiltersMetadata.getVintageFiltersMetadata(), mainApplication, ePlayerView);
+    adapter = new VideoThumbnailsRecyclerView(VideoEditor.this, videoFilterPacks.getVintageFiltersMetadata(), mainApplication, ePlayerView);
 
     thumbnailsRecyclerView.setAdapter(adapter);
 
@@ -150,31 +184,41 @@ public class VideoEditor extends AppCompatActivity {
   ImageButton.OnClickListener onClickListener = new ImageButton.OnClickListener() {
     @Override
     public void onClick(View view) {
+      Log.d("DEBUG", "CLICKED");
       thumbnailsRecyclerView.setVisibility(View.VISIBLE);
       navOverlay.setVisibility(View.VISIBLE);
 
-      for (int index = 0; index < navBtnNames.length; index++) {
-        int id = getResources().getIdentifier("ve_btn_" + navBtnNames[index], "id", getPackageName());
-        LinearLayout btn_layout = findViewById(id);
-        btn_layout.setBackgroundColor(Color.TRANSPARENT);
-      }
+        for (String navBtnName : navBtnNames) {
+            int id = getResources().getIdentifier("ve_btn_" + navBtnName, "id", getPackageName());
+            LinearLayout btn_layout = findViewById(id);
+            btn_layout.setBackgroundColor(Color.TRANSPARENT);
+        }
       view.setBackgroundColor(Color.BLACK);
       String nav_btn_tag = view.getTag().toString();
       bottomNavBar.setVisibility(GONE);
       navEffectCategories.removeAllViews();
 
+
       switch (nav_btn_tag) {
         case "filters": {
-          String[] gradientEffectNavNames = {"Gradients", "Vintage"};
+          String[] gradientEffectNavNames = {"Popular", "Vintage"};
           createCategoryMenu(gradientEffectNavNames);
 
-//              LinearLayout overlay = findViewById(R.id.nav_overlay);
-//              overlay.setVisibility(View.VISIBLE);
+          break;
+        }
+        case "glitch": {
+          String[] glitchEffectNavNames = {"Glitch", "Color Glitch"};
+          createCategoryMenu(glitchEffectNavNames);
+
+          break;
+        }
+        case "effects": {
+          String[] effectNavNames = {"Warm", "Cold"};
+          createCategoryMenu(effectNavNames);
 
           break;
         }
         case "gradient_effects": {
-          Log.d("DEBUG", "GRADIENT EFFECTS CLICKED");
           String[] gradientEffectNavNames = {"Gradients", "Neon", "Dissolve", "Color Blend"};
           createCategoryMenu(gradientEffectNavNames);
           break;
@@ -194,6 +238,7 @@ public class VideoEditor extends AppCompatActivity {
       textView.setId(generateViewId());
       textView.setOnClickListener(filterBtnOlickListener);
       textView.setTag(navName.toLowerCase());
+      textView.setTextColor(Color.GRAY);
       LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
               LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
       );
@@ -219,21 +264,41 @@ public class VideoEditor extends AppCompatActivity {
 
             switch (nav_btn_tag) {
                 case "gradients": {
-                    adapter.update(videoFiltersMetadata.getGradientFiltersMetadata());
+                    adapter.update(videoFilterPacks.getGradientFiltersMetadata());
                     break;
                 }
                 case "vintage": {
-                    adapter.update(videoFiltersMetadata.getVintageFiltersMetadata());
+                    adapter.update(videoFilterPacks.getVintageFiltersMetadata());
                     break;
                 }
                 case "dissolve": {
-                  adapter.update(videoFiltersMetadata.getDissolveFiltersMetadata());
+                  adapter.update(videoFilterPacks.getDissolveFiltersMetadata());
                     break;
+                }
+                case "glitch": {
+                  adapter.update(videoFilterPacks.getGlitchFiltersMetadata());
+                  break;
+                }
+                case "color glitch": {
+                  adapter.update(videoFilterPacks.getColorGlitchFiltersMetadata());
+                  break;
                 }
                 case "color blend": {
-                  adapter.update(videoFiltersMetadata.getColorBlendFiltersMetadata());
-                    break;
-                }
+                adapter.update(videoFilterPacks.getColorBlendFiltersMetadata());
+                break;
+              }
+              case "warm": {
+                adapter.update(videoFilterPacks.getWarmTintFiltersMetadata());
+                break;
+              }
+              case "cold": {
+                adapter.update(videoFilterPacks.getColdTintFiltersMetadata());
+                break;
+              }
+              case "popular": {
+                adapter.update(videoFilterPacks.getPopularFiltersMetadata());
+                break;
+              }
                 case "neon": {
                     adapter.clear();
                     break;
@@ -375,7 +440,12 @@ public class VideoEditor extends AppCompatActivity {
   public void openDownloadActivity() {
     Intent intent = new Intent(VideoEditor.this, DownloadProgress.class);
     intent.putExtra("videoPath", videoUrl);
+    intent.putExtra("videoFilterName", activeFilterName);
     startActivity(intent);
+  }
+
+  public void setActiveVideoFilterName(String filterName) {
+    this.activeFilterName = filterName;
   }
 
   @Override

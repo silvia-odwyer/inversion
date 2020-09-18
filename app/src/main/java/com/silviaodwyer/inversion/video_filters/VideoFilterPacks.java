@@ -7,7 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.silviaodwyer.inversion.utils.FileUtils;
-import com.silviaodwyer.inversion.VideoFilterMetadata;
+import com.silviaodwyer.inversion.models.VideoFilterMetadata;
 
 import java.util.ArrayList;
 import java.util.List;

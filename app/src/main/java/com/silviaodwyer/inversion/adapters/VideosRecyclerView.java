@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.silviaodwyer.inversion.models.FileMetadata;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.models.Video;
+import com.silviaodwyer.inversion.models.VideoMetadata;
 import com.silviaodwyer.inversion.ui.VideoEditor;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 

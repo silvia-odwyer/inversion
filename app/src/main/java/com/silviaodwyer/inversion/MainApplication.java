@@ -10,8 +10,15 @@ import android.util.Log;
 import com.daasuu.gpuv.player.GPUPlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.silviaodwyer.inversion.models.FileMetadata;
+import com.silviaodwyer.inversion.models.Image;
+import com.silviaodwyer.inversion.models.ImageMetadata;
+import com.silviaodwyer.inversion.models.ImageThumbnail;
+import com.silviaodwyer.inversion.models.Video;
+import com.silviaodwyer.inversion.models.VideoMetadata;
 import com.silviaodwyer.inversion.ui.VideoEditor;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.utils.FileUtils;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.util.ArrayList;

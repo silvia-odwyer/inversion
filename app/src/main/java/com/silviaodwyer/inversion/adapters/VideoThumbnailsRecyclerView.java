@@ -1,8 +1,6 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.adapters;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +8,16 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.daasuu.gpuv.egl.filter.GlFilter;
 import com.daasuu.gpuv.player.GPUPlayerView;
+import com.silviaodwyer.inversion.models.ImageMetadata;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.models.VideoFilterMetadata;
 import com.silviaodwyer.inversion.ui.VideoEditor;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

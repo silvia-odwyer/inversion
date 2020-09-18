@@ -136,13 +136,13 @@
           android:layoutAnimation="@anim/layout_animation"
           app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/new_effects"
-          android:textColor="@color/headingColor"
-          android:textSize="24sp"
-          android:textStyle="bold" />
+<!--      <TextView-->
+<!--          android:layout_width="wrap_content"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:text="@string/new_effects"-->
+<!--          android:textColor="@color/headingColor"-->
+<!--          android:textSize="24sp"-->
+<!--          android:textStyle="bold" />-->
 
       <LinearLayout
           android:id="@+id/effects"
@@ -153,8 +153,6 @@
           android:orientation="vertical">
 
       </LinearLayout>
-
-
     </LinearLayout>
   </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.models.Image;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
 import com.silviaodwyer.inversion.MainApplication;

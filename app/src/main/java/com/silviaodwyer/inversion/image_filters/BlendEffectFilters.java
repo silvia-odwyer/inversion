@@ -1,9 +1,18 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.image_filters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.BGRSwitchFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.BRGSwitchFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.BlueShiftFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.ChromaticAbberationFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.GreenShiftFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.RBGSwitchFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.RBRSwitchFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.RedShiftFilter;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.TintFilter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +38,17 @@ public class BlendEffectFilters extends ImageFilters {
     public List<List<Object>> createGlitchEffectFilters() {
 
         List<List<Object>> allfilters = new ArrayList<>();
+
+        allfilters.add(Arrays.asList("Chromatic Abberation", new ChromaticAbberationFilter()));
+        allfilters.add(Arrays.asList("Blue Tint Glitch", getBlueTintGlitchFilter()));
+        allfilters.add(Arrays.asList("Red Shift", new RedShiftFilter()));
+        allfilters.add(Arrays.asList("Green Shift", new GreenShiftFilter()));
+        allfilters.add(Arrays.asList("Blue Shift", new BlueShiftFilter()));
         allfilters.add(Arrays.asList("Infra", getInfraFilter()));
         allfilters.add(Arrays.asList("Lithic", getLithicFilter()));
         allfilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
         allfilters.add(Arrays.asList("Solarize Two", getSolarizeTwoFilter()));
+        allfilters.add(Arrays.asList("Pop Art 2", getPopart2Filter()));
 
         return allfilters;
     }
@@ -49,6 +65,14 @@ public class BlendEffectFilters extends ImageFilters {
         GPUImageFilter filter = createTwoBlendFilter(getContext(), GPUImageColorBlendFilter.class, invertedImage);
 
         return filter;
+    }
+
+    public GPUImageFilterGroup getBlueTintGlitchFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(getInfraFilter());
+        filterGroup.addFilter(new ChromaticAbberationFilter());
+
+        return filterGroup;
     }
 
     public GPUImageFilter getLithicFilter() {

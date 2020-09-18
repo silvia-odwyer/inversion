@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
-import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.ImageThumbnail;
+import com.silviaodwyer.inversion.models.Image;
+import com.silviaodwyer.inversion.models.ImageThumbnail;
+import com.silviaodwyer.inversion.image_filters.glitch_filters.TintFilter;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import jp.co.cyberagent.android.gpuimage.filter.*;
@@ -75,46 +75,6 @@ public class ImageFilters {
         return BitmapFactory.decodeResource(context.getResources(), resource_id);
     }
 
-    public List<List<Object>> createVintageFilters() {
-
-        List<List<Object>> allfilters = new ArrayList<>();
-        allfilters.add(Arrays.asList("Dramatic", getDramaticFilter()));
-        allfilters.add(Arrays.asList("Sepia", new GPUImageSepiaToneFilter()));
-        allfilters.add(Arrays.asList("Obsidian", getObsidianFilter()));
-        allfilters.add(Arrays.asList("Grayscale", new GPUImageGrayscaleFilter()));
-        allfilters.add(Arrays.asList("Retro 1", getRetroFilter()));
-        allfilters.add(Arrays.asList("Retro 2", getRetroFilter2()));
-        allfilters.add(Arrays.asList("Vivid", getVividFilter()));
-        allfilters.add(Arrays.asList("Retro Vignette", getRetroVignette()));
-        allfilters.add(Arrays.asList("Retro Vignette 2", getRetroVignette2()));
-        allfilters.add(Arrays.asList("Lomo", getLomoFilter()));
-        allfilters.add(Arrays.asList("Lomo Fuschia", getLomoFuschiaFilter()));
-        allfilters.add(Arrays.asList("Lomo Violet", getLomoVioletFilter()));
-        allfilters.add(Arrays.asList("Lomo Blue", getLomoBlueFilter()));
-
-        return allfilters;
-    }
-
-    public List<List<Object>> createEffectFilters() {
-
-        List<List<Object>> allfilters = new ArrayList<>();
-        allfilters.add(Arrays.asList("Solarize", new GPUImageSolarizeFilter()));
-        allfilters.add(Arrays.asList("Solarize 2", getSolarizeVariantFilter()));
-        allfilters.add(Arrays.asList("Solarus", getSolarusFilter()));
-        allfilters.add(Arrays.asList("False Color", new GPUImageFalseColorFilter()));
-        allfilters.add(Arrays.asList("Posterize", new GPUImagePosterizeFilter()));
-        allfilters.add(Arrays.asList("Half Tone", new GPUImageHalftoneFilter()));
-        allfilters.add(Arrays.asList("RGB Dilation", new GPUImageRGBDilationFilter()));
-        allfilters.add(Arrays.asList("Vibrance", new GPUImageVibranceFilter()));
-        allfilters.add(Arrays.asList("Toon", new GPUImageToonFilter()));
-        allfilters.add(Arrays.asList("Smooth Toon", new GPUImageSmoothToonFilter()));
-        allfilters.add(Arrays.asList("Duotone", getDuotoneFilter()));
-        allfilters.add(Arrays.asList("Duotone2", getDuotone2Filter()));
-        allfilters.add(Arrays.asList("Pop Art", getPopartFilter()));
-        allfilters.add(Arrays.asList("Pop Art 2", getPopart2Filter()));
-
-        return allfilters;
-    }
 
     public GPUImageFilterGroup getVividFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
@@ -138,6 +98,30 @@ public class ImageFilters {
         filterGroup.addFilter(new GPUImageFalseColorFilter());
         filterGroup.addFilter(new GPUImageHueFilter(180));
 
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getPinkTintFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageContrastFilter(1.05f));
+        filterGroup.addFilter(new GPUImageSaturationFilter(0.9f));
+        filterGroup.addFilter(new TintFilter(1.25f, 1.0f, 1.25f));
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getLokiFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageContrastFilter(1.15f));
+        filterGroup.addFilter(new GPUImageSaturationFilter(1.1f));
+        filterGroup.addFilter(new TintFilter(1.25f, 1.0f, 1.25f));
+        return filterGroup;
+    }
+
+    public GPUImageFilterGroup getLafaroFilter() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageContrastFilter(1.35f));
+        filterGroup.addFilter(new GPUImageSaturationFilter(1.4f));
+        filterGroup.addFilter(new TintFilter(1.16f, 1.0f, 1.25f));
         return filterGroup;
     }
 
@@ -174,7 +158,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getOribitonFilter() {
+    GPUImageFilterGroup getOribitonFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getObsidianFilter());
         Bitmap bmp = decodeBitmapFromResource(R.mipmap.purple);
@@ -183,7 +167,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getNeonPinkFilter() {
+    GPUImageFilterGroup getNeonPinkFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getObsidianFilter());
         Bitmap bmp = decodeBitmapFromResource(R.mipmap.pink);
@@ -329,7 +313,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getRetroFilter3() {
+    GPUImageFilterGroup getRetroFilter3() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
 
         GPUImageGrayscaleFilter filter = new GPUImageGrayscaleFilter();
@@ -364,7 +348,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getAestheticaFilter() {
+    GPUImageFilterGroup getAestheticaFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         float amt = (float) 0.4;
         float exp_amt = (float) 0.05;
@@ -383,7 +367,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getLomoFilter() {
+    GPUImageFilterGroup getLomoFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getVividFilter());
         filterGroup.addFilter(createVignette());
@@ -391,7 +375,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getLomoFuschiaFilter() {
+    GPUImageFilterGroup getLomoFuschiaFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getVividFilter());
         filterGroup.addFilter(createVignette());
@@ -402,7 +386,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getLomoBlueFilter() {
+    GPUImageFilterGroup getLomoBlueFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getVividFilter());
         filterGroup.addFilter(createVignette());
@@ -413,7 +397,7 @@ public class ImageFilters {
         return filterGroup;
     }
 
-    private GPUImageFilterGroup getLomoVioletFilter() {
+    GPUImageFilterGroup getLomoVioletFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getVividFilter());
         filterGroup.addFilter(createVignette());
@@ -436,7 +420,7 @@ public class ImageFilters {
         return vf;
     }
 
-    private GPUImageFilterGroup getRetroVignette() {
+    GPUImageFilterGroup getRetroVignette() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
         filterGroup.addFilter(getRetroFilter());
         filterGroup.addFilter(createVignette());
@@ -450,6 +434,29 @@ public class ImageFilters {
         filterGroup.addFilter(createVignette());
         return filterGroup;
     }
+
+    public GPUImageFilterGroup getGrayscaleVignette() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(new GPUImageGrayscaleFilter());
+        filterGroup.addFilter(createVignette());
+        return filterGroup;
+    }
+
+    public GPUImageFilter getSwirlFilter() {
+        GPUImageSwirlFilter swirlFilter = new GPUImageSwirlFilter();
+        swirlFilter.setCenter(new PointF(20.0f, 18.0f));
+        swirlFilter.setRadius(15.3f);
+        swirlFilter.setAngle(15.4f);
+        return swirlFilter;
+    }
+
+    public GPUImageFilterGroup getGrayscaleVignette2() {
+        GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
+        filterGroup.addFilter(getDramaticFilter());
+        filterGroup.addFilter(createVignette());
+        return filterGroup;
+    }
+
 
     private GPUImageFilterGroup getOrbikFilter() {
         GPUImageFilterGroup filterGroup = new GPUImageFilterGroup();
@@ -485,14 +492,6 @@ public class ImageFilters {
         return filters;
     }
 
-    public void filterImageFromName(String filterName, Image image) {
-        GPUImageFilter filter = getFilterFromName(filterName);
-        image.getMetaData().setAppliedFilter(filterName);
-
-        ImageEditor activity = image.getActivity();
-        activity.updateGPUImage(filter);
-    }
-
     public static String filterInCategory(String filterName) {
         String[] categories = {"Gradient", "Color Blend"};
         for (String category : categories) {
@@ -503,63 +502,6 @@ public class ImageFilters {
         return null;
     }
 
-    public GPUImageFilter getFilterFromName(String filterName) {
-        GPUImageFilter filter = null;
-        switch (filterName) {
-            case "Neon Pink":
-                filter = getNeonPinkFilter();
-                break;
-            case "Eight":
-                filter = getEightFilter();
-                break;
-            case "Orbiton":
-                filter = getOribitonFilter();
-                break;
-            case "Aesthetica":
-                filter = getAestheticaFilter();
-                break;
-            case "Sepia":
-                filter = new GPUImageSepiaToneFilter();
-                break;
-            case "Grayscale":
-                filter = new GPUImageGrayscaleFilter();
-                break;
-            case "Vibrance":
-                filter = new GPUImageVibranceFilter();
-                break;
-            case "Dramatic":
-                filter = getDramaticFilter();
-                break;
-            case "Obsidian":
-                filter = getObsidianFilter();
-                break;
-            case "Vibrancy":
-                filter = getVibrancyFilter();
-                break;
-            case "Rubrik":
-                filter = getRubrikFilter();
-                break;
-            case "Cali":
-                filter = getCaliFilter();
-                break;
-            case "Retro":
-                filter = getRetroFilter();
-                break;
-            case "Retro2":
-                filter = getRetroFilter2();
-                break;
-            case "Retro3":
-                filter = getRetroFilter3();
-                break;
-            case "Retro Vignette":
-                filter = getRetroVignette();
-                break;
-            case "Retro Vignette2":
-                filter = getRetroVignette2();
-                break;
-        }
-        return filter;
-        }
 
   public void addEffect(GPUImageFilter filter, Image image) {
     ImageEditor activity = image.getActivity();

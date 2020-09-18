@@ -21,13 +21,7 @@ public class HomeActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-      boolean nightMode = false;
-      if (nightMode) {
-          setTheme(R.style.splash_screen_theme);
-      }
-    else {
-        setTheme(R.style.splash_screen_theme_rb);
-      }
+    setTheme(R.style.splash_screen_theme);
     super.onCreate(savedInstanceState);
     setTheme(R.style.AppTheme);
     setContentView(R.layout.activity_home);

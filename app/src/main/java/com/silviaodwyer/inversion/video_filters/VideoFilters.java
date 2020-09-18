@@ -9,21 +9,11 @@ import android.widget.Toast;
 import com.daasuu.gpuv.egl.filter.*;
 import com.daasuu.gpuv.player.GPUPlayerView;
 import com.silviaodwyer.inversion.image_filters.GradientFilters;
-import com.silviaodwyer.inversion.image_filters.ImageFilterPacks;
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
-import com.silviaodwyer.inversion.utils.ImageUtils;
-import com.silviaodwyer.inversion.VideoThumbnail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilterGroup;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageHueFilter;
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
 
 public class VideoFilters {
   private ArrayList<GlFilter> videoFilters = new ArrayList<>();
@@ -47,16 +37,16 @@ public class VideoFilters {
         return blendFilters;
     }
 
-    public List<List<Object>> createColorBlendFilters() {
-        List<List<Object>> blendFilters = new ArrayList<>();
-        for (int k = 0; k < bitmaps.size(); k++) {
-            Integer bitmapResource = bitmaps.get(k);
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
-            blendFilters.add(Arrays.asList("Color Blend " + k, new GLMultiplyBlendFilter(bitmap)));
-
-        }
-        return blendFilters;
-    }
+//    public List<List<Object>> createColorBlendFilters() {
+//        List<List<Object>> blendFilters = new ArrayList<>();
+//        for (int k = 0; k < bitmaps.size(); k++) {
+//            Integer bitmapResource = bitmaps.get(k);
+//            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResource);
+//            blendFilters.add(Arrays.asList("Color Blend " + k, new GLMultiplyBlendFilter(bitmap)));
+//
+//        }
+//        return blendFilters;
+//    }
 
   public ArrayList<GlFilter> getVideoFilters() {
     return videoFilters;

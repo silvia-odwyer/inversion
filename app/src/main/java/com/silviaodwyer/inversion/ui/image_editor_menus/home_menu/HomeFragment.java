@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.models.Image;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;

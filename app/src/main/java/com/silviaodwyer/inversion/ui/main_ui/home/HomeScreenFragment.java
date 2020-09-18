@@ -121,7 +121,7 @@ public class HomeScreenFragment extends Fragment {
     setUpOnClickListeners();
     setUpImages();
     initVideos();
-    initEffectList();
+//    initEffectList();
 
     mainApplication.requestPermissions(getActivity());
 

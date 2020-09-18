@@ -1,7 +1,6 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
-import android.net.Uri;
-import java.util.ArrayList;
+import com.silviaodwyer.inversion.models.FileMetadata;
 
 public class ImageMetadata extends FileMetadata {
     private String originalImagePath;

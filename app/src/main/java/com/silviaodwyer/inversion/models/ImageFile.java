@@ -1,6 +1,8 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 import android.graphics.Bitmap;
+
+import com.silviaodwyer.inversion.models.FileMetadata;
 
 public class ImageFile {
   private Bitmap bitmap;

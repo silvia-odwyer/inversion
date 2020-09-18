@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.ImageMetadata;
+import com.silviaodwyer.inversion.models.Image;
+import com.silviaodwyer.inversion.models.ImageMetadata;
 import com.silviaodwyer.inversion.MainApplication;
-import com.silviaodwyer.inversion.Video;
+import com.silviaodwyer.inversion.models.Video;
 
 import java.io.File;
 import java.io.FileInputStream;

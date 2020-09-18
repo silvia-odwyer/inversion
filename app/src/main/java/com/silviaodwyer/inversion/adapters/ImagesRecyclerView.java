@@ -1,22 +1,18 @@
 package com.silviaodwyer.inversion;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -33,13 +29,15 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   private ArrayList<ImageMetadata> metaDataArray;
   private ImageUtils imageUtils;
   private Activity activity;
+  private boolean isCentreCrop;
 
-  public ImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication) {
+  public ImagesRecyclerView(Activity context, ArrayList<ImageMetadata> data, MainApplication mainApplication, boolean isCentreCrop) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
     this.context = context;
     this.mainApplication = mainApplication;
     this.imageUtils = new ImageUtils(context);
+    this.isCentreCrop = isCentreCrop;
   }
 
   public void updateRecyclerView(ArrayList<ImageMetadata> updatedFiles) {
@@ -52,6 +50,10 @@ public class ImagesRecyclerView extends RecyclerView.Adapter<ImagesRecyclerView.
   @NonNull
   public ImagesRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = inflater.inflate(R.layout.recyclerview_image, parent, false);
+    if (isCentreCrop) {
+        ImageView imageView = view.findViewById(R.id.image_thumbnail);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+    }
     return new ViewHolder(view);
   }
 

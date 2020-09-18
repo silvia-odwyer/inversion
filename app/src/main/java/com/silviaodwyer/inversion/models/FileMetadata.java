@@ -1,7 +1,9 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 import android.os.Environment;
 import android.util.Log;
+
+import com.silviaodwyer.inversion.utils.FileUtils;
 
 import java.io.File;
 

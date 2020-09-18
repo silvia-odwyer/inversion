@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+import com.silviaodwyer.inversion.models.ImageMetadata;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
 
 import java.util.ArrayList;

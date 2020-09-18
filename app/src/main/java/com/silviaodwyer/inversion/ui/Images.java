@@ -13,11 +13,11 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.silviaodwyer.inversion.FileMetadata;
+import com.silviaodwyer.inversion.models.FileMetadata;
 import com.silviaodwyer.inversion.utils.FileUtils;
-import com.silviaodwyer.inversion.Image;
-import com.silviaodwyer.inversion.ImageMetadata;
-import com.silviaodwyer.inversion.ImagesRecyclerView;
+import com.silviaodwyer.inversion.models.Image;
+import com.silviaodwyer.inversion.models.ImageMetadata;
+import com.silviaodwyer.inversion.adapters.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;

@@ -1,10 +1,17 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.silviaodwyer.inversion.models.Image;
+import com.silviaodwyer.inversion.models.ImageMetadata;
+import com.silviaodwyer.inversion.MainApplication;
+import com.silviaodwyer.inversion.R;
+import com.silviaodwyer.inversion.ui.image_editor.ImageEditor;
+import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.util.ArrayList;
 

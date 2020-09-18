@@ -27,12 +27,12 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.silviaodwyer.inversion.image_filters.BlendEffectFilters;
 import com.silviaodwyer.inversion.image_filters.GradientFilters;
-import com.silviaodwyer.inversion.Image;
+import com.silviaodwyer.inversion.models.Image;
 import com.silviaodwyer.inversion.image_filters.ImageFilterPacks;
 import com.silviaodwyer.inversion.image_filters.ImageFilterRetriever;
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
-import com.silviaodwyer.inversion.ImageThumbnail;
-import com.silviaodwyer.inversion.ImageThumbnailsRecyclerView;
+import com.silviaodwyer.inversion.models.ImageThumbnail;
+import com.silviaodwyer.inversion.adapters.ImageThumbnailsRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
 

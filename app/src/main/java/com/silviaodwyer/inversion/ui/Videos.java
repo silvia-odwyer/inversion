@@ -14,14 +14,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
-import com.silviaodwyer.inversion.FileMetadata;
-import com.silviaodwyer.inversion.FileUtils;
+import com.silviaodwyer.inversion.models.FileMetadata;
+import com.silviaodwyer.inversion.utils.FileUtils;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.Video;
-import com.silviaodwyer.inversion.VideoMetadata;
-import com.silviaodwyer.inversion.VideosRecyclerView;
-import com.silviaodwyer.inversion.ui.VideoEditor;
+import com.silviaodwyer.inversion.models.Video;
+import com.silviaodwyer.inversion.models.VideoMetadata;
+import com.silviaodwyer.inversion.adapters.VideosRecyclerView;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 
 import java.io.File;

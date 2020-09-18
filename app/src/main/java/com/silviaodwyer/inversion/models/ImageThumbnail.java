@@ -1,15 +1,16 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 import android.graphics.Bitmap;
-import com.daasuu.gpuv.egl.filter.GlFilter;
 
-public class VideoThumbnail {
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
+
+public class ImageThumbnail {
 
     private Bitmap bitmap;
     private String filterName;
-    private GlFilter filter;
+    private GPUImageFilter filter;
 
-    public VideoThumbnail(Bitmap bitmap, String filterName, GlFilter filter) {
+    public ImageThumbnail(Bitmap bitmap, String filterName, GPUImageFilter filter) {
         this.bitmap = bitmap;
         this.filterName = filterName;
         this.filter = filter;
@@ -23,7 +24,7 @@ public class VideoThumbnail {
         return filterName;
     }
 
-    public GlFilter getFilter() {
+    public GPUImageFilter getFilter() {
         return filter;
     }
 }

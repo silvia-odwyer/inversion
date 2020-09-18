@@ -1,6 +1,5 @@
 package com.silviaodwyer.inversion.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,9 +34,9 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.Video;
+import com.silviaodwyer.inversion.models.Video;
 import com.silviaodwyer.inversion.video_filters.VideoFilterPacks;
-import com.silviaodwyer.inversion.VideoThumbnailsRecyclerView;
+import com.silviaodwyer.inversion.adapters.VideoThumbnailsRecyclerView;
 import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
 import java.util.HashMap;

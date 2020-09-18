@@ -1,10 +1,9 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.File;
+import com.silviaodwyer.inversion.models.VideoMetadata;
 
 public class Video {
   private VideoMetadata metadata;

@@ -17,13 +17,13 @@ import android.widget.Toast;
 import com.daasuu.gpuv.composer.FillMode;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.daasuu.gpuv.egl.filter.GlFilter;
-import com.daasuu.gpuv.egl.filter.GlFilterGroup;
 import com.daasuu.gpuv.egl.filter.GlSepiaFilter;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.Video;
-import com.silviaodwyer.inversion.VideoMetadata;
+import com.silviaodwyer.inversion.models.Video;
+import com.silviaodwyer.inversion.models.VideoMetadata;
 import com.silviaodwyer.inversion.utils.ImageUtils;
+import com.silviaodwyer.inversion.video_filters.VideoFilters;
 
 import java.io.File;
 
@@ -33,6 +33,7 @@ public class DownloadProgress extends AppCompatActivity {
     private String videoPath;
     private GlFilter activeFilter = new GlSepiaFilter();
     private MainApplication mainApplication;
+    private String videoFilterName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,14 @@ public class DownloadProgress extends AppCompatActivity {
         setContentView(R.layout.activity_download_progress);
         mainApplication = ((MainApplication)getApplication());
         video = mainApplication.getVideo();
+        VideoFilters vf = new VideoFilters(getApplicationContext());
 
         // get the video path
         videoPath = getIntent().getExtras().getString("videoPath");
+        videoFilterName = getIntent().getExtras().getString("videoFilterName");
+        Log.d("DEBUG", "VIDEO FILTER NAME: " + videoFilterName);
+        activeFilter = vf.getVideoFilterFromName(videoFilterName);
+
         this.initVideoDetailCard();
         this.saveVideo();
     }
@@ -61,12 +67,11 @@ public class DownloadProgress extends AppCompatActivity {
 
         new GPUMp4Composer(videoPath, destMp4Path)
                 .fillMode(FillMode.PRESERVE_ASPECT_CROP)
-                .filter(new GlFilterGroup(activeFilter))
+                .filter(activeFilter)
                 .listener(new GPUMp4Composer.Listener() {
                     @Override
                     public void onProgress(double progress) {
                         int progress_res = (int) Math.round((progress * 100));
-                        Log.d("DEBUG", "Progress:  " + progress_res);
                         progressBar.setProgress(progress_res);
                     }
 
@@ -75,8 +80,6 @@ public class DownloadProgress extends AppCompatActivity {
                         progressBar.setProgress(100);
                         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
                         getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
-
-                        Log.d("DEBUG", "onCompleted()");
 
                         // Save video to store
                         mainApplication.saveVideoMetadata(video.getMetadata());

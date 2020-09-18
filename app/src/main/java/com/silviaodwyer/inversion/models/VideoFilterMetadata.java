@@ -1,4 +1,4 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 public class VideoFilterMetadata {
     private String name;

@@ -12,10 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.silviaodwyer.inversion.ImageMetadata;
+import com.silviaodwyer.inversion.models.ImageMetadata;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.WeeklyEditedImagesRecyclerView;
+import com.silviaodwyer.inversion.adapters.WeeklyEditedImagesRecyclerView;
 
 import java.util.ArrayList;
 

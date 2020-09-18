@@ -1,6 +1,8 @@
-package com.silviaodwyer.inversion;
+package com.silviaodwyer.inversion.models;
 
 import android.os.Environment;
+
+import com.silviaodwyer.inversion.models.FileMetadata;
 
 import java.io.File;
 

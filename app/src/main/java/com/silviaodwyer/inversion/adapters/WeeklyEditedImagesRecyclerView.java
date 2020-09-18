@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.silviaodwyer.inversion.image_filters.ImageFilterPacks;
 import com.silviaodwyer.inversion.image_filters.ImageFilters;
 import com.silviaodwyer.inversion.utils.ImageUtils;
 
@@ -33,6 +34,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
     private ImageUtils imageUtils;
     private Activity activity;
     private Activity context;
+    private ImageFilterPacks imageFilterPacks;
     private MainApplication mainApplication;
     private ImageFilters imageFilters;
     private List<List<Object>> filters;
@@ -45,7 +47,7 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         this.imageUtils = new ImageUtils(context);
 
         this.imageFilters = new ImageFilters(context);
-        this.filters = imageFilters.createVintageFilters();
+        this.filters = imageFilterPacks.createVintageFilters();
     }
 
     @Override
@@ -66,6 +68,9 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
                 .into(new CustomTarget<Bitmap>(250, 250) {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        imageFilterPacks = new ImageFilterPacks(context, resource);
+                        filters = imageFilterPacks.createPopularFilters();
+
                         GPUImage gpuImage = new GPUImage(context);
                         gpuImage.setImage(resource);
                         Random r = new Random();

@@ -8,8 +8,13 @@ allowing users to add special effects to their videos/images quickly and save th
 ### Video Editor Screenshots
 ![Video Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/video_editor_screenshots.PNG "Video Editor Screenshots")
 
+![Video Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/video_editor_screenshots2.PNG "Video Editor Screenshots")
+
+
 ### Image Editor Screenshots
 ![Image Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/image_editor_screenshots.PNG "Image Editor Screenshots")
+
+![Image Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/image_editor_screenshots2.PNG "Image Editor Screenshots")
 
 ## Development Notes
 The app was developed with Android Studio, written in Java, and supports mobile devices with a minimum API Level of 21. 

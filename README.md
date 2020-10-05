@@ -3,14 +3,16 @@
 Inversion is a video and image processing app for Android, which performs real-time video processing on the GPU,
 allowing users to add special effects to their videos/images quickly and save them for sharing.
 
-## Visual Prototypes
+## Screenshots
 
-![Prototype](https://i.imgur.com/EDM3uef.png "Screenshots of the app prototype")
+### Video Editor Screenshots
+![Video Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/video_editor_screenshots.PNG "Video Editor Screenshots")
 
-Link to the GIF prototype demo: https://i.imgur.com/wPW9auh.gif 
+### Image Editor Screenshots
+![Image Editor screenshots](https://github.com/silvia-odwyer/inversion/blob/master/screenshots/image_editor_screenshots.PNG "Image Editor Screenshots")
 
 ## Development Notes
-The app is being developed with Android Studio, written in Java, and supports mobile devices with a minimum API Level of 21. 
+The app was developed with Android Studio, written in Java, and supports mobile devices with a minimum API Level of 21. 
 
 ### Screens/Activities
 - **Home**: This is the app’s Launcher activity, and is the starting point for the user. It contains a selection of the user’s images and videos which they have previously edited. It also contains a list of new effects which have been added recently. 
@@ -44,11 +46,3 @@ aberration, monitor scanlines, and other glitch effects.
 - **Filters**: Hue transforms, blending with a variety of gradients, RGB shifts, tints,
 - **Special effects**: Other effects such as applying vignettes, halftone, pixelization, noise, vintage effects, solarization etc.,
 - **Blending**: Blending with other images will also be available, such as using Multiply blend, Add blend, and so forth.
-
-## Other Features
-- Image collage creation
-- Adding text to images
-- Watermarking videos
-- Exporting edited images/videos
-
-Some visual examples of the filters will be added here or in the repository Wiki.

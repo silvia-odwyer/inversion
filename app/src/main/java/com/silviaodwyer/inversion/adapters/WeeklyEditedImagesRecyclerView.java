@@ -50,7 +50,6 @@ public class WeeklyEditedImagesRecyclerView extends RecyclerView.Adapter<WeeklyE
         this.imageUtils = new ImageUtils(context);
 
         this.imageFilters = new ImageFilters(context);
-        this.filters = imageFilterPacks.createVintageFilters();
     }
 
     @Override

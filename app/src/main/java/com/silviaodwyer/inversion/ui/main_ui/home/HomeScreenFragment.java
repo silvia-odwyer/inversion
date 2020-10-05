@@ -45,7 +45,6 @@ import com.silviaodwyer.inversion.ui.Images;
 import com.silviaodwyer.inversion.adapters.ImagesRecyclerView;
 import com.silviaodwyer.inversion.MainApplication;
 import com.silviaodwyer.inversion.R;
-import com.silviaodwyer.inversion.Shop;
 import com.silviaodwyer.inversion.models.Video;
 import com.silviaodwyer.inversion.ui.VideoEditor;
 import com.silviaodwyer.inversion.models.VideoMetadata;
@@ -82,7 +81,6 @@ public class HomeScreenFragment extends Fragment {
   private MainApplication mainApplication;
   private ArrayList<String> effectNames = new ArrayList<String>();
   private FileUtils fileUtils;
-  private TextView shop;
   private int numImages;
   private int numVideos;
   private Button uploadImageBtn;
@@ -95,7 +93,6 @@ public class HomeScreenFragment extends Fragment {
     context = activity.getApplicationContext();
     viewImages = root.findViewById(R.id.view_images);
     viewVideos = root.findViewById(R.id.view_videos);
-    shop = root.findViewById(R.id.shop);
     fileUtils = new FileUtils(context);
     effectList = root.findViewById(R.id.effects);
     mainApplication = (MainApplication) activity.getApplication();
@@ -255,13 +252,6 @@ public class HomeScreenFragment extends Fragment {
       }
     });
 
-    shop.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), Shop.class);
-            startActivity(intent);
-        }
-    });
 
   }
 
